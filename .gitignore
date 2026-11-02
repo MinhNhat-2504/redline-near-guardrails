@@ -16,3 +16,7 @@ id.json
 *-keypair.json
 backend/executor.json
 backend/owner.json
+
+# Workspace-only build tools and extracted source documents
+.tooling/
+playbook.extracted.txt
