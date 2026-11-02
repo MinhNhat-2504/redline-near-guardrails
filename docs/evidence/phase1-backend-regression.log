@@ -1,0 +1,13 @@
+
+> redline-backend@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 D:/Project/AI Engineer/redline-near-guardrails/backend
+
+
+ Test Files  28 passed (28)
+      Tests  284 passed (284)
+   Start at  03:43:31
+   Duration  1.47s (transform 2.59s, setup 0ms, import 8.48s, tests 1.54s, environment 3ms)
+

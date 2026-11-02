@@ -3,3 +3,8 @@ protocol = "sparse"
 
 [net]
 git-fetch-with-cli = true
+
+# near-sdk 5.30 selects NEAR host hashing/panics only with this target cfg.
+# Solana's native/BPF targets are unaffected.
+[target.wasm32-unknown-unknown]
+rustflags = ["--cfg", "near"]

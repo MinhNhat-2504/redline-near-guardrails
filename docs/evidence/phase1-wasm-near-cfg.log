@@ -1,0 +1,56 @@
+wsl :    Compiling syn v2.0.119
+At line:2 char:242
++ ... Cargo.toml; wsl -d Ubuntu --exec bash .tooling/run-rust.sh cargo buil ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling syn v2.0.119:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling typenum v1.20.1
+   Compiling proc-macro-error-attr3 v3.1.1
+   Compiling hashbrown v0.17.1
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling zmij v1.0.23
+   Compiling equivalent v1.0.3
+   Compiling foldhash v0.2.0
+   Compiling borsh v1.8.1
+   Compiling serde_json v1.0.154
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling near-sys v0.4.0
+   Compiling base64 v0.23.1
+   Compiling hex v0.4.3
+   Compiling bs58 v0.5.1
+   Compiling near-crypto-hash v0.2.0
+   Compiling near-sdk-env v0.1.8
+   Compiling base64 v0.22.1
+   Compiling wee_alloc v0.4.5
+   Compiling memory_units v0.4.0
+   Compiling cfg-if v0.1.10
+   Compiling once_cell v1.21.4
+   Compiling hex-literal v1.1.0
+   Compiling hybrid-array v0.4.15
+   Compiling indexmap v2.14.2
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling digest v0.11.3
+   Compiling proc-macro-error3 v3.1.1
+   Compiling near-account-id v3.0.0
+   Compiling near-token v0.3.6
+   Compiling near-gas v0.3.7
+   Compiling serde_with v3.24.0
+   Compiling impl-tools-lib v0.12.0
+   Compiling darling_core v0.20.11
+   Compiling strum_macros v0.26.4
+   Compiling cfg_eval v0.1.2
+   Compiling impl-tools v0.12.0
+   Compiling darling_macro v0.20.11
+   Compiling near-sdk-core v4.4.1
+   Compiling near-digest v0.1.4
+   Compiling near-global-contracts v0.3.2
+   Compiling darling v0.20.11
+   Compiling near-sdk-macros v5.30.0
+   Compiling near-sdk v5.30.0
+   Compiling redline-safety-vault v0.1.0 (/mnt/d/Project/AI 
+Engineer/redline-near-guardrails/contracts/near-safety-vault)
+    Finished `release` profile [optimized] target(s) in 17.63s

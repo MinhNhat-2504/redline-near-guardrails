@@ -1,3 +1,5 @@
+> **REDLINE for NEAR — migration in progress.** This repository preserves the original [REDLINE](https://github.com/MinhNhat-2504/REDLINE) Git history and CSaCLAB credits. The dashboard/backend and Solana documentation below are inherited. The new [NEAR Safety Vault](contracts/near-safety-vault) passes 21 SDK unit tests and real local sandbox receipt tests ([reproduce](contracts/near-safety-vault/tests/README.md)); **no NEAR Testnet deployment or transaction proof exists yet**. Follow [verified progress](docs/PROGRESS.md), [test evidence](docs/TEST_RESULTS.md), [reuse attribution](docs/REUSED_COMPONENTS.md) and [NEAR threat model](docs/NEAR_THREAT_MODEL.md). Existing Solana explorer links do not prove NEAR functionality.
+
 <div align="center">
 
 # 🛡️ REDLINE

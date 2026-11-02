@@ -1,0 +1,22 @@
+wsl : Traceback (most recent call last):
+At line:2 char:138
++ ...  --version; wsl -d Ubuntu --exec python3 contracts/near-safety-vault/ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "/mnt/d/Project/AI Engineer/redline-near-guardrails/contracts/near-safety-vault/tests/sandbox.py", line 285, in 
+<module>
+    main()
+  File "/mnt/d/Project/AI Engineer/redline-near-guardrails/contracts/near-safety-vault/tests/sandbox.py", line 269, in 
+main
+    scenarios(chain, root, args.wasm)
+  File "/mnt/d/Project/AI Engineer/redline-near-guardrails/contracts/near-safety-vault/tests/sandbox.py", line 162, in 
+scenarios
+    c.call(stranger, 'revoke_grant', {'grant_id': 'happy'}, fail='OWNER_ONLY')
+  File "/mnt/d/Project/AI Engineer/redline-near-guardrails/contracts/near-safety-vault/tests/sandbox.py", line 109, in 
+call
+    assert fail in json.dumps(result['status']), result['status']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'Failure': {'ActionError': {'index': 0, 'kind': {'FunctionCallError': {'ExecutionError': 'WebAssembly 
+trap: An `unreachable` opcode was executed.'}}}}}

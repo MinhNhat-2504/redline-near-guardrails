@@ -1,0 +1,48 @@
+name: NEAR contract
+on:
+  push:
+    paths: ['contracts/near-safety-vault/**', '.cargo/config.toml', '.github/workflows/near-contract.yml']
+  pull_request:
+    paths: ['contracts/near-safety-vault/**', '.cargo/config.toml', '.github/workflows/near-contract.yml']
+permissions:
+  contents: read
+jobs:
+  local-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: '1.99.1'
+          targets: wasm32-unknown-unknown
+          components: rustfmt, clippy
+      - name: Formatting and unit tests (SDK VM context)
+        run: |
+          cargo fmt --manifest-path contracts/near-safety-vault/Cargo.toml --check
+          cargo test --manifest-path contracts/near-safety-vault/Cargo.toml --locked --lib
+          cargo clippy --manifest-path contracts/near-safety-vault/Cargo.toml --locked --all-targets -- -D warnings
+      - name: Build WASM
+        run: cargo build --manifest-path contracts/near-safety-vault/Cargo.toml --locked --target wasm32-unknown-unknown --release
+      - name: Official sandbox binary (pinned archive checksum)
+        run: |
+          mkdir -p .tooling docs/evidence
+          curl --fail --location --retry 3 https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Linux-x86_64/2.14.0-rc.5/near-sandbox.tar.gz -o .tooling/sandbox.tar.gz
+          echo '11ff20219d0a3847ee85f14232d169072a0e105f744dc6ab9d587efbbded0a5e  .tooling/sandbox.tar.gz' | sha256sum --check
+          tar -xzf .tooling/sandbox.tar.gz -C .tooling
+      - name: Python Ed25519 dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes python3-cryptography
+      - name: Real local NEAR receipt integration tests
+        run: |
+          /usr/bin/python3 contracts/near-safety-vault/tests/sandbox.py \
+            --binary .tooling/Linux-x86_64/near-sandbox \
+            --wasm contracts/near-safety-vault/target/wasm32-unknown-unknown/release/redline_safety_vault.wasm \
+            --evidence docs/evidence/ci-local-sandbox.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: near-local-runtime-evidence
+          path: docs/evidence/ci-local-sandbox.json
+          if-no-files-found: ignore

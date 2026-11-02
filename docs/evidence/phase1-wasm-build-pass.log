@@ -1,0 +1,9 @@
+wsl :    Compiling redline-safety-vault v0.1.0 (/mnt/d/Project/AI 
+Engineer/redline-near-guardrails/contracts/near-safety-vault)
+At line:2 char:1
++ wsl -d Ubuntu --exec bash .tooling/run-rust.sh cargo build --manifest ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling re...r-safety-vault):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `release` profile [optimized] target(s) in 4.57s

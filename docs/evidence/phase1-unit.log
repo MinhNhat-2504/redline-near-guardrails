@@ -1,0 +1,12 @@
+wsl :     Updating crates.io index
+At line:2 char:1
++ wsl -d Ubuntu --exec bash .tooling/run-rust.sh cargo test --manifest- ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Updating crates.io index:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Blocking waiting for file lock on package cache
+     Locking 283 packages to highest compatible versions
+      Adding crypto-common v0.1.6 (available: v0.1.7)
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache

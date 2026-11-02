@@ -1,0 +1,10 @@
+wsl : error: failed to download `aws-lc-sys v0.47.0`
+At line:2 char:1
++ wsl -d Ubuntu --exec bash .tooling/run-rust.sh cargo build --manifest ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error: failed t...lc-sys v0.47.0`:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Caused by:
+  attempting to make an HTTP request, but --offline was specified

@@ -1,0 +1,22 @@
+wsl : Traceback (most recent call last):
+At line:2 char:113
++ ... sha256.txt; wsl -d Ubuntu --exec python3 contracts/near-safety-vault/ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "/mnt/d/Project/AI Engineer/redline-near-guardrails/contracts/near-safety-vault/tests/sandbox.py", line 265, in 
+<module>
+    main()
+  File "/mnt/d/Project/AI Engineer/redline-near-guardrails/contracts/near-safety-vault/tests/sandbox.py", line 249, in 
+main
+    scenarios(chain, root, args.wasm)
+  File "/mnt/d/Project/AI Engineer/redline-near-guardrails/contracts/near-safety-vault/tests/sandbox.py", line 126, in 
+scenarios
+    c.call(owner, 'new', {})
+  File "/mnt/d/Project/AI Engineer/redline-near-guardrails/contracts/near-safety-vault/tests/sandbox.py", line 111, in 
+call
+    assert 'SuccessValue' in result['status'], result['status']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'Failure': {'ActionError': {'index': 0, 'kind': {'FunctionCallError': {'ExecutionError': 'Link Error: 
+unknown or invalid import'}}}}}

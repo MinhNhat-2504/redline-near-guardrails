@@ -1,0 +1,201 @@
+{
+  "network": "local near-sandbox ONLY",
+  "binary_version": "neard (release 2.13.4) (build 2.13.4) (commit 44f7ae6cd7ef08bab604e20a473bf77e35d4c993) (rustc 1.93.0) (min_protocol 83) (protocol 86) (db 49)\nfeatures: [default, dump_test_contract, json_rpc, near_dump_test_contract, rosetta_rpc, sandbox]",
+  "wasm_sha256": "6058ac2be15f9660c2c5aa7e2f36a4df779e64e1311c825518dd7fede3c4b9eb",
+  "result": "FAIL",
+  "transactions": [
+    {
+      "hash": "JBteKMePAZbqmJyaftCASFBGSFqM1TTAUR7NQ1qLza6a",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "GS5cdvZdD954VEXqPjQzEso6Vo2mH8XK2ojeWDPqFiyy",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "12omuKx9kxiGLJHnxve2sdMRREcX5X76WrUJ3NYFHQML",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "FrGSf1dJydhUButZ1ywkuZgMGaU6etppV17fGnu9ADCL",
+      "receiver": "owner.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "A7wACTn73zHRM6iVP2Pib9356Mpfyi2FxDVdVkRM1zp1",
+          "executor_id": "owner.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "7M5zEh2Vz3HpVS6HmGz9c9HCJJ4UQq5DjkxFKyCUxgKy",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "DX44vWQFz24siTD7CgSDDBU6Btj9KwMqbqVJgogyvBZU",
+      "receiver": "agent.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "2P4yGHu6DbW7vWBanGEMJfh5Y4Nxuj6SRt8XLFQqfeZb",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "HGjUS5SbNwGeNd3fvRWi9A6f2J2DHu5xZwSXJ5P9w25K",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "3qP5Ghzrpj5rNDL19iomjwZTQEzXycBPkFzcS1jvER6s",
+      "receiver": "payee.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "2ZPiE2eCv6vSh2pc5EM6Gav8TFNYjXJXSsUUhNhZHRDB",
+          "executor_id": "payee.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "4d4TUyKhoN1GWiWBj9VrxQoxuqZSm6cv6HrancZDNqtL",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "AV69A4ZMNBhGLzxwLFSEJTaN3NAyMHwFiVj5WCiDKDnV",
+      "receiver": "stranger.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "3VK6UtpZhkBEEdFsMEhDnitsy1ksqUfLZhk9pibEHgF2",
+          "executor_id": "stranger.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "5n2PAF78izFUqWn5zveLwwpRqoNqgLmfi5ftzDho8FeF",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "3hKKqNteetLhxh2iaKGfRKHR52TNFyGvQgq2UCDnGfro",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "DJN2ksxzM3uejT4yFFxG9jwaZCqAZsEQ9248Yfzz8DGJ",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "CndyqCRKn8zq1ifr1MqvuPkPDWTzd3jonsCbXQC4Dfpw",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "3oUjYdajELm4iYPPpxcf1zdthEX5kMUtvGDNsbUNMA2T",
+      "receiver": "vault.test.near",
+      "status": {
+        "Failure": {
+          "ActionError": {
+            "index": 0,
+            "kind": {
+              "FunctionCallError": {
+                "ExecutionError": "Link Error: unknown or invalid import"
+              }
+            }
+          }
+        }
+      },
+      "receipt_outcomes": [
+        {
+          "id": "9yAG9cofs2oUiB1igkLwVFkADBL2woQockue6LCpa81k",
+          "executor_id": "vault.test.near",
+          "status": {
+            "Failure": {
+              "ActionError": {
+                "index": 0,
+                "kind": {
+                  "FunctionCallError": {
+                    "ExecutionError": "Link Error: unknown or invalid import"
+                  }
+                }
+              }
+            }
+          },
+          "logs": []
+        },
+        {
+          "id": "F4GFqYGAS5kkkShGQ31W1VrKq2SjHCsWnzif3zU9vLZK",
+          "executor_id": "owner.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    }
+  ]
+}

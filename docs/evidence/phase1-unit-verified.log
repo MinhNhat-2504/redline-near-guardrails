@@ -1,0 +1,37 @@
+wsl :    Compiling redline-safety-vault v0.1.0 (/mnt/d/Project/AI 
+Engineer/redline-near-guardrails/contracts/near-safety-vault)
+At line:2 char:417
++ ... STEXITCODE; wsl -d Ubuntu --exec bash .tooling/run-rust.sh cargo test ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling re...r-safety-vault):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.85s
+     Running unittests src/lib.rs 
+(/tmp/redline-near-build-ad7cv0ea/target/debug/deps/redline_safety_vault-b878d1de198b1d1c)
+
+running 21 tests
+test tests::large_amounts_and_nanoseconds_are_json_strings ... ok
+test tests::ledger_credit_overflow_fails_closed - should panic ... ok
+test tests::all_seven_gates_and_extra_checks ... ok
+test tests::liquid_storage_and_operating_reserve_are_protected - should panic ... ok
+test tests::external_callback_cannot_settle - should panic ... ok
+test tests::rejected_intent_is_persisted_without_money_or_nonce_changes ... ok
+test tests::low_gas_cannot_queue_money - should panic ... ok
+test tests::callback_without_receipt_cannot_settle - should panic ... ok
+test tests::deposit_grant_and_successful_callback_are_accounted_once ... ok
+test tests::failed_withdrawal_restores_available_once ... ok
+test tests::foreign_owner_cannot_revoke - should panic ... ok
+test tests::storage_is_not_subsidized_by_other_owners_principal - should panic ... ok
+test tests::failed_callback_releases_once_without_reusing_nonce_or_id ... ok
+test tests::overlapping_requests_cannot_exceed_spend_or_transaction_caps ... ok
+test tests::signer_spoofing_via_intermediary_is_rejected - should panic ... ok
+test tests::second_owner_cannot_borrow_first_owners_balance ... ok
+test tests::replay_while_pending_and_after_settlement_does_not_queue_again ... ok
+test tests::revoke_does_not_cancel_pending_settlement ... ok
+test tests::unexpected_callback_payload_must_not_release_funds - should panic ... ok
+test tests::withdraw_cannot_spend_transfer_reservation - should panic ... ok
+test tests::withdraw_pending_is_reserved_separately_and_callback_idempotent ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+

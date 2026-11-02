@@ -1,0 +1,9 @@
+wsl :     Checking redline-safety-vault v0.1.0 (/mnt/d/Project/AI 
+Engineer/redline-near-guardrails/contracts/near-safety-vault)
+At line:2 char:114
++ ... Cargo.toml; wsl -d Ubuntu --exec bash .tooling/run-rust.sh cargo clip ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking re...r-safety-vault):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.35s

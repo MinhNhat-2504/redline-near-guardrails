@@ -1,0 +1,1 @@
+6058ac2be15f9660c2c5aa7e2f36a4df779e64e1311c825518dd7fede3c4b9eb  contracts/near-safety-vault/target/wasm32-unknown-unknown/release/redline_safety_vault.wasm

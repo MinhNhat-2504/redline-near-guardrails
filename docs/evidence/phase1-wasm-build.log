@@ -1,0 +1,51 @@
+wsl :     Blocking waiting for file lock on package cache
+At line:2 char:1
++ wsl -d Ubuntu --exec bash .tooling/run-rust.sh cargo build --manifest ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Blocking wa...n package cache:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Updating crates.io index
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+ Downloading crates ...
+  Downloaded Inflector v0.11.4
+  Downloaded anyhow v1.0.104
+  Downloaded arbitrary v1.5.0
+  Downloaded base64 v0.22.1
+  Downloaded bitflags v1.3.2
+  Downloaded blake2 v0.10.6
+  Downloaded blst v0.3.17
+  Downloaded bs58 v0.4.0
+  Downloaded byteorder v1.5.0
+  Downloaded cc v1.11.0
+  Downloaded cfg_aliases v0.2.2
+  Downloaded cmake v0.1.58
+  Downloaded convert_case v0.10.0
+  Downloaded crossbeam-utils v0.8.23
+  Downloaded crypto-common v0.1.6
+  Downloaded curve25519-dalek-derive v0.1.1
+  Downloaded darling_core v0.20.11
+  Downloaded darling_macro v0.24.1
+  Downloaded defmt-macros v1.2.0
+  Downloaded deranged v0.5.9
+  Downloaded derive_builder_core v0.20.2
+  Downloaded derive_more-impl v2.1.1
+  Downloaded digest-io v0.1.0
+  Downloaded easy-ext v0.2.9
+  Downloaded ed25519-dalek v2.2.0
+  Downloaded enum-map v2.7.3
+  Downloaded errno v0.3.14
+  Downloaded find-msvc-tools v0.1.15
+  Downloaded foldhash v0.2.0
+  Downloaded futures-core v0.3.34
+  Downloaded generic-array v0.14.9
+  Downloaded group v0.13.0
+  Downloaded hashbrown v0.17.1
+  Downloaded hex v0.4.3
+  Downloaded hybrid-array v0.4.15
+  Downloaded indexmap v1.9.3
+  Downloaded itoa v1.0.18
+  Downloaded jiff-tzdb v0.1.9
+  Downloaded js-sys v0.3.107
+  Downloaded keccak v0.2.2

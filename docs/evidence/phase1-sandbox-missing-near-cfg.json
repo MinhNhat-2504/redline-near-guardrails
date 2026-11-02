@@ -1,0 +1,580 @@
+{
+  "network": "local near-sandbox ONLY",
+  "binary_version": "neard (release 2.14.0-rc.5) (build 2.14.0-rc.5) (commit b7b4737cab46f17a6daa2ed694d7aebbd204363a) (rustc 1.95.0) (min_protocol 84) (protocol 88) (db 51)\nfeatures: [default, dump_test_contract, json_rpc, near_dump_test_contract, rosetta_rpc, sandbox]",
+  "wasm_sha256": "4a4770dd9ac47fb165379921e8f86be13e825364bf3aa1bd2c56ee25540bc72c",
+  "result": "FAIL",
+  "transactions": [
+    {
+      "hash": "HeekCEJjaEuCjERR9iodRzXRNdT5kzv8azp3qYLK3c67",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "68oWJgn2ZJWo3rQ4ESRz4yvzoo6LP4RJY9FzBnDUYxLd",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "4KxyzoiEFefD7fuXGmgbwuGCV5TSJcRFaEX9v9ZAqBt6",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "D66Lb5PyNk48p1GYqeMaYmLAHNX3YiQw3WQ2G9TiXXUu",
+      "receiver": "owner.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "FydMkMs2DcCtDXycFGqNmE9tj7wfbVMXCnNGeqeqnQxH",
+          "executor_id": "owner.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "3Eh4j73fyoERGx9dA6efQmeFWJhphuCM6w2CHrRw9t6Z",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "GFV2ZVJvSZRg74vuTp6PDXowkqpi9QjNqUjAfJySB67r",
+      "receiver": "agent.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "2rafTRBH2Yc63koCkAEfK7gZLwQ2XNPCZmVrfiMBrEfZ",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "2JuUGSwrwtEsrL3o1GSMBWVrTM1L7LS4EHp1JHbM9QeY",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "dCsueeXjvkZfBZauZnN6ZRhB91Fz3XWmXWX1ETa5Wfc",
+      "receiver": "payee.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "5LrRqZW2Dm4BfudkhceLEUkiNVAwnTfwXerg4HwsFb7z",
+          "executor_id": "payee.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "5RrB1jkTzuGhKWLc7QT6Cxgi4RkwwA6PPUmArycshabG",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "HjyjXxKqogoGmk67qP1J5ABfT9Kqx42oWBHSuBpmcCFH",
+      "receiver": "stranger.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "22QQVXSXU1KDRBfPmB7nRHQFETYVa7iMC3Lzdk2aRugB",
+          "executor_id": "stranger.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "8iGzqZHyAMhR3YG7dHbsFZRm3XkLoPkqVLmwoWfU8oEq",
+          "executor_id": "test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "G2g9VeagrC49fZWdNH2ZsdZLcjGyp3EMRAD6K6BnBFSa",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "2z49Rh3Hix1zuFK5CXasJLGggig3TFLCSgxujAydZTkE",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "4NvDxxSq5hQQhbLS9Nm3JBsHiP8Np5o11FJBTQM5gcRb",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "82SgK2TLTAeGBnqv7gvGnR6YQAZhTx9257LhxDyv4TDs",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      },
+      "receipt_outcomes": [
+        {
+          "id": "A5yN59X1UzFa6uPf3eP4V1zuhdXxsHsN6TNmB7y1b1gs",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "HJDTu9aZaSJPw73a7GduNcvhxDdkUDbQmpWzYxKcDa5H",
+          "executor_id": "owner.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "12fs1wUUjkWjYgfaMP7iVNzBt5i3Ro8CKnGUrEg2ofRi",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJjcmVkaXRlZCI6IjAiLCJmaW5hbGl6ZWRfc3BlbnQiOiIwIiwicGVuZGluZ19yZXNlcnZlZCI6IjAiLCJjb21wbGV0ZWRfd2l0aGRyYXdhbHMiOiIwIiwicGVuZGluZ193aXRoZHJhd2FscyI6IjAiLCJzdG9yYWdlX2F2YWlsYWJsZSI6Ijk5ODQ0MDAwMDAwMDAwMDAwMDAwMDAwMCJ9"
+      },
+      "receipt_outcomes": [
+        {
+          "id": "H2PuTTJYQjbWGsZaccVdzuvnHhpArJGFxkpJeCF6Ucsd",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJjcmVkaXRlZCI6IjAiLCJmaW5hbGl6ZWRfc3BlbnQiOiIwIiwicGVuZGluZ19yZXNlcnZlZCI6IjAiLCJjb21wbGV0ZWRfd2l0aGRyYXdhbHMiOiIwIiwicGVuZGluZ193aXRoZHJhd2FscyI6IjAiLCJzdG9yYWdlX2F2YWlsYWJsZSI6Ijk5ODQ0MDAwMDAwMDAwMDAwMDAwMDAwMCJ9"
+          },
+          "logs": []
+        },
+        {
+          "id": "8EGgg7TwtS6QxcBr2zQiuzCdYzHEw6m8u6v98S42wX19",
+          "executor_id": "owner.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "7uXAUA8tuLPJPxg1gZZvfAcjW5Hwii79GE9nb71CyzoY",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJjcmVkaXRlZCI6IjAiLCJmaW5hbGl6ZWRfc3BlbnQiOiIwIiwicGVuZGluZ19yZXNlcnZlZCI6IjAiLCJjb21wbGV0ZWRfd2l0aGRyYXdhbHMiOiIwIiwicGVuZGluZ193aXRoZHJhd2FscyI6IjAiLCJzdG9yYWdlX2F2YWlsYWJsZSI6Ijk5ODQ0MDAwMDAwMDAwMDAwMDAwMDAwMCJ9"
+      },
+      "receipt_outcomes": [
+        {
+          "id": "GmxAej8psGqgXLaEm2MPoaXmFc14VE9TkKXxCGtux8YP",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJjcmVkaXRlZCI6IjAiLCJmaW5hbGl6ZWRfc3BlbnQiOiIwIiwicGVuZGluZ19yZXNlcnZlZCI6IjAiLCJjb21wbGV0ZWRfd2l0aGRyYXdhbHMiOiIwIiwicGVuZGluZ193aXRoZHJhd2FscyI6IjAiLCJzdG9yYWdlX2F2YWlsYWJsZSI6Ijk5ODQ0MDAwMDAwMDAwMDAwMDAwMDAwMCJ9"
+          },
+          "logs": []
+        },
+        {
+          "id": "2icfY8xV4QZYijRTf6txNdiY1B9nCAK4wei4b9usJw5E",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "E3SS3QPYtdqVgtZ7cu3ZYBeLKF4DushECMpLxkDmLqYd",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJjcmVkaXRlZCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwiZmluYWxpemVkX3NwZW50IjoiMCIsInBlbmRpbmdfcmVzZXJ2ZWQiOiIwIiwiY29tcGxldGVkX3dpdGhkcmF3YWxzIjoiMCIsInBlbmRpbmdfd2l0aGRyYXdhbHMiOiIwIiwic3RvcmFnZV9hdmFpbGFibGUiOiI5OTg0NDAwMDAwMDAwMDAwMDAwMDAwMDAifQ=="
+      },
+      "receipt_outcomes": [
+        {
+          "id": "HUqYuJyHUcFj5tDSmtHmieHJnSYnHJ4cXvdBYWudH83u",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJjcmVkaXRlZCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwiZmluYWxpemVkX3NwZW50IjoiMCIsInBlbmRpbmdfcmVzZXJ2ZWQiOiIwIiwiY29tcGxldGVkX3dpdGhkcmF3YWxzIjoiMCIsInBlbmRpbmdfd2l0aGRyYXdhbHMiOiIwIiwic3RvcmFnZV9hdmFpbGFibGUiOiI5OTg0NDAwMDAwMDAwMDAwMDAwMDAwMDAifQ=="
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"deposit\",\"data\":[{\"owner\":\"owner.test.near\",\"amount\":\"10000000000000000000000000\"}]}"
+          ]
+        },
+        {
+          "id": "A42hTpchYLx5DUrhbMoUUxuzLPKQEKNNymYoewzmHGzz",
+          "executor_id": "owner.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "CrmZ3iqRvY7fcazSTX2CZWKYGeDuQxp9otooNUoovL58",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJvd25lciI6Im93bmVyLnRlc3QubmVhciIsInBvbGljeSI6eyJleGVjdXRvciI6ImFnZW50LnRlc3QubmVhciIsInBvbGljeV9oYXNoIjoiYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYSIsInNwZW5kX2NhcCI6IjUwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJtYXhfdHJhbnNhY3Rpb25zIjo1LCJyZWNpcGllbnRzIjpbInBheWVlLnRlc3QubmVhciIsIm1pc3NpbmcudGVzdC5uZWFyIl0sImV4cGlyZXNfYXRfbnMiOiIxNzkzNjU3MDMwNDU4MDExNjU3IiwiY29vbGRvd25fbnMiOiIwIn0sImFjdGl2ZSI6dHJ1ZSwiZmluYWxpemVkX3NwZW50IjoiMCIsInBlbmRpbmdfcmVzZXJ2ZWQiOiIwIiwiZmluYWxpemVkX3RyYW5zYWN0aW9ucyI6MCwicGVuZGluZ190cmFuc2FjdGlvbnMiOjAsIm5leHRfbm9uY2UiOiIwIiwiaGFzX3Jlc2VydmVkIjpmYWxzZSwibGFzdF9yZXNlcnZlZF9ucyI6IjAifQ=="
+      },
+      "receipt_outcomes": [
+        {
+          "id": "6BRSs1JYaF8tQDjktWqy3z1nVWcQz8fNnGCzYnTqzzew",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJvd25lciI6Im93bmVyLnRlc3QubmVhciIsInBvbGljeSI6eyJleGVjdXRvciI6ImFnZW50LnRlc3QubmVhciIsInBvbGljeV9oYXNoIjoiYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYSIsInNwZW5kX2NhcCI6IjUwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJtYXhfdHJhbnNhY3Rpb25zIjo1LCJyZWNpcGllbnRzIjpbInBheWVlLnRlc3QubmVhciIsIm1pc3NpbmcudGVzdC5uZWFyIl0sImV4cGlyZXNfYXRfbnMiOiIxNzkzNjU3MDMwNDU4MDExNjU3IiwiY29vbGRvd25fbnMiOiIwIn0sImFjdGl2ZSI6dHJ1ZSwiZmluYWxpemVkX3NwZW50IjoiMCIsInBlbmRpbmdfcmVzZXJ2ZWQiOiIwIiwiZmluYWxpemVkX3RyYW5zYWN0aW9ucyI6MCwicGVuZGluZ190cmFuc2FjdGlvbnMiOjAsIm5leHRfbm9uY2UiOiIwIiwiaGFzX3Jlc2VydmVkIjpmYWxzZSwibGFzdF9yZXNlcnZlZF9ucyI6IjAifQ=="
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"grant_created\",\"data\":[{\"grant_id\":\"happy\",\"grant\":{\"owner\":\"owner.test.near\",\"policy\":{\"executor\":\"agent.test.near\",\"policy_hash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"spend_cap\":\"5000000000000000000000000\",\"max_transactions\":5,\"recipients\":[\"payee.test.near\",\"missing.test.near\"],\"expires_at_ns\":\"1793657030458011657\",\"cooldown_ns\":\"0\"},\"active\":true,\"finalized_spent\":\"0\",\"pending_reserved\":\"0\",\"finalized_transactions\":0,\"pending_transactions\":0,\"next_nonce\":\"0\",\"has_reserved\":false,\"last_reserved_ns\":\"0\"}}]}"
+          ]
+        },
+        {
+          "id": "2M7ok25HgMruZwc8DemWQwQVH9HXH4jGaGBVKogCBhsC",
+          "executor_id": "owner.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "4k6yBU96yVV6pt8cKh8qNTiqFWApgnNXfHuPUssru6nQ",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJub25jZSI6IjAiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiU0VUVExFRCIsInJlYXNvbiI6Ik9LIn0="
+      },
+      "receipt_outcomes": [
+        {
+          "id": "J8jVf5kDGdBSTG4x3JwsbcDZf8ib6CEHYuAmsHGE2SKq",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessReceiptId": "2euDDrRCn9xHKgWk8PH5S56PSsyQwpNi8yp35EbFVJW6"
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_pending\",\"data\":[{\"grant_id\":\"happy\",\"intent_id\":\"one\",\"intent\":{\"nonce\":\"0\",\"recipient\":\"payee.test.near\",\"amount\":\"1000000000000000000000000\",\"status\":\"PENDING\",\"reason\":\"OK\"}}]}"
+          ]
+        },
+        {
+          "id": "5GBvDRBBSfgwVA1Nmvdz75MNoyiHAhDjE9zDgqfCXAEw",
+          "executor_id": "payee.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "F34xe3PUhbiuE9SCVqCLmNZL1akUz7WvandJqP5NJJ8v",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "2euDDrRCn9xHKgWk8PH5S56PSsyQwpNi8yp35EbFVJW6",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJub25jZSI6IjAiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiU0VUVExFRCIsInJlYXNvbiI6Ik9LIn0="
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_completed\",\"data\":[{\"grant_id\":\"happy\",\"intent_id\":\"one\",\"intent\":{\"nonce\":\"0\",\"recipient\":\"payee.test.near\",\"amount\":\"1000000000000000000000000\",\"status\":\"SETTLED\",\"reason\":\"OK\"}}]}"
+          ]
+        },
+        {
+          "id": "FDXytAA2A87BhFvVRnBApZLZBQrxhsFefp223kkisJKD",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        },
+        {
+          "id": "BRz1kqVAUuSY8zMYve4uZtoJwB3MVB22SRZ56SZBbdk3",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "4h4KkiXPAmvgHUdVXENwLSdHkZZUVvutQExMnyJGaic6",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJOT05DRV9SRVBMQVkifQ=="
+      },
+      "receipt_outcomes": [
+        {
+          "id": "8RRnizzxowaxu6MYDnVCgcg6i7X4Tg9Mm1B7QLG7PjaY",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJOT05DRV9SRVBMQVkifQ=="
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_rejected\",\"data\":[{\"grant_id\":\"happy\",\"intent_id\":\"one\",\"intent\":{\"nonce\":\"1\",\"recipient\":\"payee.test.near\",\"amount\":\"1000000000000000000000000\",\"status\":\"REJECTED\",\"reason\":\"NONCE_REPLAY\"},\"duplicate\":true}]}"
+          ]
+        },
+        {
+          "id": "BqwbE4AZsyv3EGFUMR7qJ1xD4UWq9jmZ6EZtKwwoVrjn",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "9cDXnrMGrYkAJs32B6gWQ97suVxApnugir9CbSV8h3pG",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJzdHJhbmdlci50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJERVNUSU5BVElPTl9OT1RfQUxMT1dFRCJ9"
+      },
+      "receipt_outcomes": [
+        {
+          "id": "BYB8qfxfMaqkmFPEXtQF8MVevE268KnVtuw6oDWVHTJc",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJzdHJhbmdlci50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJERVNUSU5BVElPTl9OT1RfQUxMT1dFRCJ9"
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_rejected\",\"data\":[{\"grant_id\":\"happy\",\"intent_id\":\"recipient\",\"intent\":{\"nonce\":\"1\",\"recipient\":\"stranger.test.near\",\"amount\":\"1000000000000000000000000\",\"status\":\"REJECTED\",\"reason\":\"DESTINATION_NOT_ALLOWED\"}}]}"
+          ]
+        },
+        {
+          "id": "3yZCjkxYPMapK8ijHwpVYj8SpNtWHWnH1vaDhh7swEtt",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "G1fqEwNRGxupuFj85vjaSqqiC2MsrANHBMmh4tfjzLn3",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJBU1NFVF9OT1RfQUxMT1dFRCJ9"
+      },
+      "receipt_outcomes": [
+        {
+          "id": "39zbjZUFqc1PL5SBhVutVaYygVbP8WNJxJeDueZAUc61",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJBU1NFVF9OT1RfQUxMT1dFRCJ9"
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_rejected\",\"data\":[{\"grant_id\":\"happy\",\"intent_id\":\"asset\",\"intent\":{\"nonce\":\"1\",\"recipient\":\"payee.test.near\",\"amount\":\"1000000000000000000000000\",\"status\":\"REJECTED\",\"reason\":\"ASSET_NOT_ALLOWED\"}}]}"
+          ]
+        },
+        {
+          "id": "EtzKjKxSYzG5wunFMmw4gADEMLJByV7T6KUD9CWeHwqY",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "3BQes5VtzzY9zT5jPFzDwo5ty9rmQ5mGfjD6XhbgUX9g",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiI2MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJTUEVORF9DQVBfRVhDRUVERUQifQ=="
+      },
+      "receipt_outcomes": [
+        {
+          "id": "H6AubSxnUyHbwiQVkHsofyVo6ycJtyyzet5TcAhvWLQb",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiI2MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJTUEVORF9DQVBfRVhDRUVERUQifQ=="
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_rejected\",\"data\":[{\"grant_id\":\"happy\",\"intent_id\":\"spend\",\"intent\":{\"nonce\":\"1\",\"recipient\":\"payee.test.near\",\"amount\":\"6000000000000000000000000\",\"status\":\"REJECTED\",\"reason\":\"SPEND_CAP_EXCEEDED\"}}]}"
+          ]
+        },
+        {
+          "id": "CxsatmnH1KLhx3dzJWSjY4oG5YLAcYkKfa86uLCvC5qt",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "4e7Upm4g5tZstH6Ja7eRgrmML3GY8s1UvbKNNPmXFibm",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJub25jZSI6IjciLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJOT05DRV9SRVBMQVkifQ=="
+      },
+      "receipt_outcomes": [
+        {
+          "id": "13xrGsUCtVc9pxRRVJnudZvMXL2ZY39JWxm9pwjQiibu",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJub25jZSI6IjciLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJOT05DRV9SRVBMQVkifQ=="
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_rejected\",\"data\":[{\"grant_id\":\"happy\",\"intent_id\":\"nonce\",\"intent\":{\"nonce\":\"7\",\"recipient\":\"payee.test.near\",\"amount\":\"1000000000000000000000000\",\"status\":\"REJECTED\",\"reason\":\"NONCE_REPLAY\"}}]}"
+          ]
+        },
+        {
+          "id": "7W9MaZM9Fg5JMpVu1W5EwSksjQPLbqLbHtAUWFQ9RaPw",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "52txAJ8etM45gKcWcccRnN8AhkTeZvuD2xMYEBJXQcZG",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJQT0xJQ1lfSEFTSF9NSVNNQVRDSCJ9"
+      },
+      "receipt_outcomes": [
+        {
+          "id": "CBpAAWAwsPwE3SGSZnuBouXXM2RJ1PiLtawoB1KjjVLi",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJQT0xJQ1lfSEFTSF9NSVNNQVRDSCJ9"
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_rejected\",\"data\":[{\"grant_id\":\"happy\",\"intent_id\":\"hash\",\"intent\":{\"nonce\":\"1\",\"recipient\":\"payee.test.near\",\"amount\":\"1000000000000000000000000\",\"status\":\"REJECTED\",\"reason\":\"POLICY_HASH_MISMATCH\"}}]}"
+          ]
+        },
+        {
+          "id": "BXAf2Px3reNhTK7PWwm8bZ5XcshnmRrfk78mCwuT8pbB",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "HVWHb2cfYeaRYZteT3YPLmjPDqzzpQ3jhahQWwP7RKnN",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJJTlZBTElEX0FNT1VOVCJ9"
+      },
+      "receipt_outcomes": [
+        {
+          "id": "FGgs3BpZB9j7MmEeRtubS9B3hgbcLNNVkCkJK7ezqhG7",
+          "executor_id": "vault.test.near",
+          "status": {
+            "SuccessValue": "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJwYXllZS50ZXN0Lm5lYXIiLCJhbW91bnQiOiIwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJJTlZBTElEX0FNT1VOVCJ9"
+          },
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_rejected\",\"data\":[{\"grant_id\":\"happy\",\"intent_id\":\"zero\",\"intent\":{\"nonce\":\"1\",\"recipient\":\"payee.test.near\",\"amount\":\"0\",\"status\":\"REJECTED\",\"reason\":\"INVALID_AMOUNT\"}}]}"
+          ]
+        },
+        {
+          "id": "J8UL3aPfi6BXGKquTPZuunb8Mk47WEt6HCUSjSw8zQwz",
+          "executor_id": "agent.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    },
+    {
+      "hash": "7aWXLZ79ustsXDcL2saNrXFZKUHWzSPJ1HM9jAoWUA13",
+      "receiver": "vault.test.near",
+      "status": {
+        "Failure": {
+          "ActionError": {
+            "index": 0,
+            "kind": {
+              "FunctionCallError": {
+                "ExecutionError": "WebAssembly trap: An `unreachable` opcode was executed."
+              }
+            }
+          }
+        }
+      },
+      "receipt_outcomes": [
+        {
+          "id": "3aUgpkju8iJMk9xch5Y85TBfat9ue2EZFv4PfwYkxBi5",
+          "executor_id": "vault.test.near",
+          "status": {
+            "Failure": {
+              "ActionError": {
+                "index": 0,
+                "kind": {
+                  "FunctionCallError": {
+                    "ExecutionError": "WebAssembly trap: An `unreachable` opcode was executed."
+                  }
+                }
+              }
+            }
+          },
+          "logs": []
+        },
+        {
+          "id": "HMhgYwkzR3XP7WUPtYyLZud54oEJLw8TKs8KfMHysdWK",
+          "executor_id": "stranger.test.near",
+          "status": {
+            "SuccessValue": ""
+          },
+          "logs": []
+        }
+      ]
+    }
+  ]
+}

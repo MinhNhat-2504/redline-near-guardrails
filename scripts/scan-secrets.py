@@ -22,8 +22,16 @@ patterns = {
 findings = []
 reviewed_fixtures = []
 blobs = 0
-for entry in git("rev-list", "--objects", "--all").decode().splitlines():
+entries = git("rev-list", "--objects", "--all").decode().splitlines()
+for staged in git("ls-files", "--stage").decode().splitlines():
+    metadata, path = staged.split("\t", 1)
+    entries.append(metadata.split()[1] + " " + path)
+seen = set()
+for entry in entries:
     oid, _, path = entry.partition(" ")
+    if oid in seen:
+        continue
+    seen.add(oid)
     if git("cat-file", "-t", oid).strip() != b"blob":
         continue
     blobs += 1
@@ -38,7 +46,7 @@ for entry in git("rev-list", "--objects", "--all").decode().splitlines():
                                           "reason": "Explicit TESTONLY alphabet fixture at line 113; manually reviewed."})
                 continue
             findings.append({"blob": oid, "path": path, "rule": rule})
-print(json.dumps({"scope": "all reachable Git blobs", "blobs_scanned": blobs, "findings": findings,
+print(json.dumps({"scope": "all reachable Git blobs plus staged index", "blobs_scanned": blobs, "findings": findings,
                   "reviewed_fixtures": reviewed_fixtures,
-                  "limitation": "Pattern scan only; excludes untracked files, entropy detection and credential validation."}, indent=2))
+                  "limitation": "Pattern scan only; excludes unstaged/untracked content, entropy detection and credential validation."}, indent=2))
 raise SystemExit(bool(findings))

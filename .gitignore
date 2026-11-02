@@ -20,3 +20,4 @@ backend/owner.json
 # Workspace-only build tools and extracted source documents
 .tooling/
 playbook.extracted.txt
+__pycache__/
