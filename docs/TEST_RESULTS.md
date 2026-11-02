@@ -17,6 +17,7 @@ Environment: Windows/PowerShell Node 24.14.1/npm 11.11.0; Ubuntu WSL Rust/Cargo 
 | `cargo build --manifest-path contracts/near-safety-vault/Cargo.toml --locked --offline --target wasm32-unknown-unknown --release` | PASS, target cfg near | `evidence/phase1-wasm-near-cfg.log` |
 | `python3 contracts/near-safety-vault/tests/sandbox.py --binary .tooling/near88/Linux-x86_64/near-sandbox --wasm contracts/near-safety-vault/target/wasm32-unknown-unknown/release/redline_safety_vault.wasm --evidence docs/evidence/phase1-local-sandbox.json` | PASS: 53 unique local transactions, 136 receipt outcomes | `evidence/phase1-sandbox-verified.log`, `evidence/phase1-local-sandbox.json` |
 | Public Testnet RPC `status` | PASS: read-only protocol/runtime query; NOT deployment | `evidence/phase1-testnet-runtime.json` |
+| `python scripts/scan-secrets.py` | PASS: 460 history/index blobs, no new credential-pattern findings; exact TESTONLY exception | `evidence/phase1-secret-scan.json` |
 
 Final sandbox-tested WASM SHA-256: `ae5e7a073b97f1834f245adf74e7a4ac0b1baf6d9f5248cabb7120a55b6c2524` (`evidence/phase1-wasm-sha256-final.txt`).
 
