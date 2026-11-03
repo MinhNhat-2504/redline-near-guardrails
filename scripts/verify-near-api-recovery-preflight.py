@@ -5,6 +5,7 @@ Not a cryptographic light-client proof. Re-query RPC for freshness/provenance.
 import base64
 import hashlib
 import json
+import argparse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -12,6 +13,7 @@ EVIDENCE = Path(__file__).resolve().parent.parent / "docs/evidence"
 OWNER, VAULT = "nhat-redline-owner.testnet", "nhat-redline-vault.testnet"
 AGENT, PAYEE = "nhat-redline-agent.testnet", "nhat-redline-payee.testnet"
 TX = "B9HT5FBGAQdp5xnfS4TsfntJA5B5C2PkwsaERP3vTgG1"
+PREFIX = "phase3-api-recovery"
 
 
 def read(name):
@@ -19,7 +21,7 @@ def read(name):
 
 
 def result(name):
-    data = read(f"phase3-api-recovery-{name}.json")
+    data = read(f"{PREFIX}-{name}.json")
     assert "error" not in data, name
     return data["result"]
 
@@ -29,13 +31,14 @@ def view(name):
 
 
 def verify():
-    prepared = read("phase3-api-recovery-prepared.json")
+    renewed = PREFIX == "phase3-api-renewal"
+    prepared = read(f"{PREFIX}-prepared.json")
     args = {"grant_id": prepared["grantId"], "policy": prepared["policy"]}
     assert args["policy"]["spend_cap"] == str(5 * 10**22)
     assert args["policy"]["max_transactions"] == 3
     assert args["policy"]["recipients"] == [PAYEE] and args["policy"]["executor"] == AGENT
     assert args["policy"]["cooldown_ns"] == "0" and prepared["plannedTopupYocto"] == "0"
-    canonical_bytes = (EVIDENCE / "phase3-api-recovery-policy-canonical.json").read_bytes()
+    canonical_bytes = (EVIDENCE / f"{PREFIX}-policy-canonical.json").read_bytes()
     assert hashlib.sha256(canonical_bytes).hexdigest() == args["policy"]["policy_hash"]
     canonical = json.loads(canonical_bytes)
     for field, expected in {"schema": "redline.near.policy.v1", "network": "testnet", "contract_id": VAULT, "owner_id": OWNER, "grant_id": args["grant_id"]}.items():
@@ -81,20 +84,33 @@ def verify():
     payee = result("payee-before-transfer")["amount"]
     assert payee == str(1005 * 10**22)
     access = result("executor-before-transfer")
-    assert access["permission"] == {"FunctionCall": {"receiver_id": VAULT, "method_names": ["execute_transfer"], "allowance": str(10**23)}}
+    expired = read("phase3-api-expired-verification.json") if renewed else None
+    expected_allowance = expired["keyAllowanceYocto"] if renewed else str(10**23)
+    assert access["permission"] == {"FunctionCall": {"receiver_id": VAULT, "method_names": ["execute_transfer"], "allowance": expected_allowance}}
+    assert int(expected_allowance) > 80 * 10**21
     journal = read("phase3-executor-journal-recovery.json")
     assert journal["status"] == "INVALIDATED_BY_FINAL_KEY_RESET" and journal["disposition"]["state"] == "INVALIDATED"
     assert prepared["recoveryOf"]["transactionHash"] == journal["originalTransactionHash"]
     assert prepared["recoveryOf"]["resetTransactionHash"] == journal["resetTransactionHash"]
-    assert int(access["nonce"]) == int(journal["disposition"]["keyResetProof"]["finalizedKeyNonce"])
+    expected_nonce = expired["keyNonce"] if renewed else journal["disposition"]["keyResetProof"]["finalizedKeyNonce"]
+    assert int(access["nonce"]) == int(expected_nonce)
+    if renewed:
+        assert expired["status"] == "PASS_FINAL_EXPIRED_REJECTION"
+        assert prepared["renewalOf"]["grantId"] == expired["grantId"]
+        assert prepared["grantId"] != expired["grantId"]
     expiry = datetime.fromtimestamp(int(args["policy"]["expires_at_ns"]) / 10**9, timezone(timedelta(hours=7)))
-    report = {"status": "PASS_RECOVERY_GRANT_PREFLIGHT", "transactionHash": TX, "grantId": args["grant_id"],
+    report = {"status": "PASS_RENEWED_GRANT_PREFLIGHT" if renewed else "PASS_RECOVERY_GRANT_PREFLIGHT", "transactionHash": TX, "grantId": args["grant_id"],
               "availableYocto": str(available), "payeeBaselineYocto": payee, "executorKeyNonce": str(access["nonce"]),
               "policyHash": args["policy"]["policy_hash"], "expiresAtUtcPlus7": expiry.isoformat(),
               "scope": "FINAL owner grant, canonical policy, grant/ledger/key/payee snapshots; recovered API transfer NOT RUN"}
-    (EVIDENCE / "phase3-api-recovery-preflight-verification.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    (EVIDENCE / f"{PREFIX}-preflight-verification.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--renewed-grant", action="store_true", help="Verify separately saved new grant after FINAL EXPIRED attempt")
+    if parser.parse_args().renewed_grant:
+        PREFIX = "phase3-api-renewal"
+        TX = "H7FJXLjXkFC9NsD8JdxoSB6i2CxsSMULBD9vKv7K17Az"
     verify()

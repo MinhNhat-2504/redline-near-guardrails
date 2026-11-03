@@ -1,0 +1,11 @@
+{
+  "status": "PASS_RENEWED_GRANT_PREFLIGHT",
+  "transactionHash": "H7FJXLjXkFC9NsD8JdxoSB6i2CxsSMULBD9vKv7K17Az",
+  "grantId": "grant-c6acee2055d848febbdafce9eba0ed49",
+  "availableYocto": "100000000000000000000000",
+  "payeeBaselineYocto": "10050000000000000000000000",
+  "executorKeyNonce": "276023048000001",
+  "policyHash": "bc8842eddd2ba6e2a3daf17469db38a4bd5bcc1fdd48282e2ce53debaac5d33b",
+  "expiresAtUtcPlus7": "2026-11-03T18:34:49.317000+07:00",
+  "scope": "FINAL owner grant, canonical policy, grant/ledger/key/payee snapshots; recovered API transfer NOT RUN"
+}

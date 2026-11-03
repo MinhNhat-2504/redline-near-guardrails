@@ -1,0 +1,13 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "result":  {
+                   "amount":  "10050000000000000000000000",
+                   "block_hash":  "DteY4r6P7kzXmbPB79yaR1bHkfDjetaajWTwf7PTPUnq",
+                   "block_height":  276037421,
+                   "code_hash":  "11111111111111111111111111111111",
+                   "locked":  "0",
+                   "storage_paid_at":  0,
+                   "storage_usage":  182
+               },
+    "id":  "renewal-payee-before-transfer"
+}

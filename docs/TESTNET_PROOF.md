@@ -81,3 +81,9 @@ Offline check: `python scripts/verify-near-api-recovery-preflight.py`; [report](
 [Transaction Gqv1YhjYHr9ZVkLnEscPmHFSAWDZ5TcgHhCUxvPPmxGQ](https://explorer.testnet.near.org/transactions/Gqv1YhjYHr9ZVkLnEscPmHFSAWDZ5TcgHhCUxvPPmxGQ) is FINAL, agent signer with installed scoped public key9hau..., execute_transfer80Tgas/deposit0. Returned/stored intent and vault event agree REJECTED/EXPIRED. Vault block276034591 executed17:09:29.167770251 UTC+7, after16:57:51.496 expiry. No payee receipt or pending/completed event; principal available0.1 and payee10.05 unchanged. Gas/intent-storage costs still incurred.
 
 Offline verification using production parser: `cd backend; npx tsx scripts/verify-near-api-expired.ts`. [Report](evidence/phase3-api-expired-verification.json), full actual RPC inputs phase3-api-expired-*.json. Current key allowance0.0997350360765734; no key reset/principal topup required. This proves real scoped-key API REJECT execution. A successful ALLOW/SETTLED transfer and full Phase3 gate remain pending.
+
+## Owner-reviewed renewal FINAL
+
+[Transaction H7FJXLjXkFC9NsD8JdxoSB6i2CxsSMULBD9vKv7K17Az](https://explorer.testnet.near.org/transactions/H7FJXLjXkFC9NsD8JdxoSB6i2CxsSMULBD9vKv7K17Az) creates grant-c6acee2055d848febbdafce9eba0ed49. FINAL/exact owner args/event/canonical policy verified; cap0.05/max3/payee-only, expiry18:34:49.317 UTC+7 November3. Active nonce0/counters0 at baseline; available0.1/payee10.05, scoped key allowance0.0997350360765734/nonce276023048000001. No topup/reset repeated.
+
+Offline `python scripts/verify-near-api-recovery-preflight.py --renewed-grant` PASS; [report](evidence/phase3-api-renewal-preflight-verification.json) and separate public RPC/canonical files. This proves renewed owner authorization/baselines, not a settled executor transfer. Phase3 remains PARTIAL.
