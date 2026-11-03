@@ -3,28 +3,34 @@
   "owner": "nhat-redline-owner.testnet",
   "executor": "nhat-redline-agent.testnet",
   "contract": "nhat-redline-vault.testnet",
-  "grantId": "grant-c6acee2055d848febbdafce9eba0ed49",
+  "grantId": "grant-fed48ec7b5db4ba59fe224d9f807d64f",
   "policy": {
     "executor": "nhat-redline-agent.testnet",
-    "policy_hash": "bc8842eddd2ba6e2a3daf17469db38a4bd5bcc1fdd48282e2ce53debaac5d33b",
+    "policy_hash": "138919a19b9a15eaa1edff9ff8123d1c883d06636b5229d80252edda62062c24",
     "spend_cap": "50000000000000000000000",
     "max_transactions": 3,
     "recipients": [
       "nhat-redline-payee.testnet"
     ],
-    "expires_at_ns": "1793705689317000000",
+    "expires_at_ns": "1793738771164000000",
     "cooldown_ns": "0"
+  },
+  "validityHours": 8,
+  "validity": {
+    "hours": 8,
+    "preparedAtMs": 1793709971164,
+    "expiresAtNs": "1793738771164000000"
   },
   "plannedTopupYocto": "0",
   "financialActions": "NONE",
   "recoveryOf": {
     "transactionHash": "9ZNGTALnybEr2nPgSS8RRKgn29W18eQScoEnqeqoWrkH",
     "resetTransactionHash": "AzsMwgFkYMpKPGmah47aNjn8nAbv58hK2BrE7fGRoUo7",
-    "previousPackagePath": "D:\\Project\\AI Engineer\\redline-near-guardrails\\.tooling\\near-api-demo\\api-0376957e598e489caff90a860a756c45"
+    "previousPackagePath": "D:\\Project\\AI Engineer\\redline-near-guardrails\\.tooling\\near-api-demo\\api-eb6429f8cac54ec9876918596930a97a"
   },
   "renewalOf": {
-    "grantId": "grant-5c1326cc5e674f78a82be9fbd26744b2",
-    "policyHash": "5d1b7b57dfa3e18c6a74b84c58f73cfc8956d2914521923aa77f71a811a9ab13",
-    "previousPackagePath": "D:\\Project\\AI Engineer\\redline-near-guardrails\\.tooling\\near-api-demo\\api-0376957e598e489caff90a860a756c45"
+    "grantId": "grant-c6acee2055d848febbdafce9eba0ed49",
+    "policyHash": "bc8842eddd2ba6e2a3daf17469db38a4bd5bcc1fdd48282e2ce53debaac5d33b",
+    "previousPackagePath": "D:\\Project\\AI Engineer\\redline-near-guardrails\\.tooling\\near-api-demo\\api-eb6429f8cac54ec9876918596930a97a"
   }
 }

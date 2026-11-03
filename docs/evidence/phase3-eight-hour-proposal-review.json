@@ -1,0 +1,11 @@
+{
+  "status": "VERIFIED_UNSIGNED_8H_PROPOSAL_ONLY",
+  "grantId": "grant-fed48ec7b5db4ba59fe224d9f807d64f",
+  "policyHash": "138919a19b9a15eaa1edff9ff8123d1c883d06636b5229d80252edda62062c24",
+  "validityHours": 8,
+  "expiresAtUtcPlus7": "2026-11-04T03:46:11.164000+07:00",
+  "capNear": "0.05",
+  "maxTransactions": 3,
+  "recipient": "nhat-redline-payee.testnet",
+  "scope": "Public local unsigned policy/canonical consistency only. No owner signature, deployment or transfer proof established."
+}
