@@ -8,10 +8,11 @@ export async function wallet() { const s = await (instance ??= selector()); cons
 type Challenge = { challengeId: string; state: string; accountId: string; message: string; nonce: string; recipient: string; callbackUrl: string };
 export async function login(): Promise<string> {
   const w = await wallet();
-  let accounts = await w.getAccounts();
+  const selected = (accounts: { accountId: string }[]) => accounts.find(a => typeof a?.accountId === "string" && a.accountId.length >= 2 && a.accountId.length <= 64 && /^[a-z0-9]+(?:[-_.][a-z0-9]+)*$/.test(a.accountId))?.accountId;
+  let account = selected(await w.getAccounts());
   // Identity-only connection: omit contractId so SDK never creates a browser FunctionCall key.
-  if (!accounts.length) accounts = await w.signIn({});
-  const account = accounts[0]?.accountId;
+  // MyNearWallet10.1.4 returns [{accountId:"", publicKey:""}] while disconnected.
+  if (!account) account = selected(await w.signIn({}));
   if (!account) throw Error("Chưa chọn tài khoản ví Testnet.");
   const c = await api<Challenge>("/near/auth/challenge", { accountId: account, clientType: "wallet" });
   if (c.callbackUrl !== `${location.origin}/near/auth/callback` || c.recipient !== location.host || c.accountId !== account) throw Error("Origin hoặc tài khoản ký không khớp cấu hình backend.");

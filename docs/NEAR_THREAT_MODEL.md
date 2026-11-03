@@ -1,6 +1,6 @@
 # NEAR vault threat model (implementation review in progress)
 
-Scope: isolated native NEAR Testnet prototype. No independent audit, token transfers, swaps, marketplace payments, mainnet or backend NEAR authentication is claimed.
+Scope: native NEAR Testnet prototype. Contract/public CLI proofs and scoped backend NEP-413/API ALLOW/EXPIRED proofs are verified; browser wallet E2E remains PARTIAL. No independent audit, token transfers, swaps, marketplace payments or mainnet functionality is claimed.
 
 | Threat | Implementation control | Required evidence |
 | --- | --- | --- |
@@ -17,7 +17,11 @@ Scope: isolated native NEAR Testnet prototype. No independent audit, token trans
 | Insufficient callback gas/liquidity | Minimum remaining call gas; callback fixed allocation; physical storage/operating buffer check | Low gas/liquid reserve tests |
 | Lost callback / RPC timeout | Leave reservation locked; observe on-chain state, no timeout unlock | Pending view and documented limitation |
 | Fraudulent proof | Distinguish policy REJECTED in successful receipt from runtime panic; attach real outcomes only | Sandbox transcript; later Testnet explorer links |
+| Spoofed wallet identity | NEP-413 one-use challenge, exact recipient/callback/client mode, finalized FullAccess ownership and recheck; memory-only browser bearer | Backend unit/real-DB tests and actual CLI authentication; browser wallet E2E pending |
+| Storage failure loses browser request identity | Persist/read back public intent before enabling submission; malformed saved JSON retained, validated before restore; compare saved request on submit | Frontend storage failure/corruption tests; no credentials persisted |
+| Wrong or optimistic journal row unlocks another request | Exact grant/intent/hash/state plus FINAL matching event/amount/recipient/nonce before completing saved intent | Browser boundary unit tests plus parsing a real saved callback; not browser E2E |
+| Browser cached empty account skips wallet connection | Validate actual account ID, not array length; identity-only signIn omits contractId, creates no browser FunctionCall key | Reproduced MyNearWallet10.1.4 empty sentinel from SDK source; regression unit tests; real popup retry pending |
 
-Open limitations: global grant IDs can be squatted (use random IDs); executor must fund/register its own non-refundable storage allowance; direct owner calls only; no repair for stuck callbacks; immutable on-chain record retention grows storage; a contract account full-access key/deployment upgrade can replace all controls and must be secured before Testnet deployment. Backend database, owner wallet UX and NEAR event reconciliation are later phases.
+Open limitations: global grant IDs can be squatted (use random IDs); executor must fund/register its own non-refundable storage allowance; direct owner calls only; no repair for stuck callbacks; immutable on-chain record retention grows storage; a contract account FullAccess key/deployment upgrade can replace all controls. Backend projection/auth/reconciliation are implemented with limited finalized direct-call discovery, not full archival discovery. Browser wallet interoperability, new public replay demonstration, CI hosted results and production deployment hardening remain unverified. Browser localStorage is not an atomic cross-tab lock; the durable backend request binding/executor lock and on-chain nonce/reservations remain authoritative. Same-origin XSS can compromise a browser session; no production XSS-hardening audit is claimed.
 
 Do not use the inherited Solana `tx?.meta?.err ?? null` success fallback or the inherited no-API-key auth bypass for NEAR. Neither is a valid trust boundary.
