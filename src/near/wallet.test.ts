@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ getAccounts: vi.fn(), signIn: vi.fn(), signMessage: vi.fn(), api: vi.fn(), token: vi.fn() }));
 vi.mock("@near-wallet-selector/core", () => ({ setupWalletSelector: async () => ({ wallet: async () => ({ type: "injected", ...mocks }) }) }));
-vi.mock("@near-wallet-selector/my-near-wallet", () => ({ setupMyNearWallet: () => ({}) }));
+vi.mock("@near-wallet-selector/intear-wallet", () => ({ setupIntearWallet: () => ({}) }));
 vi.mock("./api", () => ({ api: mocks.api, setToken: mocks.token }));
 import { login } from "./wallet";
 afterEach(() => { vi.clearAllMocks(); vi.unstubAllGlobals(); });

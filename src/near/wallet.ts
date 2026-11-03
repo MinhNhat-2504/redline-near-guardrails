@@ -1,17 +1,17 @@
 import { setupWalletSelector } from "@near-wallet-selector/core";
-import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import { setupIntearWallet } from "@near-wallet-selector/intear-wallet";
 import { Buffer } from "buffer";
 import { api, setToken } from "./api";
-const selector = () => setupWalletSelector({ network: { networkId: "testnet", nodeUrl: "https://test.rpc.fastnear.com", helperUrl: "https://helper.testnet.near.org", explorerUrl: "https://explorer.testnet.near.org", indexerUrl: "https://test.api.fastnear.com/v0" }, modules: [setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com" })] });
+const selector = () => setupWalletSelector({ network: { networkId: "testnet", nodeUrl: "https://test.rpc.fastnear.com", helperUrl: "https://helper.testnet.near.org", explorerUrl: "https://explorer.testnet.near.org", indexerUrl: "https://test.api.fastnear.com/v0" }, modules: [setupIntearWallet({ walletUrl: "https://wallet.intear.tech" })] });
 let instance: ReturnType<typeof selector> | undefined;
-export async function wallet() { const s = await (instance ??= selector()); const w = await s.wallet("my-near-wallet"); if (w.type !== "injected") throw Error("Loại ví khác cấu hình đã duyệt."); return w; }
+export async function wallet() { const s = await (instance ??= selector()); const w = await s.wallet("intear-wallet"); if (w.type !== "injected") throw Error("Loại ví khác cấu hình đã duyệt."); return w; }
 type Challenge = { challengeId: string; state: string; accountId: string; message: string; nonce: string; recipient: string; callbackUrl: string };
 export async function login(): Promise<string> {
   const w = await wallet();
   const selected = (accounts: { accountId: string }[]) => accounts.find(a => typeof a?.accountId === "string" && a.accountId.length >= 2 && a.accountId.length <= 64 && /^[a-z0-9]+(?:[-_.][a-z0-9]+)*$/.test(a.accountId))?.accountId;
   let account = selected(await w.getAccounts());
-  // Identity-only connection: omit contractId so SDK never creates a browser FunctionCall key.
-  // MyNearWallet10.1.4 returns [{accountId:"", publicKey:""}] while disconnected.
+  // Identity-only: do not request an on-chain FunctionCall key or any contract authority.
+  // Intear stores a separate local app-auth key for its revocable wallet connection.
   if (!account) account = selected(await w.signIn({}));
   if (!account) throw Error("Chưa chọn tài khoản ví Testnet.");
   const c = await api<Challenge>("/near/auth/challenge", { accountId: account, clientType: "wallet" });

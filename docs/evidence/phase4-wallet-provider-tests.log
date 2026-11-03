@@ -1,0 +1,12 @@
+
+> redline@0.0.1 test
+> vitest run
+
+
+ RUN  v4.1.11 D:/Project/AI Engineer/redline-near-guardrails
+
+
+ Test Files  27 passed (27)
+      Tests  212 passed (212)
+   Start at  22:22:13
+   Duration  1.13s (transform 2.13s, setup 0ms, import 4.01s, tests 473ms, environment 3ms)

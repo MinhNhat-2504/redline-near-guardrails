@@ -1,0 +1,676 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@meteorwallet/sdk": {
+      "name": "@meteorwallet/sdk",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@near-js/accounts",
+        "@near-js/crypto",
+        "@near-js/keystores",
+        "@near-js/keystores-browser",
+        "@near-js/providers",
+        "@near-js/signers",
+        "@near-js/transactions",
+        "query-string"
+      ],
+      "effects": [
+        "@near-wallet-selector/meteor-wallet"
+      ],
+      "range": "0.3.7 - 0.3.9 || >=0.5.0",
+      "nodes": [
+        "node_modules/@meteorwallet/sdk"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/meteor-wallet",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@near-js/accounts": {
+      "name": "@near-js/accounts",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "@near-js/crypto",
+        "@near-js/keystores",
+        "@near-js/providers",
+        "@near-js/signers",
+        "@near-js/transactions"
+      ],
+      "effects": [],
+      "range": ">=1.2.2",
+      "nodes": [
+        "node_modules/@meteorwallet/sdk/node_modules/@near-js/accounts",
+        "node_modules/@near-js/accounts"
+      ],
+      "fixAvailable": true
+    },
+    "@near-js/crypto": {
+      "name": "@near-js/crypto",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "secp256k1"
+      ],
+      "effects": [
+        "@meteorwallet/sdk",
+        "@near-js/accounts",
+        "@near-js/keystores",
+        "@near-js/keystores-browser",
+        "@near-js/providers",
+        "@near-js/signers",
+        "@near-js/transactions",
+        "@near-wallet-selector/core",
+        "@near-wallet-selector/my-near-wallet"
+      ],
+      "range": ">=1.3.0-next.0",
+      "nodes": [
+        "node_modules/@meteorwallet/sdk/node_modules/@near-js/crypto",
+        "node_modules/@near-js/crypto",
+        "node_modules/@near-js/keystores-browser/node_modules/@near-js/crypto"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/meteor-wallet",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@near-js/keystores": {
+      "name": "@near-js/keystores",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "@near-js/crypto"
+      ],
+      "effects": [
+        "@near-js/accounts"
+      ],
+      "range": ">=0.1.0-next.0",
+      "nodes": [
+        "node_modules/@meteorwallet/sdk/node_modules/@near-js/keystores",
+        "node_modules/@near-js/keystores",
+        "node_modules/@near-js/keystores-browser/node_modules/@near-js/keystores"
+      ],
+      "fixAvailable": true
+    },
+    "@near-js/keystores-browser": {
+      "name": "@near-js/keystores-browser",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "@near-js/crypto",
+        "@near-js/keystores"
+      ],
+      "effects": [
+        "@meteorwallet/sdk",
+        "@near-wallet-selector/meteor-wallet"
+      ],
+      "range": ">=0.1.0-next.0",
+      "nodes": [
+        "node_modules/@meteorwallet/sdk/node_modules/@near-js/keystores-browser",
+        "node_modules/@near-js/keystores-browser"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/meteor-wallet",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@near-js/providers": {
+      "name": "@near-js/providers",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "@near-js/crypto",
+        "@near-js/transactions"
+      ],
+      "effects": [
+        "@meteorwallet/sdk",
+        "@near-js/accounts",
+        "@near-wallet-selector/core"
+      ],
+      "range": ">=0.2.3",
+      "nodes": [
+        "node_modules/@meteorwallet/sdk/node_modules/@near-js/providers",
+        "node_modules/@near-js/providers"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/core",
+        "version": "9.5.4",
+        "isSemVerMajor": true
+      }
+    },
+    "@near-js/signers": {
+      "name": "@near-js/signers",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "@near-js/crypto",
+        "@near-js/keystores",
+        "@near-js/transactions"
+      ],
+      "effects": [
+        "@meteorwallet/sdk",
+        "@near-wallet-selector/core"
+      ],
+      "range": ">=0.1.5",
+      "nodes": [
+        "node_modules/@meteorwallet/sdk/node_modules/@near-js/signers",
+        "node_modules/@near-js/signers"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/meteor-wallet",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@near-js/transactions": {
+      "name": "@near-js/transactions",
+      "severity": "low",
+      "isDirect": true,
+      "via": [
+        "@near-js/crypto"
+      ],
+      "effects": [
+        "@near-js/providers",
+        "@near-js/signers"
+      ],
+      "range": ">=1.2.3",
+      "nodes": [
+        "node_modules/@meteorwallet/sdk/node_modules/@near-js/transactions",
+        "node_modules/@near-js/transactions"
+      ],
+      "fixAvailable": {
+        "name": "@near-js/transactions",
+        "version": "1.2.2",
+        "isSemVerMajor": true
+      }
+    },
+    "@near-wallet-selector/core": {
+      "name": "@near-wallet-selector/core",
+      "severity": "low",
+      "isDirect": true,
+      "via": [
+        "@near-js/crypto",
+        "@near-js/providers",
+        "@near-js/signers",
+        "@near-js/transactions"
+      ],
+      "effects": [],
+      "range": "8.9.13 - 8.9.14 || >=9.1.0",
+      "nodes": [
+        "node_modules/@near-wallet-selector/core"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/core",
+        "version": "9.5.4",
+        "isSemVerMajor": true
+      }
+    },
+    "@near-wallet-selector/meteor-wallet": {
+      "name": "@near-wallet-selector/meteor-wallet",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@meteorwallet/sdk",
+        "@near-js/keystores-browser",
+        "@near-wallet-selector/core"
+      ],
+      "effects": [],
+      "range": ">=7.0.0",
+      "nodes": [
+        "node_modules/@near-wallet-selector/meteor-wallet"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/meteor-wallet",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@near-wallet-selector/my-near-wallet": {
+      "name": "@near-wallet-selector/my-near-wallet",
+      "severity": "low",
+      "isDirect": true,
+      "via": [
+        "@near-js/accounts",
+        "@near-js/crypto",
+        "@near-js/providers",
+        "@near-js/transactions",
+        "@near-wallet-selector/core"
+      ],
+      "effects": [],
+      "range": ">=10.0.0-beta.0",
+      "nodes": [
+        "node_modules/@near-wallet-selector/my-near-wallet"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/my-near-wallet",
+        "version": "9.5.4",
+        "isSemVerMajor": true
+      }
+    },
+    "@vitest/mocker": {
+      "name": "@vitest/mocker",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1242767,
+          "name": "@vitest/mocker",
+          "dependency": "@vitest/mocker",
+          "title": "Vitest: Code injection via unauthenticated manual mock registration",
+          "url": "https://github.com/advisories/GHSA-qxg6-89mg-rqv8",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-94",
+            "CWE-116",
+            "CWE-306"
+          ],
+          "cvss": {
+            "score": 4.7,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N"
+          },
+          "range": ">=2.1.0-beta.7 <4.1.12"
+        },
+        {
+          "source": 1242769,
+          "name": "@vitest/mocker",
+          "dependency": "@vitest/mocker",
+          "title": "Vitest: Windows backslash traversal bypasses the @vitest/mocker redirect allowlist fix",
+          "url": "https://github.com/advisories/GHSA-xp26-3454-mjgp",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+          },
+          "range": ">=4.1.11 <4.1.12"
+        }
+      ],
+      "effects": [
+        "vitest"
+      ],
+      "range": "<=4.1.11",
+      "nodes": [
+        "node_modules/@vitest/mocker"
+      ],
+      "fixAvailable": {
+        "name": "vitest",
+        "version": "4.1.12",
+        "isSemVerMajor": false
+      }
+    },
+    "baseline-browser-mapping": {
+      "name": "baseline-browser-mapping",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1193686,
+          "name": "baseline-browser-mapping",
+          "dependency": "baseline-browser-mapping",
+          "title": "baseline-browser-mapping process termination on invalid input causes denial of service",
+          "url": "https://github.com/advisories/GHSA-w5vr-8v7q-w6rv",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-705"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=2.0.0 <2.11.0"
+        }
+      ],
+      "effects": [],
+      "range": ">=2.0.0 <2.11.0",
+      "nodes": [
+        "node_modules/baseline-browser-mapping"
+      ],
+      "fixAvailable": true
+    },
+    "browserslist": {
+      "name": "browserslist",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1153171,
+          "name": "browserslist",
+          "dependency": "browserslist",
+          "title": "Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM",
+          "url": "https://github.com/advisories/GHSA-c83g-rgw3-j3cx",
+          "severity": "high",
+          "cwe": [
+            "CWE-770"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=4.28.6"
+        },
+        {
+          "source": 1153172,
+          "name": "browserslist",
+          "dependency": "browserslist",
+          "title": "Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)",
+          "url": "https://github.com/advisories/GHSA-73wf-gq98-2v4g",
+          "severity": "high",
+          "cwe": [
+            "CWE-248",
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=4.28.6"
+        }
+      ],
+      "effects": [],
+      "range": "<=4.28.6",
+      "nodes": [
+        "node_modules/browserslist"
+      ],
+      "fixAvailable": true
+    },
+    "decode-uri-component": {
+      "name": "decode-uri-component",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1147955,
+          "name": "decode-uri-component",
+          "dependency": "decode-uri-component",
+          "title": "decode-uri-component: Denial of service via exponential decoding of malformed percent-encoded input",
+          "url": "https://github.com/advisories/GHSA-vcc3-ghjq-m6fr",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400",
+            "CWE-405",
+            "CWE-407",
+            "CWE-1176"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=0.4.2"
+        },
+        {
+          "source": 1243857,
+          "name": "decode-uri-component",
+          "dependency": "decode-uri-component",
+          "title": "decode-uri-component vulnerable to denial of service via quadratic replacement of percent-encoded runs",
+          "url": "https://github.com/advisories/GHSA-qr28-fpjm-wq7f",
+          "severity": "high",
+          "cwe": [
+            "CWE-400",
+            "CWE-407"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=0.5.0"
+        }
+      ],
+      "effects": [
+        "query-string"
+      ],
+      "range": "<=0.5.0",
+      "nodes": [
+        "node_modules/decode-uri-component"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/meteor-wallet",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "elliptic": {
+      "name": "elliptic",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1112030,
+          "name": "elliptic",
+          "dependency": "elliptic",
+          "title": "Elliptic Uses a Cryptographic Primitive with a Risky Implementation",
+          "url": "https://github.com/advisories/GHSA-848j-6mx2-7j84",
+          "severity": "low",
+          "cwe": [
+            "CWE-1240"
+          ],
+          "cvss": {
+            "score": 5.6,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L"
+          },
+          "range": "<=6.6.1"
+        }
+      ],
+      "effects": [
+        "secp256k1"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/elliptic"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/meteor-wallet",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "query-string": {
+      "name": "query-string",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "decode-uri-component"
+      ],
+      "effects": [
+        "@meteorwallet/sdk"
+      ],
+      "range": "5.0.0 - 9.4.1",
+      "nodes": [
+        "node_modules/query-string"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/meteor-wallet",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "secp256k1": {
+      "name": "secp256k1",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "elliptic"
+      ],
+      "effects": [
+        "@near-js/crypto"
+      ],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/secp256k1"
+      ],
+      "fixAvailable": {
+        "name": "@near-wallet-selector/meteor-wallet",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "source-map-js": {
+      "name": "source-map-js",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1241209,
+          "name": "source-map-js",
+          "dependency": "source-map-js",
+          "title": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+          "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+          "severity": "high",
+          "cwe": [
+            "CWE-1284"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=1.0.0 <1.2.2"
+        }
+      ],
+      "effects": [],
+      "range": "1.0.0 - 1.2.1",
+      "nodes": [
+        "node_modules/source-map-js"
+      ],
+      "fixAvailable": true
+    },
+    "vite": {
+      "name": "vite",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        {
+          "source": 1242622,
+          "name": "vite",
+          "dependency": "vite",
+          "title": "launch-editor: escapeCmdArgs() omits % escaping on Windows",
+          "url": "https://github.com/advisories/GHSA-698v-4r3x-3vcv",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-78"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=6.4.3"
+        },
+        {
+          "source": 1242651,
+          "name": "vite",
+          "dependency": "vite",
+          "title": "launch-editor: Editor CLI flag misinterpretation causing arbitrary command execution for some editors",
+          "url": "https://github.com/advisories/GHSA-r825-w8mm-5pxw",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-88"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=6.4.3"
+        },
+        {
+          "source": 1242658,
+          "name": "vite",
+          "dependency": "vite",
+          "title": "launch-editor: `fs.existsSync()` existence check can be bypassed on Windows",
+          "url": "https://github.com/advisories/GHSA-587h-7wmj-h5pm",
+          "severity": "high",
+          "cwe": [
+            "CWE-77"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=6.4.3"
+        },
+        {
+          "source": 1242724,
+          "name": "vite",
+          "dependency": "vite",
+          "title": "Vite: Cross origin script execution through Vite custom middleware",
+          "url": "https://github.com/advisories/GHSA-9jrq-w75r-8gcw",
+          "severity": "low",
+          "cwe": [
+            "CWE-80"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=6.4.3"
+        },
+        {
+          "source": 1242730,
+          "name": "vite",
+          "dependency": "vite",
+          "title": "Vite: Files outside `server.fs.allow` could be served when project paths match system paths on non-Windows machine",
+          "url": "https://github.com/advisories/GHSA-rq7h-c2jc-7f22",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-22",
+            "CWE-284"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=6.4.3"
+        }
+      ],
+      "effects": [],
+      "range": "<=6.4.3",
+      "nodes": [
+        "node_modules/vite"
+      ],
+      "fixAvailable": {
+        "name": "vite",
+        "version": "6.4.5",
+        "isSemVerMajor": false
+      }
+    },
+    "vitest": {
+      "name": "vitest",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@vitest/mocker"
+      ],
+      "effects": [],
+      "range": "2.1.0-beta.1 - 4.1.11",
+      "nodes": [
+        "node_modules/vitest"
+      ],
+      "fixAvailable": {
+        "name": "vitest",
+        "version": "4.1.12",
+        "isSemVerMajor": false
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 11,
+      "moderate": 3,
+      "high": 7,
+      "critical": 0,
+      "total": 21
+    },
+    "dependencies": {
+      "prod": 373,
+      "dev": 167,
+      "optional": 84,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 543
+    }
+  }
+}
