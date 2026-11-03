@@ -7,6 +7,9 @@ export const DEFAULT_NEAR_RPC = "https://test.rpc.fastnear.com";
 export class NearRpcError extends Error {
   constructor(readonly code: string, readonly remoteName?: string) { super(`NEAR read-only RPC failed: ${code}`); }
 }
+export class NearViewError extends NearRpcError {
+  constructor(readonly method: string, readonly blockHeight: number, readonly blockHash: string, reason: string) { super("VIEW_EXECUTION_FAILED", reason); }
+}
 
 /** Node's source-aware reviver retains an RPC u64 nonce before Number rounding. */
 export function parseRpcJson(text: string): unknown {
@@ -71,10 +74,18 @@ export class NearReadOnlyRpc {
 
   async view(contract: string, method: string, args: Record<string, unknown>): Promise<unknown> {
     this.requireConnected();
-    const result = z.object({ result: z.array(z.number().int().min(0).max(255)), block_height: z.number().int().nonnegative().safe(), block_hash: z.string() }).parse(await this.request("query", {
+    const raw = await this.request("query", {
       request_type: "call_function", finality: "final", account_id: contract, method_name: method,
       args_base64: Buffer.from(JSON.stringify(args)).toString("base64"),
-    }));
+    });
+    const failed = z.object({ error: z.string(), logs: z.array(z.string()), block_height: z.number().int().nonnegative().safe(), block_hash: z.string() }).safeParse(raw);
+    if (failed.success) {
+      // Testnet panic text may contain literal backslash+n, not a real newline.
+      const errorText = failed.data.error.replaceAll(String.fromCharCode(92, 110), " ");
+      const registration = method === "get_owner_balance" && /GuestPanic/.test(errorText) && /\bSTORAGE_REGISTRATION_REQUIRED\b/.test(errorText);
+      throw new NearViewError(method, failed.data.block_height, failed.data.block_hash, registration ? "STORAGE_REGISTRATION_REQUIRED" : "CONTRACT_VIEW_FAILED");
+    }
+    const result = z.object({ result: z.array(z.number().int().min(0).max(255)), block_height: z.number().int().nonnegative().safe(), block_hash: z.string() }).parse(raw);
     return { value: decodeBase64Json(Buffer.from(result.result).toString("base64")), blockHeight: result.block_height, blockHash: result.block_hash };
   }
 

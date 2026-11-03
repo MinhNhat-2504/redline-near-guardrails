@@ -1,6 +1,6 @@
 # NEAR browser demo — implementation checkpoint
 
-Status: PARTIAL. Browser wallet signing and actual browser transfer NOT RUN. Unit tests/build are separate from Testnet evidence. Phase3 scoped-key API ALLOW is now independently verified; this does not establish browser wallet interoperability.
+Status: PARTIAL. Browser NEP-413 sign-in is owner-observed; browser financial signatures/transfer remain NOT RUN. Unit tests/build are separate from Testnet evidence. Phase3 scoped-key API ALLOW is independently verified; it does not establish the complete browser financial walkthrough.
 
 ## Run locally
 
@@ -29,6 +29,8 @@ After this provider/dependency change, close the obsolete popup, restart only Vi
 ## Guided sequence
 
 - Connect/sign in. Read an existing grant's FINAL snapshot before preparing any new authority. The CLI8h grant has been signed and its API payment verified. Open `/near?grant=grant-fed48ec7b5db4ba59fe224d9f807d64f` and read FINAL snapshots without logging in or creating another proposal.
+- A separate web owner needs its own vault setup. Use “Đọc vault của ví đăng nhập”. An explicit contract registration panic is shown as unregistered, never as a fabricated zero ledger. Review storage0.05NEAR Testnet first, then initial principal0.1NEAR Testnet, each as a separate unsigned proposal and separate wallet signature. Funding is not automatically submitted. Sufficient storage blocks another storage proposal; existing credited principal blocks automatic replenishment. Existing CLI-owner funds/grants do not migrate.
+- Before opening a funding signature, the public expected owner/method/amount/baseline height is durably saved. After the wallet returns a public hash, authenticated reconciliation independently checks exact FINAL owner/vault/method/amount/empty args/100Tgas, successful receipts and ledger return, plus execution after the baseline. UNKNOWN/timeouts retain this attempt and block another signature; restore it after reload/login and reconcile, rather than paying again. If cancellation produced no hash or a runtime failure occurs, stop for manual review. There is no contract-level idempotency key for deposit and no automatic retry of owner signatures. Do not use multiple tabs for funding.
 - For a new browser grant: choose1–8 hours, cap0.05 nativeNEAR, max3 transfers, only approved payee. Review exact JSON/hash/expiry, then open wallet. The browser rejects modified receiver/executor/cap/recipient/deposit/canonical policy. Preparation does not sign or fund anything. Expiry starts at preparation; login never extends it.
 - Read FINAL snapshot after wallet confirmation. Grant storage and principal must already be sufficient; this page does not automatically fund accounts. If storage/funding is needed, stop for owner review.
 - Prepare ALLOW0.01, inspect JSON, explicitly send. UNKNOWN/PENDING keeps the exact intent ID. Reload: restore public request, log in, read its grant, reconcile the same intent. Never replace an unresolved request. Journal statuses and Explorer links are available; use “Đối soát FINAL” for recorded hashes.
@@ -36,6 +38,8 @@ After this provider/dependency change, close the obsolete popup, restart only Vi
 - Review/sign revoke, refresh active=false, then a fresh controlled request should demonstrate REVOKED. Revocation does not cancel already-dispatched transfer receipts.
 
 No live browser E2E, full historical discovery, LLM prompt attack or production security audit is claimed. Current scenarios are explicitly controlled JSON proposals. Preserve the contract's real sandbox concurrency/failure proofs separately.
+
+Browser sign-in for nhat-redline-web.testnet has since been observed in the owner's screenshots; the financial browser walkthrough above remains NOT RUN. New funding/reconciliation routes require restarting only the backend with start-near-local.ps1. No Prisma regeneration or database migration is needed for this change. After a full page reload, sign in again because the bearer is memory-only.
 
 ## Dependency and deployment limits
 

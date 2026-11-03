@@ -164,3 +164,8 @@ NOT RUN: real owner-wallet NEP-413 login, scoped-key API execution on public Tes
 
 - USER screenshot shows Intear sign-in completed for nhat-redline-web.testnet, but both login/logout were rendered. Corrected conditional controls/status/hint; no authentication-policy change.
 - `npm.cmd run check` PASS:214 tests/28 files, typecheck and Vite build; `phase4-login-state-checks.log`. Chunk warning remains. Browser sign-in observation does not establish the remaining browser financial walkthrough; no token/private-key collection or backend/DB/Rust rerun.
+# Phase4 web-owner setup and funding reconciliation — 2026-11-03
+
+- Root221 tests/29 files + typecheck/Vite build PASS; backend424 tests/35 files + typecheck/direct tsc PASS.25 real isolated Postgres integration tests PASS, disposable container cleaned up; no existing DB/schema/contract change or Prisma regeneration. Logs `phase4-web-funding-*`; strict standalone helper compile/help PASS. Chunk warning remains.
+- Actual public web-owner baseline:2.5nativeNEAR, vault explicitly unregistered at block276072399. `phase4-web-owner-before-funding.json`. First view shape and escaped GuestPanic matching attempts failed before correction; only successful final capture used as evidence.
+- Funding tests cover exact fixed review amount, storage-before-principal/no automatic replenishment, malformed/overspent ledger, durable attempt, changed/optimistic/old hash blocking,401 before RPC and real saved Phase2 owner funding receipts. Those old receipts/synthetic vectors are not new web wallet transactions. Browser funding/signing/grant E2E NOT RUN; Phase4 PARTIAL pending owner approval/signatures.

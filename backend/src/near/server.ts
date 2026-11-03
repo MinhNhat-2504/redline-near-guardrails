@@ -6,6 +6,7 @@ import type { PrismaClient } from "@prisma/client";
 import { NearAuth } from "./auth.js";
 import { accountId, hashId, httpError, recordId, transferSchema } from "./types.js";
 import { prepareOwnerAction } from "./owner-actions.js";
+import { fundingStatus, reconcileFunding } from "./funding.js";
 import type { NearChain } from "../chain/near.js";
 
 export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: string, logging = true) {
@@ -38,7 +39,9 @@ export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: str
     return grant;
   });
   app.get("/near/owners/:account/balance", async req => chain.readBalance(z.object({ account: accountId }).parse(req.params).account));
+  app.get("/near/owners/:account/funding", async req => fundingStatus(chain.rpc, chain.config.contractId, z.object({ account: accountId }).parse(req.params).account));
   app.post("/near/owner-actions", async req => prepareOwnerAction(chain, (await session(req)).accountId, req.body));
+  app.post("/near/owner-actions/reconcile", async req => reconcileFunding(chain, (await session(req)).accountId, req.body));
   app.post("/near/grants/:id/intents", async req => {
     const owner = (await session(req)).accountId;
     const { id } = z.object({ id: recordId }).parse(req.params);

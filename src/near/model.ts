@@ -2,6 +2,8 @@ export const CONTRACT = "nhat-redline-vault.testnet";
 export const EXECUTOR = "nhat-redline-agent.testnet";
 export const PAYEE = "nhat-redline-payee.testnet";
 export const CAP = "50000000000000000000000";
+export const STORAGE_FUNDING = "50000000000000000000000", PRINCIPAL_FUNDING = "100000000000000000000000", MIN_OWNER_STORAGE = "10000000000000000000000";
+export type OwnerMethod = "create_grant" | "revoke_grant" | "storage_deposit" | "deposit";
 export type Grant = { owner: string; active: boolean; next_nonce: string; finalized_spent: string; pending_reserved: string; finalized_transactions: number; pending_transactions: number; policy: { executor: string; policy_hash: string; spend_cap: string; max_transactions: number; recipients: string[]; expires_at_ns: string; cooldown_ns: string } };
 export type Ledger = { credited: string; finalized_spent: string; pending_reserved: string; completed_withdrawals: string; pending_withdrawals: string; storage_available: string };
 export function near(value: string): string {
@@ -19,10 +21,15 @@ export function assertIdentity(h: { chain: string; network: string; contractId: 
 }
 export type Proposal = { network: string; signerId: string; unsigned: boolean; canonicalPolicy?: string; transaction: { receiverId: string; actions: { type: "FunctionCall"; params: { methodName: string; args: Record<string, unknown>; gas: string; deposit: string } }[] } };
 /** Treat the server's unsigned proposal as untrusted until every authority field matches. */
-export async function validateProposal(p: Proposal, owner: string, method: "create_grant" | "revoke_grant", grantId?: string, now = Date.now()) {
+export async function validateProposal(p: Proposal, owner: string, method: OwnerMethod, grantId?: string, now = Date.now()) {
   if (!p.unsigned || p.network !== "testnet" || p.signerId !== owner || p.transaction.receiverId !== CONTRACT || p.transaction.actions.length !== 1) throw Error("Đề xuất ký không hợp lệ.");
   const a = p.transaction.actions[0];
-  if (a.type !== "FunctionCall" || a.params.methodName !== method || a.params.deposit !== "0" || a.params.gas !== "100000000000000") throw Error("Quyền hoặc deposit bị thay đổi.");
+  if (a.type !== "FunctionCall" || a.params.methodName !== method || a.params.gas !== "100000000000000") throw Error("Quyền hoặc gas bị thay đổi.");
+  if (method === "storage_deposit" || method === "deposit") {
+    if (a.params.deposit !== (method === "storage_deposit" ? STORAGE_FUNDING : PRINCIPAL_FUNDING) || !a.params.args || typeof a.params.args !== "object" || Array.isArray(a.params.args) || Object.keys(a.params.args).length !== 0 || p.canonicalPolicy !== undefined) throw Error("Khoản nạp khác đề xuất demo đã xem lại.");
+    return;
+  }
+  if (a.params.deposit !== "0") throw Error("Deposit không được thay đổi.");
   if (method === "revoke_grant") {
     if (a.params.args.grant_id !== grantId || Object.keys(a.params.args).length !== 1) throw Error("Sai grant cần thu hồi.");
     return;
