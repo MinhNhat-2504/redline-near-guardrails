@@ -140,3 +140,8 @@ NOT RUN: real owner-wallet NEP-413 login, scoped-key API execution on public Tes
 - Actual `verify-near-owner-grant.ts <public-package> 3q9hhGTRCS3UNn2V3PZndzzzsxYgYPnZD7vPKUzT147R <new-prefix>`: PASS_FINAL_OWNER_GRANT_PREFLIGHT, actual RPC inputs/report `phase3-eight-hour-signed-*`. ALLOW is still pending.
 - `npm.cmd audit --json`: completed, exit1 due16 advisories (10low/3moderate/3high/0critical), `phase4-dependency-audit.json`; not a clean audit PASS.
 - Browser E2E/signing, scoped API ALLOW, fresh DB integration, Rust/sandbox: NOT RUN at this checkpoint. Existing Phase2/public expiry/local sandbox evidence retained separately; no claims of a rerun or completed migration.
+# Phase3 actual scoped ALLOW closure — 2026-11-03
+
+- Read-only AFTER RPC capture for GDDHqqikTtpuH3dcrosMJDDbaXuFf2QkLMvcFh9wPXUZ + offline `capture-near-allow-proof.ts verify`: PASS_FINAL_SCOPED_ALLOW on real data; exact API response separately matched. Six receipts, stored/callback SETTLED/OK; payee/ledger delta conserved. `phase3-api-allow-*` contains the real inputs and report. This is not a mocked transfer.
+- Frontend `npm.cmd run test`183 tests/25 files and `npm.cmd run build` PASS; backend `npm.cmd run test`411 tests/34 files, `npm.cmd run typecheck`, direct `npx.cmd tsc -p tsconfig.json` PASS. Logs `phase3-allow-{frontend,backend}-{tests,build}.log`. Vite wallet-chunk >500kB warning retained.
+- No new DB/Rust/sandbox run; no schema or contract change. Browser signing/E2E and a public replay demonstration remain NOT RUN. Phase3 adapter/auth/scoped receipt MVP gate PASS; migration overall still incomplete.

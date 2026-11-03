@@ -1,6 +1,6 @@
 # NEAR browser demo — implementation checkpoint
 
-Status: PARTIAL. Browser wallet signing and actual browser transfer NOT RUN. Unit tests/build are separate from Testnet evidence. Phase 3 scoped-key ALLOW remains pending the owner's signature and finalized public proof.
+Status: PARTIAL. Browser wallet signing and actual browser transfer NOT RUN. Unit tests/build are separate from Testnet evidence. Phase3 scoped-key API ALLOW is now independently verified; this does not establish browser wallet interoperability.
 
 ## Run locally
 
@@ -26,7 +26,7 @@ Wallet connection omits `contractId`, so it creates no browser FunctionCall key.
 
 ## Guided sequence
 
-- Connect/sign in. Read an existing grant's FINAL snapshot before preparing any new authority. The outstanding CLI8h proposal can be completed without creating a second browser proposal.
+- Connect/sign in. Read an existing grant's FINAL snapshot before preparing any new authority. The CLI8h grant has been signed and its API payment verified. Open `/near?grant=grant-fed48ec7b5db4ba59fe224d9f807d64f` and read FINAL snapshots without logging in or creating another proposal.
 - For a new browser grant: choose1–8 hours, cap0.05 nativeNEAR, max3 transfers, only approved payee. Review exact JSON/hash/expiry, then open wallet. The browser rejects modified receiver/executor/cap/recipient/deposit/canonical policy. Preparation does not sign or fund anything. Expiry starts at preparation; login never extends it.
 - Read FINAL snapshot after wallet confirmation. Grant storage and principal must already be sufficient; this page does not automatically fund accounts. If storage/funding is needed, stop for owner review.
 - Prepare ALLOW0.01, inspect JSON, explicitly send. UNKNOWN/PENDING keeps the exact intent ID. Reload: restore public request, log in, read its grant, reconcile the same intent. Never replace an unresolved request. Journal statuses and Explorer links are available; use “Đối soát FINAL” for recorded hashes.

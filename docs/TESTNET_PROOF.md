@@ -90,3 +90,17 @@ Offline `python scripts/verify-near-api-recovery-preflight.py --renewed-grant` P
 # Phase3 signed eight-hour grant preflight — 2026-11-03
 
 Owner create_grant transaction [3q9hhGTRCS3UNn2V3PZndzzzsxYgYPnZD7vPKUzT147R](https://explorer.testnet.near.org/transactions/3q9hhGTRCS3UNn2V3PZndzzzsxYgYPnZD7vPKUzT147R) independently verified FINAL/CONFIRMED against exact public canonical policy and vault event/arguments. Grant `grant-fed48ec7b5db4ba59fe224d9f807d64f`, cap0.05nativeNEAR/max3/only approved payee, deadline03:46:11.164 UTC+7 Nov4; active nonce0/counters0. Owner available0.1NEAR, scoped keynonce276023048000001. Evidence `phase3-eight-hour-signed-{inputs,verification}.json`. This is pre-transfer proof: scoped API0.01 ALLOW/SETTLED remains pending. Historical Phase2 and API EXPIRED evidence below retain their original scope.
+# Phase3 scoped API ALLOW — independently verified FINAL
+
+[Transaction GDDHqqikTtpuH3dcrosMJDDbaXuFf2QkLMvcFh9wPXUZ](https://explorer.testnet.near.org/transactions/GDDHqqikTtpuH3dcrosMJDDbaXuFf2QkLMvcFh9wPXUZ) transferred **0.01 nativeNEAR** from vault to approved payee through the real scoped executor API. Exact key9hau…, execute_transfer80Tgas/zero attached deposit, stable intent `api-safe-517314f69acd437e8b01bfeba3fd45a8`/nonce0/policy and successful callback verified. Six receipt outcomes; stored intent and completed event SETTLED/OK. Public API response hash/fields independently matched the RPC result.
+
+| Field | BEFORE | AFTER |
+| --- | --- | --- |
+| Payee NEAR | 10.05 | 10.06 |
+| Owner available principal | 0.1 | 0.09 |
+| Owner finalized spend | 0.05 | 0.06 |
+| Grant finalized spend | 0 | 0.01 |
+| Grant finalized count / next nonce | 0 / 0 | 1 / 1 |
+| Owner/grant pending reserved | 0 | 0 |
+
+Inputs: `phase3-api-allow-before.json`, `phase3-api-allow-after.json`, immutable copied `phase3-api-allow-api-response.json`; report `phase3-api-allow-verification.json`. Reproduce the public-data consistency verifier from backend: `npx.cmd tsx scripts/capture-near-allow-proof.ts verify ../docs/evidence/phase3-api-allow-before.json ../docs/evidence/phase3-api-allow-after.json`. Not a light-client proof or browser E2E. Phase3 MVP gate PASS; browser/signature/replay demonstration and release gates still incomplete.

@@ -1,0 +1,10 @@
+{
+  "grantId": "grant-fed48ec7b5db4ba59fe224d9f807d64f",
+  "intentId": "api-safe-517314f69acd437e8b01bfeba3fd45a8",
+  "amount": "10000000000000000000000",
+  "recipient": "nhat-redline-payee.testnet",
+  "transactionHash": "GDDHqqikTtpuH3dcrosMJDDbaXuFf2QkLMvcFh9wPXUZ",
+  "finalized": true,
+  "state": "SETTLED",
+  "reason": "OK"
+}

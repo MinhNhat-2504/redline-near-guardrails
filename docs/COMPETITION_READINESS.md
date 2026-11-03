@@ -11,9 +11,9 @@ Reviewed2026-11-03. Goal: a credible, competitive Track06 submission. This is en
 
 | Priority | Outcome to demonstrate | Verified status / remaining gap |
 |---|---|---|
-| P0 | Real backend-scoped transfer ALLOW, private callback SETTLED, conserved owner ledger and payee delta | PENDING. Phase2 contract ALLOW exists; it does not substitute for Phase3 backend ALLOW. Actual backend80Tgas EXPIRED rejection verified. |
-| P0 | Honest, predictable authorization and lifecycle | Contract/sandbox pending/replay/callback protections and real scoped key/auth verified. Demo expiry guard and explicit1..8h selector implemented; end-to-end normal payment still pending. |
-| P1 | Browser walkthrough a judge can complete | Phase4 PENDING. No NEAR wallet/API integration found in root frontend src audit. Need wallet login, review budget/recipient/expiry, sign, payment status and receipt links in one guided flow. |
+| P0 | Real backend-scoped transfer ALLOW, private callback SETTLED, conserved owner ledger and payee delta | PASS: scoped API0.01NEAR FINAL/SETTLED GDDHqqikTtpuH3dcrosMJDDbaXuFf2QkLMvcFh9wPXUZ; independently verified callbacks, key,80Tgas, payee10.05→10.06, available0.1→0.09/pending0. Backend EXPIRED rejection also verified. |
+| P0 | Honest, predictable authorization and lifecycle | Contract/sandbox pending/replay/callback protections and real scoped key/auth verified. Expiry guard/explicit1..8h selector and real normal API payment verified; browser lifecycle still needs owner E2E. |
+| P1 | Browser walkthrough a judge can complete | Phase4 PARTIAL: `/near` implements wallet login, reviewed policy, expiry/ledger, intent scenarios, journal/receipt links.183 frontend tests/build passed; browser wallet interoperability/first-time onboarding NOT RUN. |
 | P1 | Visible attack resistance | Contract Testnet cap/recipient/revoke proofs + real sandbox races/failure tests exist. Backend public proof currently EXPIRED only. Present exactly which layer/scenario was verified; never label hand-written intents as a live LLM attack. |
 | P1 | A real agent-use story | Show how untrusted agent intents meet on-chain constraints. Distinguish scripted scenarios from actual LLM integration, and implemented behavior from planned agent/marketplace features. |
 | P1 | Fresh-clone reproducibility and accurate claims | Document versions, isolated tests, real proofs and legacy/new diff. Hosted CI result not verified. Git remote push currently blocked on owner authentication; no tracked LICENSE found, owner choice pending. |

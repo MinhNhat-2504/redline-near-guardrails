@@ -4,7 +4,7 @@ Status: PARTIAL; do not present a browser case as on-chain proof until its FINAL
 
 | Demonstration | Existing verified evidence | Remaining work |
 | --- | --- | --- |
-| Native ALLOW + callback | Phase2 CLI0.05NEAR SETTLED, payee10→10.05; TESTNET_PROOF.md | Scoped API0.01NEAR SETTLED and browser flow pending |
+| Native ALLOW + callback | Phase2 CLI0.05NEAR SETTLED; new scoped API0.01NEAR FINAL/SETTLED `GDDHqqikTtpuH3dcrosMJDDbaXuFf2QkLMvcFh9wPXUZ`, payee10.05→10.06, available0.1→0.09 | Browser signing/transfer still pending |
 | Over spend cap | Phase2 CLI `J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x`, SPEND_CAP_EXCEEDED | New browser case not run |
 | Wrong recipient | Phase2 CLI `8MCrqH1rQXTPvfuG6Yk9TuAVXgGo7mj55rmfMvNL9DuB`, DESTINATION_NOT_ALLOWED | New browser case not run |
 | Revoke and denial | Phase2 revoke `C2tYedjVQycHtCovMXTGr75DLWbmRNawLjkwnSxobCEU`; denial `4huc1hEC2EF3jEft21Ga7xBvoFMCuvzsCTsiLWJkGBU4` | New browser case not run |
@@ -27,6 +27,6 @@ Capture public BEFORE ledger/payee/grant/key snapshots, the exact reviewed reque
 3. Grant finalized spend +0.01, count+1, nonce+1, pending0; owner finalized spend+0.01 and available−0.01, pending0; payee amount+0.01, no additional payee transactions within the compared interval. Use receipt amounts as the primary payment evidence when unrelated account activity makes balance deltas ambiguous.
 4. Same intent retry cannot pay again; retained history matches the same packet/hash. Independently verify the public data and archive it before marking PASS.
 
-Until this gate passes, Phase3 remains PARTIAL. Phase2 CLI ALLOW is real but is not a substitute for scoped API ALLOW. The demo uses scripted JSON attacks; no LLM-generated attack or guarantee of preventing every prompt injection is claimed.
+This gate passed for transaction `GDDHqqikTtpuH3dcrosMJDDbaXuFf2QkLMvcFh9wPXUZ`: public BEFORE/AFTER snapshots, production receipt verifier and separate exact client-response matching are saved in `phase3-api-allow-*`. Browser signing and a public replay demonstration remain separate pending gates. The demo uses scripted JSON attacks; no LLM-generated attack or guarantee of preventing every prompt injection is claimed.
 
 Public collection helper (does not sign, submit or read a session): `backend/scripts/capture-near-allow-proof.ts`. From backend, `npx.cmd tsx scripts/capture-near-allow-proof.ts --help` lists `before <public-request.json> <new-output.json>`, `after <public-request.json> <new-output.json> <public-tx-hash>`, and `verify <before.json> <after.json>`. Existing output files are never overwritten. Capture BEFORE after request preparation but before explicit --submit. `verify` checks the production receipt parser, exact arguments/key/gas, callback/stored intent, grant/ledger/payee deltas, scoped permission and snapshot heights after the latest receipt. Separately compare the returned hash with the actual public API response to establish the API linkage. Synthetic verifier tests never create public evidence or prove an actual transfer.

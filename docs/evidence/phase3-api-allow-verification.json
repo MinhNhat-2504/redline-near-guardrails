@@ -1,0 +1,21 @@
+{
+  "status": "PASS_FINAL_SCOPED_ALLOW",
+  "transactionHash": "GDDHqqikTtpuH3dcrosMJDDbaXuFf2QkLMvcFh9wPXUZ",
+  "grantId": "grant-fed48ec7b5db4ba59fe224d9f807d64f",
+  "intentId": "api-safe-517314f69acd437e8b01bfeba3fd45a8",
+  "amountYocto": "10000000000000000000000",
+  "callback": "SETTLED",
+  "key": "ed25519:9hauPZp4YBAHNMNp8bf4ThyYuSMeVTrKn5twEU2JrCy3",
+  "finalized": true,
+  "scope": "Saved RPC consistency checks; separately match the API response hash to establish API linkage. Balance delta requires no unrelated payee activity in capture interval. Not a light-client proof or browser E2E.",
+  "apiResponseMatched": true,
+  "availableBeforeYocto": "100000000000000000000000",
+  "availableAfterYocto": "90000000000000000000000",
+  "payeeBeforeYocto": "10050000000000000000000000",
+  "payeeAfterYocto": "10060000000000000000000000",
+  "grantFinalizedSpentYocto": "10000000000000000000000",
+  "ownerFinalizedSpentYocto": "60000000000000000000000",
+  "nextNonce": "1",
+  "pendingReservedYocto": "0",
+  "receiptCount": 6
+}
