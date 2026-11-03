@@ -160,3 +160,7 @@ NOT RUN: real owner-wallet NEP-413 login, scoped-key API execution on public Tes
 - Live user error `Buffer is not defined`; source inspection found Wallet Selector uses global Buffer beyond our local import. Added absent-only browser bootstrap using existing buffer6.0.3 before SDK operations, preserving existing implementations.
 - `npm.cmd run test`: PASS214 tests/28 files; `npm.cmd run build`: PASS typecheck/Vite build. `phase4-browser-buffer-{tests,build}.log`. Real SDK NEP-413 serializer under missing global reproduces failure then passes with unchanged callback binding after bootstrap. This synthetic browser condition is not real browser E2E.
 - No backend/schema/contract/dependency changes; no backend/DB/Rust rerun. Actual browser login remains pending. New web Testnet account is separate from the original grant owner; no new funding or transfer requested here.
+# Phase4 authenticated button state — 2026-11-03
+
+- USER screenshot shows Intear sign-in completed for nhat-redline-web.testnet, but both login/logout were rendered. Corrected conditional controls/status/hint; no authentication-policy change.
+- `npm.cmd run check` PASS:214 tests/28 files, typecheck and Vite build; `phase4-login-state-checks.log`. Chunk warning remains. Browser sign-in observation does not establish the remaining browser financial walkthrough; no token/private-key collection or backend/DB/Rust rerun.
