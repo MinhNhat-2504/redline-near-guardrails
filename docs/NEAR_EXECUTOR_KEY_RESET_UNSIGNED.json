@@ -1,5 +1,5 @@
 {
-  "status": "UNSIGNED_REVIEW_ONLY_REQUIRES_USER_APPROVAL",
+  "status": "DESIGN_APPROVED_UNSIGNED_OWNER_SIGNATURE_REQUIRED",
   "network": "testnet",
   "signerId": "nhat-redline-agent.testnet",
   "receiverId": "nhat-redline-agent.testnet",

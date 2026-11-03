@@ -1,0 +1,16 @@
+{
+  "kind": "verification_summary_not_raw_log",
+  "backendUnitTests": {"passed": 380, "files": 31, "syntheticKeyResetCases": 24},
+  "backendTypecheck": "PASS",
+  "backendDirectTscBuild": "PASS_NO_PRISMA_REGENERATION",
+  "standaloneReadOnlyVerifierTypecheck": "PASS",
+  "readOnlyVerifierHelp": "PASS_NO_FILE_OR_NETWORK_ACCESS",
+  "atomicCliArgumentsCheckCli": "PASS_HELP_ONLY_NO_SIGNING",
+  "maintenanceGuard": {"isolatedOpenPortBlocked": true, "isolatedClosedPortAccepted": true},
+  "failedAttemptsRetainedInProgress": ["socket-connect closed-port timeout", "Get-NetTCPConnection Access denied"],
+  "postgresTests": "NOT_RERUN_NO_DB_CHANGES_PRIOR18_REMAIN_PRIOR_EVIDENCE",
+  "actualKeyReset": "NOT_RUN_OWNER_SIGNATURE_REQUIRED",
+  "actualResetFinalProof": "NOT_RUN",
+  "journalDisposition": "NOT_RUN_DEPENDS_ON_REAL_RESET_PROOF",
+  "recoveredPublicTransfer": "NOT_RUN"
+}

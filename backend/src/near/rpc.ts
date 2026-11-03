@@ -39,9 +39,9 @@ export class NearReadOnlyRpc {
     this.checked = status.chain_id === "testnet";
   }
 
-  async transaction(hash: string, signer: string): Promise<unknown> {
+  async transaction(hash: string, signer: string, waitUntil: "FINAL" | "NONE" = "FINAL"): Promise<unknown> {
     this.requireConnected();
-    return this.request("tx", { tx_hash: hash, sender_account_id: signer, wait_until: "FINAL" });
+    return this.request("tx", { tx_hash: hash, sender_account_id: signer, wait_until: waitUntil });
   }
 
   async accessKey(account: string, publicKey: string): Promise<unknown> {
@@ -52,6 +52,16 @@ export class NearReadOnlyRpc {
   async finalBlock(height?: number): Promise<unknown> {
     this.requireConnected();
     return this.request("block", height === undefined ? { finality: "final" } : { block_id: height });
+  }
+
+  async blockAtHash(hash: string): Promise<unknown> {
+    this.requireConnected();
+    return this.request("block", { block_id: hash });
+  }
+
+  async account(account: string): Promise<unknown> {
+    this.requireConnected();
+    return this.request("query", { request_type: "view_account", finality: "final", account_id: account });
   }
 
   async chunk(hash: string): Promise<unknown> {
