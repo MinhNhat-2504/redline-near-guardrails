@@ -1,5 +1,5 @@
 # Persistent local NEAR demo database. SetupOnly never opens an executor credential.
-param([switch]$SetupOnly, [ValidateRange(1024,65535)][int]$Port = 8787)
+param([switch]$SetupOnly, [ValidateRange(1024,65535)][int]$Port = 8787, [string]$RpcUrl = 'https://test.rpc.fastnear.com')
 $ErrorActionPreference = 'Stop'
 function Invoke-LocalNative([string]$Command, [string[]]$Arguments) {
     $oldPreference = $ErrorActionPreference
@@ -67,7 +67,7 @@ try {
     $env:CHAIN = 'near'
     $env:NEAR_NETWORK = 'testnet'
     $env:NEAR_APP_ORIGIN = 'http://localhost:5173'
-    $env:NEAR_RPC_URL = 'https://rpc.testnet.near.org'
+    $env:NEAR_RPC_URL = $RpcUrl
     $env:NEAR_CONTRACT_ID = 'nhat-redline-vault.testnet'
     $env:NEAR_EXECUTOR_ID = $metadata.accountId
     $env:NEAR_EXECUTOR_PUBLIC_KEY = $metadata.publicKey

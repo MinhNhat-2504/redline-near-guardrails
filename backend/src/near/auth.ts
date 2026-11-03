@@ -4,10 +4,13 @@ import { JsonRpcProvider, type PublicKey } from "near-api-js";
 import type { PrismaClient } from "@prisma/client";
 import { z } from "zod";
 import { accountId, httpError } from "./types.js";
-import { NearReadOnlyRpc } from "./rpc.js";
+import { NearReadOnlyRpc, NearRpcError } from "./rpc.js";
 import { u64 } from "./units.js";
 
 const hash = (value: string) => createHash("sha256").update(value).digest("hex");
+function unavailable(error: unknown): boolean {
+  return error instanceof z.ZodError || (error instanceof NearRpcError && !["UNKNOWN_ACCESS_KEY", "UNKNOWN_ACCOUNT"].includes(error.remoteName ?? ""));
+}
 const signedBody = z.object({
   challengeId: z.string().regex(/^[a-f0-9]{64}$/), state: z.string().regex(/^[A-Za-z0-9_-]{43}$/),
   accountId, publicKey: z.string().regex(/^ed25519:[1-9A-HJ-NP-Za-km-z]{32,44}$/),
@@ -64,7 +67,10 @@ export class NearAuth {
       await verifyMessage({ signerAccountId: body.accountId, signerPublicKey: body.publicKey,
         signature: Buffer.from(body.signature, "base64"), provider: this.provider,
         payload: { message: challenge.message, nonce: Buffer.from(challenge.nonce, "base64"), recipient: challenge.recipient, callbackUrl: challenge.callbackUrl || undefined } });
-    } catch { throw httpError(401, "NEAR signature or finalized key ownership could not be verified"); }
+    } catch (error) {
+      if (unavailable(error)) throw httpError(503, "NEAR RPC temporarily unavailable; retry without changing wallet identity");
+      throw httpError(401, "NEAR signature or finalized key ownership could not be verified");
+    }
     const token = randomBytes(32).toString("base64url");
     const expiresAt = new Date(this.now() + 30 * 60_000);
     await this.db.$transaction(async tx => {
@@ -82,7 +88,10 @@ export class NearAuth {
     try {
       const key = await this.provider.viewAccessKey({ accountId: session.accountId, publicKey: session.publicKey as string | PublicKey, finalityQuery: { finality: "final" } });
       if (key.permission !== "FullAccess") throw new Error("Key no longer authorized");
-    } catch { throw httpError(401, "NEAR session key could not be verified on chain"); }
+    } catch (error) {
+      if (unavailable(error)) throw httpError(503, "NEAR RPC temporarily unavailable; session retained, retry later");
+      throw httpError(401, "NEAR session key could not be verified on chain");
+    }
     return session;
   }
 

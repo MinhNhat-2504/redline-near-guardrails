@@ -11,8 +11,31 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { cliLoginProof } from "../src/near/cli-login.js";
 import { KeyPair, KeyPairSigner, baseEncode } from "near-api-js";
+import { networkBudget, RequestBudget, retryAfterMs } from "../src/near/rpc-budget.js";
 
 const fixture = (n: string) => JSON.parse(readFileSync(new URL(`../../docs/evidence/phase2-${n}.json`, import.meta.url), "utf8")).result;
+
+describe("shared RPC throttling, fake clock only (never load tests public endpoints)",()=>{
+  it("spaces simultaneous reservations and shares endpoint budgets between clients",async()=>{
+    let clock=0;const waits:number[]=[];const starts:number[]=[];
+    const budget=new RequestBudget(2000,()=>clock,async ms=>{waits.push(ms);clock+=ms;});
+    await Promise.all([1,2,3].map(async()=>{await budget.beforeRequest();starts.push(clock);}));
+    expect(waits).toEqual([2000,2000]);expect(clock).toBe(4000);
+    expect(networkBudget('https://test.rpc.fastnear.com',fetch)).toBe(networkBudget('https://test.rpc.fastnear.com/',fetch));
+  });
+  it("extends an existing shared cooldown and parses bounded Retry-After",async()=>{
+    let clock=0;const budget=new RequestBudget(2000,()=>clock,async ms=>{clock+=ms;});
+    budget.coolDown(30000);budget.coolDown(1000);await budget.beforeRequest();expect(clock).toBe(30000);
+    expect(retryAfterMs('60',0)).toBe(60000);expect(retryAfterMs(null,0)).toBe(30000);
+    expect(retryAfterMs(new Date(90000).toUTCString(),0)).toBe(90000);
+  });
+  it("sets cooldown after one HTTP429 without immediate replay",async()=>{
+    const budget={beforeRequest:vi.fn(async()=>{}),coolDown:vi.fn()};
+    const fake=vi.fn(async()=>new Response('',{status:429,headers:{'retry-after':'45'}})) as unknown as typeof fetch;
+    const rpc=new NearReadOnlyRpc('https://test.rpc.fastnear.com',fake,async()=>{},budget);
+    await expect(rpc.connect()).rejects.toThrow('RATE_LIMITED');expect(fake).toHaveBeenCalledTimes(1);expect(budget.coolDown).toHaveBeenCalledWith(45000);
+  });
+});
 
 describe("CLI 0.30.1 signature normalization, ephemeral SDK key only",()=>{
   it("converts CLI ed25519:base58 to the API's exact 64-byte base64 signature",async()=>{

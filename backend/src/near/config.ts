@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { accountId } from "./types.js";
+import { DEFAULT_NEAR_RPC } from "./rpc.js";
 
 export function nearConfig(env: NodeJS.ProcessEnv = process.env) {
   const origin = new URL(z.string().url().parse(env.NEAR_APP_ORIGIN));
   if (origin.origin !== env.NEAR_APP_ORIGIN || (origin.protocol !== "https:" && !(origin.protocol === "http:" && ["localhost", "127.0.0.1"].includes(origin.hostname)))) {
     throw new Error("NEAR_APP_ORIGIN must be an exact HTTPS origin (localhost HTTP allowed)");
   }
-  const rpcUrl = env.NEAR_RPC_URL ?? "https://rpc.testnet.near.org";
+  const rpcUrl = env.NEAR_RPC_URL ?? DEFAULT_NEAR_RPC;
   const rpc = new URL(rpcUrl);
   if (rpc.protocol !== "https:" || rpc.username || rpc.password) throw new Error("Invalid HTTPS NEAR RPC URL");
   if ((env.NEAR_NETWORK ?? "testnet") !== "testnet") throw new Error("Only NEAR Testnet is supported");

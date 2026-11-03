@@ -12,7 +12,7 @@ const port=(socket.address() as {port:number}).port;await new Promise<void>(reso
 const rpc=new NearReadOnlyRpc();await rpc.connect();
 const block=await rpc.finalBlock() as {header:{height:number}};
 const child=spawn(process.execPath,['dist/server.js'],{env:{...process.env,DATABASE_URL:url.toString(),CHAIN:'near',PORT:String(port),
-  NEAR_APP_ORIGIN:'http://localhost:5173',NEAR_NETWORK:'testnet',NEAR_RPC_URL:'https://rpc.testnet.near.org',
+  NEAR_APP_ORIGIN:'http://localhost:5173',NEAR_NETWORK:'testnet',NEAR_RPC_URL:'https://test.rpc.fastnear.com',
   NEAR_CONTRACT_ID:'nhat-redline-vault.testnet',NEAR_EXECUTOR_ID:'nhat-redline-agent.testnet',NEAR_EXECUTOR_PUBLIC_KEY:'',NEAR_EXECUTOR_CREDENTIAL_PATH:'',
   NEAR_START_BLOCK:String(block.header.height)},stdio:'ignore',windowsHide:true});
 let spawnError=false;child.on('error',()=>{spawnError=true;});

@@ -1,0 +1,1 @@
+USER-RUN: prepares unsigned API demo, target principal 0.1 NEAR, total grant cap 0.05 NEAR, max3, one payee, one-hour expiry. No signing/submission.

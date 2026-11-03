@@ -1,5 +1,8 @@
 import { z } from "zod";
 import { decodeBase64Json } from "./receipts.js";
+import { networkBudget, retryAfterMs, type RpcBudget } from "./rpc-budget.js";
+
+export const DEFAULT_NEAR_RPC = "https://test.rpc.fastnear.com";
 
 export class NearRpcError extends Error {
   constructor(readonly code: string, readonly remoteName?: string) { super(`NEAR read-only RPC failed: ${code}`); }
@@ -21,9 +24,10 @@ export class NearReadOnlyRpc {
   private checked = false;
   private sequence = 0;
   constructor(
-    private readonly url = "https://rpc.testnet.near.org",
+    private readonly url = DEFAULT_NEAR_RPC,
     private readonly fetcher: typeof fetch = fetch,
     private readonly pause: (ms: number) => Promise<void> = ms => new Promise(resolve => setTimeout(resolve, ms)),
+    private readonly budget: RpcBudget | undefined = networkBudget(url, fetcher),
   ) {
     const endpoint = new URL(url);
     if (endpoint.protocol !== "https:" || endpoint.username || endpoint.password) throw new Error("NEAR RPC requires HTTPS without embedded credentials");
@@ -69,6 +73,7 @@ export class NearReadOnlyRpc {
   private async request(method: "status" | "tx" | "query" | "block" | "chunk", params: unknown): Promise<unknown> {
     const id = `redline-near-${++this.sequence}`;
     for (let attempt = 0; attempt < 3; attempt++) {
+      await this.budget?.beforeRequest();
       let reply: Response;
       try {
         reply = await this.fetcher(this.url, {
@@ -79,7 +84,12 @@ export class NearReadOnlyRpc {
         if (attempt === 2) throw new NearRpcError("TRANSPORT");
         await this.pause(250 * 2 ** attempt); continue;
       }
-      if ((reply.status === 429 || reply.status >= 500) && attempt < 2) {
+      if (reply.status === 429) {
+        this.budget?.coolDown(retryAfterMs(reply.headers.get("retry-after")));
+        await reply.body?.cancel();
+        throw new NearRpcError("RATE_LIMITED"); // never hammer the same window with immediate retries
+      }
+      if (reply.status >= 500 && attempt < 2) {
         await reply.body?.cancel();
         await this.pause(250 * 2 ** attempt); continue;
       }

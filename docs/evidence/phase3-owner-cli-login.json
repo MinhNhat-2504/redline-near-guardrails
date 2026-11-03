@@ -1,0 +1,11 @@
+{
+  "status": "AUTHENTICATED",
+  "accountId": "nhat-redline-owner.testnet",
+  "publicKey": "ed25519:GP9GkLPAsB3mkuRfP1RKzUKUHhMhRLceYtEXR1kvpWYk",
+  "challengeId": "c01a3cedc64443f75ec85069e82bd497fd250a61602a8d608d602028927c7794",
+  "clientType": "cli",
+  "expiresAt": "2026-11-03T07:24:30.946Z",
+  "verification": "API NEP-413 verify and authenticated /me both succeeded",
+  "token": "NOT INCLUDED",
+  "financialActions": "NONE"
+}

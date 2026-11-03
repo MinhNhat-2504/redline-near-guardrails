@@ -1,0 +1,17 @@
+{
+  "result": "PASS",
+  "rpcEndpoint": "https://test.rpc.fastnear.com",
+  "ledger": {
+    "value": {
+      "credited": "500000000000000000000000",
+      "finalized_spent": "50000000000000000000000",
+      "pending_reserved": "0",
+      "completed_withdrawals": "450000000000000000000000",
+      "pending_withdrawals": "0",
+      "storage_available": "44010000000000000000000"
+    },
+    "blockHeight": 276015668,
+    "blockHash": "5vbMj5tZuYKp9EBt3ZsbhXQYXxW5Wsdr27tZE4XXfi5g"
+  },
+  "scope": "two sequential throttled public Testnet reads; no signing or session access"
+}

@@ -125,6 +125,12 @@ describe("NEP-413 SDK crypto + Postgres session atomicity", () => {
     const session = await login();await auth.logout(`Bearer ${session.token}`);
     await expect(auth.requireSession(`Bearer ${session.token}`)).rejects.toThrow();
   });
+  it("retains a valid session and returns unavailable on RPC rate limits rather than asserting bad identity",async()=>{
+    const session=await login();
+    access.mockRejectedValueOnce(new NearRpcError('RATE_LIMITED'));
+    await expect(auth.requireSession(`Bearer ${session.token}`)).rejects.toMatchObject({statusCode:503});
+    expect((await auth.requireSession(`Bearer ${session.token}`)).accountId).toBe(OWNER);
+  });
 });
 
 describe("real Postgres receipt journal and numeric bounds", () => {

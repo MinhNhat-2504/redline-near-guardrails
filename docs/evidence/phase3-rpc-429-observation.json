@@ -1,0 +1,12 @@
+{
+  "kind": "executed client diagnostic observation, not a raw RPC response",
+  "result": "FAIL",
+  "endpoint": "https://rpc.testnet.near.org",
+  "observed_client_error": {
+    "name": "Error",
+    "code": "HTTP_429",
+    "message": "NEAR read-only RPC failed: HTTP_429"
+  },
+  "context": "Local balance endpoint also returned HTTP503 while reader was backfilling. User stopped backend before repair.",
+  "financial_actions": "NONE"
+}

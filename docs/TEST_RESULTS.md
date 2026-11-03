@@ -107,3 +107,10 @@ NOT RUN: real owner-wallet NEP-413 login, scoped-key API execution on public Tes
 - PASS npm run typecheck and npx tsc -p tsconfig.json (`phase3-cli-auth-{typecheck,ts-build}.log`). Direct TS compile avoids regenerating a Prisma DLL held by the running user server; no schema change. This is not falsely recorded as npm run build.
 - Independent installed-key GET /health PASS (`phase3-installed-key-health.json`). Actual CLI path/version --check-cli PASS (`phase3-cli-login-path-check.log`), no key read/signature. Known restricted esbuild EPERM attempt resolved with permitted check-only execution.
 - Actual owner CLI sign-in helper NOT RUN by agent, no session token read, no new financial action. User restart/signature required next. Phase 3 PARTIAL.
+
+## Real-login and RPC-rate checkpoint
+
+- Real user CLI login verified from consumed DB challenge + session metadata (no token/hash selected) + current finalized FullAccess public-key query: PASS, `phase3-owner-login-verification.json`. This supersedes the prior NOT RUN owner-login status, but public scoped-key API transfer remains NOT RUN.
+- Actual rpc.testnet.near.org HTTP429 diagnosed while historical reader ran; local balance API returned503. Labeled observation retained, no failed read counted as pass. User stopped backend. Repair tests use fake-clock pacing/cooldown and real Postgres session retention on rate failure; 347 unit/18 DB tests PASS plus typecheck/direct tsc. `phase3-rpc-throttle-*.log`.
+- Recovery: two sequential throttled reads on officially listed FASTNEAR Testnet endpoint, finalized ledger conservation PASS (`phase3-rpc-recovery-read.json`). No throughput/load test or wallet signing.
+- New unsigned API demo helper --help PASS (`phase3-api-demo-helper-check.log`), before session-file access. Actual user proposal creation and all new funding/grant/API transfer proofs remain pending; no fabricated completion.

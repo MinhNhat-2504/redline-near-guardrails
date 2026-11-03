@@ -140,10 +140,10 @@ describe("read-only RPC safety", () => {
     expect(await rpc.view(VAULT, "get_owner_balance", { owner: AGENT })).toMatchObject({ value: { completed_withdrawals: "450000000000000000000000" } });
     expect(calls).toEqual(["status", "tx", "query"]);
   });
-  it("bounds retries on rate limits without ever broadcasting", async () => {
+  it("does not hammer a 429 window and bounds 503 retries without broadcasting", async () => {
     let calls = 0; const delays: number[] = [];
-    const rpc = new NearReadOnlyRpc(undefined, mockRpc(b => ++calls < 3 ? new Response("", { status: 429 }) : json(b.id, { chain_id: "testnet", sync_info: { syncing: false } })), async ms => { delays.push(ms); });
-    await rpc.connect(); expect(calls).toBe(3); expect(delays).toEqual([250, 500]);
+    const rpc = new NearReadOnlyRpc(undefined, mockRpc(() => {calls++;return new Response("",{status:429});}), async ms => { delays.push(ms); });
+    await expect(rpc.connect()).rejects.toThrow("RATE_LIMITED"); expect(calls).toBe(1); expect(delays).toEqual([]);
     const broken = new NearReadOnlyRpc(undefined, mockRpc(() => new Response("", { status: 503 })), async () => {});
     await expect(broken.connect()).rejects.toThrow("HTTP_503");
   });

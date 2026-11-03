@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "scope": "user-executed CLI login verified from consumed challenge + session metadata + current public key permission; no token/hash/private-key access",
+  "accountId": "nhat-redline-owner.testnet",
+  "publicKey": "ed25519:GP9GkLPAsB3mkuRfP1RKzUKUHhMhRLceYtEXR1kvpWYk",
+  "challengeConsumed": true,
+  "matchingSessionRecords": 1,
+  "expiresAt": "2026-11-03T07:24:30.946Z",
+  "activeAtVerification": true,
+  "keyPermission": "FullAccess",
+  "financialActions": "NONE"
+}

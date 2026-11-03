@@ -1,0 +1,13 @@
+Script executed successfully.
+
+> redline-backend@0.1.0 test:near:db
+> vitest run --config vitest.near-db.config.ts
+
+
+ RUN  v4.1.11 D:/Project/AI Engineer/redline-near-guardrails/backend
+
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  14:05:40
+   Duration  1.33s (transform 101ms, setup 0ms, import 589ms, tests 613ms, environment 0ms)

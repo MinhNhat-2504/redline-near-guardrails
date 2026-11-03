@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { NearChain } from "../chain/near.js";
 import { NearAuth, FinalAccessProvider } from "./auth.js";
 import { NearReadOnlyRpc } from "./rpc.js";
+import { NearRpcError } from "./rpc.js";
 import { nearConfig } from "./config.js";
 import { buildNearApp } from "./server.js";
 import { NearIndexer } from "./indexer.js";
@@ -22,9 +23,9 @@ export async function startNearServer() {
     let timer: ReturnType<typeof setTimeout> | undefined;
     let running: Promise<void> | undefined;
     const tick = async () => {
-      try { await indexer.reconcileJournal(); await indexer.scan(); }
-      catch { app.log.warn("NEAR reconciliation incomplete; retaining checkpoint and all reservations"); }
-      if (!stopping) timer = setTimeout(() => { running = tick(); }, 5_000);
+      try { await indexer.reconcileJournal(); await indexer.scan(1); }
+      catch (error) { app.log.warn({ reason: error instanceof NearRpcError ? error.code : "RECONCILIATION_ERROR", rpcCause: error instanceof NearRpcError ? error.remoteName : undefined }, "NEAR reconciliation incomplete; retaining checkpoint and all reservations"); }
+      if (!stopping) timer = setTimeout(() => { running = tick(); }, 30_000);
     };
     app.addHook("onClose", async () => { stopping = true; if (timer) clearTimeout(timer); await running; await db.$disconnect(); });
     await app.listen({ port: config.port, host: "127.0.0.1" });
