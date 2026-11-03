@@ -1,10 +1,11 @@
+import { ensureBrowserBuffer } from "./browser-runtime";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupIntearWallet } from "@near-wallet-selector/intear-wallet";
 import { Buffer } from "buffer";
 import { api, setToken } from "./api";
 const selector = () => setupWalletSelector({ network: { networkId: "testnet", nodeUrl: "https://test.rpc.fastnear.com", helperUrl: "https://helper.testnet.near.org", explorerUrl: "https://explorer.testnet.near.org", indexerUrl: "https://test.api.fastnear.com/v0" }, modules: [setupIntearWallet({ walletUrl: "https://wallet.intear.tech" })] });
 let instance: ReturnType<typeof selector> | undefined;
-export async function wallet() { const s = await (instance ??= selector()); const w = await s.wallet("intear-wallet"); if (w.type !== "injected") throw Error("Loại ví khác cấu hình đã duyệt."); return w; }
+export async function wallet() { ensureBrowserBuffer(); const s = await (instance ??= selector()); const w = await s.wallet("intear-wallet"); if (w.type !== "injected") throw Error("Loại ví khác cấu hình đã duyệt."); return w; }
 type Challenge = { challengeId: string; state: string; accountId: string; message: string; nonce: string; recipient: string; callbackUrl: string };
 export async function login(): Promise<string> {
   const w = await wallet();
