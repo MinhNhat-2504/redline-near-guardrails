@@ -1,6 +1,20 @@
 # NEAR browser demo — implementation checkpoint
 
-Status: PARTIAL. Browser NEP-413 sign-in is owner-observed; browser financial signatures/transfer remain NOT RUN. Unit tests/build are separate from Testnet evidence. Phase3 scoped-key API ALLOW is independently verified; it does not establish the complete browser financial walkthrough.
+Status: PARTIAL for the full Phase4 acceptance gate. The owner completed the browser financial walkthrough on 2026-11-04; all nine financial transactions below are independently FINAL-verified through public RPC. Browser NEP-413 interoperability and UI operation are owner-observed, not an automated browser test. Unit tests/build remain separate from Testnet evidence. The newcomer/README-only guided-demo acceptance still needs validation.
+
+## Verified browser financial walkthrough — 2026-11-04
+
+Owner: `nhat-redline-web.testnet`; grant: `grant-1b031438090c4fa1902eb9ddcbd1f47c`.
+
+| Action | Independently verified result | Evidence in docs/evidence |
+|---|---|---|
+| Storage0.05NEAR | FINAL CONFIRMED; historical storage return0.04835 | phase4-web-storage-verification.json |
+| Principal0.1NEAR | FINAL CONFIRMED; historical credited0.1/spent0 | phase4-web-principal-verification.json |
+| Create/revoke grant | Both FINAL CONFIRMED; exact canonical policy, owner and order | phase4-web-owner-actions-verification.json |
+| ALLOW0.01NEAR | FINAL SETTLED/OK; completion event and stored intent match | phase4-web-allow-verification.json |
+| Cap/recipient/replay/revoked | Four FINAL REJECTED; exact reasons and stored intents, no recipient execution | phase4-web-rejections-verification.json |
+
+Independent current ledger/grant snapshots show principal0.09NEAR, spent0.01, pending0, nonce1 and revoked grant. Current snapshots are not historical before/after payee balance-delta proof. Original memory-only review timestamps are not independently archived. No repeat funding, signatures or key reset is needed to review this evidence. This was a human-guided browser run, not a one-click unattended demo or production security audit.
 
 ## Run locally
 
@@ -37,9 +51,9 @@ After this provider/dependency change, close the obsolete popup, restart only Vi
 - Only after a terminal journal state, unlock next case. Replay nonce0 requires a prior settled nonce0 call; otherwise nonce0 can be valid. Cap case requests cap+1yocto; recipient case requests owner (outside sole approved payee). Each denial still incurs gas/storage.
 - Review/sign revoke, refresh active=false, then a fresh controlled request should demonstrate REVOKED. Revocation does not cancel already-dispatched transfer receipts.
 
-No live browser E2E, full historical discovery, LLM prompt attack or production security audit is claimed. Current scenarios are explicitly controlled JSON proposals. Preserve the contract's real sandbox concurrency/failure proofs separately.
+The owner-observed live browser walkthrough has the independent transaction evidence above. No automated browser E2E, full historical discovery, LLM prompt attack or production security audit is claimed. Current scenarios are explicitly controlled JSON proposals. Preserve the contract's real sandbox concurrency/failure proofs separately.
 
-Browser sign-in for nhat-redline-web.testnet has since been observed in the owner's screenshots; the financial browser walkthrough above remains NOT RUN. New funding/reconciliation routes require restarting only the backend with start-near-local.ps1. No Prisma regeneration or database migration is needed for this change. After a full page reload, sign in again because the bearer is memory-only.
+Browser sign-in and the financial walkthrough for nhat-redline-web.testnet were observed in the owner's screenshots; all nine financial receipts are now independently archived. For a new local startup, use start-near-local.ps1; no Prisma regeneration or database migration is needed. After a full page reload, sign in again because the bearer is memory-only. The recorded grant has been revoked; do not expect it to allow another payment.
 
 ## Dependency and deployment limits
 
