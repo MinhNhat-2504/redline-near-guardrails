@@ -84,8 +84,10 @@ describe("NEAR receipt interpretation", () => {
     tx.receipts_outcome = [];
     expect(() => observe(tx)).toThrow("no receipt");
   });
-  it("never calls an unrelated successful return a settled transfer", () => {
-    expect(observe(fixture("revoke"))).toMatchObject({ state: "UNKNOWN", finalized: true });
+  it("distinguishes a confirmed owner action from a settled transfer", () => {
+    expect(observe(fixture("revoke"))).toMatchObject({ state: "CONFIRMED", finalized: true });
+    const tx = fixture("revoke"); tx.transaction.actions[0].FunctionCall.method_name = "unsupported";
+    expect(observe(tx).state).toBe("UNKNOWN");
   });
   it("keeps a real transfer failure distinct from a runtime failure (synthetic fixture mutation)", () => {
     const tx = fixture("safe-transfer");

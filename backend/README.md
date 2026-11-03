@@ -286,11 +286,8 @@ The dashboard needs nothing entered by hand — every `VITE_*` value is pulled f
 
 ## NEAR migration checkpoint
 
-Phase 2 public Testnet contract proof is verified in [TESTNET_PROOF](../docs/TESTNET_PROOF.md). Backend NEAR support is **read-only foundation**, not a writable API adapter. `CHAIN=near` currently fails explicitly; unknown CHAIN values no longer silently select mock. Existing mock/Solana paths remain available.
+Use [NEAR_BACKEND_SETUP](../docs/NEAR_BACKEND_SETUP.md) for the approved NEAR-native API/auth/adapter/reader path. Set CHAIN=near and an explicit NEAR_APP_ORIGIN; the main entry point selects the NEAR server. Legacy mock/Solana startup remains separate, its server implementation preserved byte-for-byte. Startup no longer runs an implicit `db push --accept-data-loss`; apply reviewed schema setup explicitly.
 
-- `src/near/units.ts`: exact string/BigInt NEAR, yocto, u128/u64 and nanosecond conversions.
-- `src/near/rpc.ts`: Testnet-verified HTTPS read-only RPC; `src/near/receipts.ts`: FINAL receipt/event/callback interpretation.
-- `src/near/reader.ts`: reconciliation of explicitly tracked transaction hashes. Requires a durable atomically deduping store implementation; no continuous historical discovery or Postgres wiring yet.
-- `npm test` includes offline receipt-fixture and negative security tests; `npx tsx scripts/near-read-proof.ts` is an explicit **live, read-only** Testnet check. Never treat offline fixtures as fresh on-chain transactions.
+Near* tables use exact decimal u128/u64 fields; NEP-413 sessions check current finalized FullAccess ownership and have no API-key bypass. A newly installed executor FunctionCall key is required to enable signing; owner keys stay in wallet. Without it signing is disabled. The old Testnet demo grant is revoked/expired. Do not claim writable Testnet E2E until a new reviewed key/grant flow is actually run.
 
-Owner auth, scoped executor signing, NEAR-safe database fields, routes and UI are pending. See the reviewable [security activation proposal](../docs/PHASE3_SECURITY_REVIEW.md); no owner keys belong on the backend. Existing generic routes/auth/indexer retain Solana semantics and must not be enabled for NEAR without that work.
+Verified: 342 unit tests, 15 real isolated-Postgres integration tests, typecheck/build and actual public Testnet API reads/restart/dedupe/compiled-startup smoke. `scripts/test-near-db.ps1` reproduces a disposable DB test; `-LiveProof` explicitly includes public read-only RPC and compiled server startup. No existing database or owner key is needed for these tests. See evidence and limitations in `docs/PROGRESS.md`.

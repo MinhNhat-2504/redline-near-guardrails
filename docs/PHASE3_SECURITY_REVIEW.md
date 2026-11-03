@@ -1,6 +1,6 @@
-# Phase 3 activation proposal - owner decision pending
+# Phase 3 activation design - approved by owner
 
-Date: 2026-11-03. This is a reviewable proposal, not an activated authentication/signing system. The user explicitly requires approval for security-critical decisions. Read-only components and tests are implemented; `CHAIN=near` deliberately refuses to start the inherited writable API until the missing NEAR boundaries are implemented and verified.
+Date: 2026-11-03. Owner approved this architecture in chat after reviewing the proposal. Implementation and verification are in progress; approval does not itself activate credentials or complete Phase 3. The user explicitly requires approval for security-critical decisions. Read-only components and tests are implemented; `CHAIN=near` deliberately refuses to start the inherited writable API until the missing NEAR boundaries are implemented and verified.
 
 ## Verified audit findings
 
@@ -40,4 +40,8 @@ Official RPC references consulted: [transaction finality and receipt results](ht
 
 ## Approval requested before activation
 
-Approve the wallet-only NEP-413 owner-login model and separately scoped executor-key model above, or specify a different custody/authentication requirement. Approval of this architecture is separate from a later user signature to install a new key or create a new grant. Until that decision, writable NEAR API activation, production session/auth changes and credential provisioning remain blocked by the user's security boundary. Phase 3 is PARTIAL, not PASS; UI, Postgres projection and writable end-to-end tests are not implemented.
+Approve the wallet-only NEP-413 owner-login model and separately scoped executor-key model above, or specify a different custody/authentication requirement. Approval of this architecture is separate from a later user signature to install a new key or create a new grant. Architecture decision APPROVED by owner. Implement and test the approved model; installation of a new executor key and future grant/funding transactions still require user signatures. Phase 3 is PARTIAL, not PASS; UI, Postgres projection and writable end-to-end tests are not implemented.
+
+## Approved implementation checkpoint
+
+The owner approved this model in chat. Implementation now includes NEAR-specific server dispatch, NEP-413 sessions, a scoped-key adapter, atomic intent/event journals, additive numeric-safe Postgres migration and direct-call block discovery. Verified setup and exact limitations: [NEAR_BACKEND_SETUP.md](NEAR_BACKEND_SETUP.md). Local code/tests and read-only live proof pass; actual executor key installation, a new funded owner grant and authenticated public write proof remain user-signature boundaries. Do not request architecture approval again.

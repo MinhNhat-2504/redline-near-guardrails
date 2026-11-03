@@ -1,0 +1,94 @@
+Script executed successfully.
+
+> redline-backend@0.1.0 test:near:db
+> vitest run --config vitest.near-db.config.ts
+
+
+ RUN  v4.1.11 D:/Project/AI Engineer/redline-near-guardrails/backend
+
+
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  13:06:52
+   Duration  955ms (transform 90ms, setup 0ms, import 303ms, tests 538ms, environment 0ms)
+
+{
+  "result": "PASS",
+  "scope": "real public Testnet RPC + isolated Postgres + NEAR API reads; no signing or broadcast",
+  "health": {
+    "ok": true,
+    "chain": "near",
+    "network": "testnet",
+    "contractId": "nhat-redline-vault.testnet",
+    "executorId": "nhat-redline-agent.testnet",
+    "identityEnforced": true,
+    "signingEnabled": false
+  },
+  "ledger": {
+    "credited": "500000000000000000000000",
+    "finalized_spent": "50000000000000000000000",
+    "pending_reserved": "0",
+    "completed_withdrawals": "450000000000000000000000",
+    "pending_withdrawals": "0",
+    "storage_available": "44010000000000000000000"
+  },
+  "finalGrantActive": false,
+  "ownerKeyPermission": "FullAccess",
+  "ownerKeyNonce": "275990883000005",
+  "decisions": [
+    {
+      "hash": "9guZzifgUg7ZJHcWK8pfLM2ruyUAV5qw2YVJTnRisQAp",
+      "state": "CONFIRMED"
+    },
+    {
+      "hash": "3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1",
+      "state": "SETTLED",
+      "reason": "OK"
+    },
+    {
+      "hash": "J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x",
+      "state": "REJECTED",
+      "reason": "SPEND_CAP_EXCEEDED"
+    },
+    {
+      "hash": "8MCrqH1rQXTPvfuG6Yk9TuAVXgGo7mj55rmfMvNL9DuB",
+      "state": "REJECTED",
+      "reason": "DESTINATION_NOT_ALLOWED"
+    },
+    {
+      "hash": "C2tYedjVQycHtCovMXTGr75DLWbmRNawLjkwnSxobCEU",
+      "state": "CONFIRMED"
+    },
+    {
+      "hash": "4huc1hEC2EF3jEft21Ga7xBvoFMCuvzsCTsiLWJkGBU4",
+      "state": "REJECTED",
+      "reason": "REVOKED"
+    },
+    {
+      "hash": "9cvuomo1TKYbT3UiyEeLVCXiqdX6vnuEJaLkWMqA7c5V",
+      "state": "SETTLED"
+    }
+  ],
+  "storedEvents": 9,
+  "restartDedupe": "PASS",
+  "recentFinalizedBlocksScanned": 2,
+  "watermark": "276009539",
+  "limitations": "Historical transactions reconciled from known proof hashes; block discovery smoke test covers two finalized blocks only. NEP-413 owner-wallet login and scoped-key execution against public Testnet require user signatures and are NOT RUN."
+}
+
+{
+  "result": "PASS",
+  "scope": "actual compiled server entry point with CHAIN=near, public Testnet RPC identity and isolated Postgres",
+  "health": {
+    "ok": true,
+    "chain": "near",
+    "network": "testnet",
+    "contractId": "nhat-redline-vault.testnet",
+    "executorId": "nhat-redline-agent.testnet",
+    "identityEnforced": true,
+    "signingEnabled": false
+  },
+  "unauthenticatedOwnerAction": 401,
+  "legacyRoute": 404,
+  "signingOrBroadcast": "NOT CONFIGURED / NOT RUN"
+}

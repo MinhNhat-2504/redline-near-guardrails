@@ -39,7 +39,7 @@ The successful runtime run includes five SETTLED agent transfers, persisted REJE
 | T10 transfer failure release | PASS: SDK exactly-once callback, missing named sandbox recipient fails transfer and restores available funds | Same |
 | T11 callback authenticity/idempotence | PASS: SDK external/duplicate/missing result/unexpected payload, sandbox external private call rejection | Same |
 | T12 withdraw safety | PASS: SDK pending transfer/withdraw accounting plus actual sandbox concurrent transfer/withdraw ledger race | Same |
-| T13 RPC/indexer restart | PARTIAL: tracked-journal reader restart/dedupe and failed-store tests PASS; Postgres/account-wide discovery NOT RUN | Phase 3 foundation tests |
+| T13 RPC/indexer restart | PASS in verified direct-call scope: real Postgres restart/dedupe/rollback and public journal reopen; synthetic skipped-block/error tests and two live finalized discovery blocks. Full public history not scanned | Phase 3 DB/live proof |
 | T14 TypeScript yocto/timestamp conversion | PASS: exact decimal conversions, u128/u64 bounds, invalid input and ns remainder tests | Phase 3 foundation tests |
 | T15 public Testnet demo | PARTIAL overall: public contract/receipts PASS (Phase 2); NEAR UI/API matching NOT RUN | `TESTNET_PROOF.md` |
 
@@ -80,3 +80,23 @@ Rust commands used `wsl bash .tooling/run-rust.sh` with the established project-
 - No frontend/contract code changed; their Phase 2 tests/builds were not repeated in this foundation checkpoint. Writable NEAR API, wallet auth/signing, Postgres projection and complete T13/T15 E2E remain NOT RUN/unimplemented.
 
 - Phase 3 checkpoint secret-pattern scan PASS across 558 reachable/staged blobs; no new findings, exact inherited TESTONLY exception retained. Evidence `evidence/phase3-secret-scan.json`; pattern-scan limitations apply.
+
+## Phase 3 approved backend implementation - PARTIAL phase
+
+| Executed command (backend) | Actual result | Evidence |
+| --- | --- | --- |
+| `npm.cmd run typecheck` | PASS | `evidence/phase3-backend-typecheck.log` |
+| `npm.cmd test` | PASS 342 unit tests | `evidence/phase3-backend-unit.log` |
+| `npm.cmd run build` | PASS Prisma generate + TypeScript | `evidence/phase3-backend-build.log` |
+| `scripts/test-near-db.ps1` | PASS: fresh temporary Postgres, atomic additive migration, 15 integration tests, guarded cleanup | `evidence/phase3-disposable-db-reproduction.log` |
+| `scripts/test-near-db.ps1 -LiveProof` | PASS: above + real public Testnet/DB/API reads + actual compiled server startup, signing disabled | `evidence/phase3-fresh-db-live-reproduction.log`, `phase3-live-api-proof.json`, `phase3-startup-smoke.json` |
+| `npm.cmd ci --dry-run --ignore-scripts --no-audit --no-fund` | PASS lockfile consistency | `evidence/phase3-lockfile-check.log` |
+| `npm.cmd audit --json` | 7 advisories: 2 moderate, 5 high, 0 critical (not a clean audit) | `evidence/phase3-dependency-audit.json` |
+
+Database tests use a new temporary localhost PostgreSQL 16 container with random local credentials, tmpfs data and explicit test-DB name guard. Actual SDK cryptographic signing uses temporary generated test keys; mocked ownership/transport must not be represented as a public account signature or transfer. T14 now also covers exact raw numeric RPC u64 nonce parsing. Live API proof separately checks seven previously signed public transactions, nine deduped events, finalized ledger and public key permission, new DB-client restart, and two finalized block discoveries. It creates no new on-chain transaction. Compiled startup proved CHAIN=near does not serve legacy routes or accept an API-key bypass.
+
+Resolved failed checks: first new signature revalidation failed because Borsh decoded signature was an array; normalize to Uint8Array before verify. First container runner attempted Prisma generation while a live client held the Windows DLL; generate once before live/test processes instead. Retained `phase3-postgres-signature-array-failure.log` and `phase3-db-runner-generate-failure.log`, followed by successful reruns. Initial PowerShell static RNG overload was unavailable and corrected before any test DB started. None is counted as a passing run.
+
+NOT RUN: real owner-wallet NEP-413 login, scoped-key API execution on public Testnet, full historical block scan, Phase 4 NEAR UI E2E and hosted workflow execution. These keep Phase 3 PARTIAL. Frontend/Rust source unchanged; their Phase 2 test/build logs are not relabeled as new runs.
+
+- Approved implementation pre-commit secret-pattern scan PASS: 617 reachable/staged blobs, no new findings, exact inherited TESTONLY exception only. Evidence `evidence/phase3-implementation-secret-scan.json`; pattern-scan limitations apply. All disposable test containers/server processes were stopped with identity guards; the temporary initial connection file was removed. No existing database or real executor key was touched.

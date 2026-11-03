@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "scope": "actual compiled server entry point with CHAIN=near, public Testnet RPC identity and isolated Postgres",
+  "health": {
+    "ok": true,
+    "chain": "near",
+    "network": "testnet",
+    "contractId": "nhat-redline-vault.testnet",
+    "executorId": "nhat-redline-agent.testnet",
+    "identityEnforced": true,
+    "signingEnabled": false
+  },
+  "unauthenticatedOwnerAction": 401,
+  "legacyRoute": 404,
+  "signingOrBroadcast": "NOT CONFIGURED / NOT RUN"
+}

@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "legacy_server_blob_before": "101d667a6b9143fc497fa58bc2c230b28486b5f8",
+  "legacy_server_blob_preserved": "101d667a6b9143fc497fa58bc2c230b28486b5f8",
+  "migration": "atomic additive Near* tables only; no inherited table drops/changes",
+  "source": "Git object comparison and migration inspection; actual empty-DB migration reproduction recorded separately"
+}

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "dev:lab": "tsx watch src/lab-server.ts",
-    "start": "prisma db push --accept-data-loss --skip-generate && node dist/server.js",
+    "start": "node dist/server.js",
     "build": "prisma generate && tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
@@ -17,7 +17,10 @@
     "devnet:setup": "tsx scripts/devnet-setup.ts",
     "db:cleanup": "tsx scripts/cleanup.ts",
     "program:fetch": "tsx scripts/fetch-program.ts",
-    "test:onchain": "vitest run --config vitest.onchain.config.ts"
+    "test:onchain": "vitest run --config vitest.onchain.config.ts",
+    "db:near": "prisma db execute --schema prisma/schema.prisma --file prisma/near-migrations/001-near.sql",
+    "test:near:db": "vitest run --config vitest.near-db.config.ts",
+    "near:prepare-executor": "tsx scripts/prepare-near-executor.ts"
   },
   "dependencies": {
     "@fastify/cors": "10.0.2",
@@ -27,6 +30,7 @@
     "@solana-program/token": "^0.16.0",
     "@solana/kit": "8.0.0",
     "fastify": "5.2.1",
+    "near-api-js": "7.4.0",
     "openai": "7.5.0",
     "zod": "3.25.76"
   },
@@ -39,6 +43,6 @@
     "vitest": "4.1.11"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.2"
   }
 }

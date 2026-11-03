@@ -9,7 +9,7 @@ export async function initChain(): Promise<ChainAdapter> {
   const kind = process.env.CHAIN ?? "mock";
   if (kind !== "mock" && kind !== "solana") {
     throw new Error(kind === "near"
-      ? "CHAIN=near is not enabled: NEAR owner authentication, executor signing and API integration are pending; read-only NEAR modules do not authorize writes"
+      ? "CHAIN=near is not enabled in the legacy runtime; use the NEAR-specific server startup"
       : `Unsupported CHAIN configuration: ${kind}`);
   }
   if (instance) {

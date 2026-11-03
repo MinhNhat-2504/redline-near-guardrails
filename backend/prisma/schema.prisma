@@ -279,3 +279,95 @@ model Session {
 
   @@index([wallet])
 }
+
+// NEAR namespace: no Solana PDA/auth tables and no signed-64bit money fields.
+model NearChallenge {
+  id          String   @id
+  accountId   String
+  message     String
+  nonce       String
+  stateHash   String
+  recipient   String
+  callbackUrl String
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model NearSession {
+  tokenHash String   @id
+  accountId String
+  publicKey String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  @@index([accountId])
+}
+
+model NearGrant {
+  scope                 String
+  grantId               String
+  ownerId               String
+  executorId            String
+  active                Boolean
+  policyJson            String
+  spentYocto            Decimal @db.Decimal(39, 0)
+  pendingYocto          Decimal @db.Decimal(39, 0)
+  nextNonce             Decimal @db.Decimal(20, 0)
+  finalizedTransactions Decimal @db.Decimal(10, 0)
+  pendingTransactions   Decimal @db.Decimal(10, 0)
+  observedHeight        BigInt
+  observedHash          String
+  @@id([scope, grantId])
+  @@index([scope, ownerId])
+}
+
+model NearTransaction {
+  scope         String
+  hash          String
+  signerId      String
+  ownerId       String?
+  grantId       String?
+  intentId      String?
+  argsJson      String?
+  signedBase64  String?
+  keyPublic     String?
+  keyNonce      Decimal? @db.Decimal(20, 0)
+  state         String   @default("TRACKED")
+  reason        String?
+  observation   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  @@id([scope, hash])
+  @@index([scope, grantId, intentId])
+  @@index([scope, signerId, state])
+}
+
+// Request identity is separate: on-chain replay attempts have distinct tx hashes.
+model NearIntentRequest {
+  scope     String
+  grantId   String
+  intentId  String
+  ownerId   String
+  argsJson  String
+  txHash    String
+  createdAt DateTime @default(now())
+  @@id([scope, grantId, intentId])
+}
+
+model NearReceiptEvent {
+  scope       String
+  id          String
+  txHash      String
+  receiptId   String
+  logIndex    Int
+  event       String
+  dataJson    String
+  @@id([scope, id])
+  @@index([scope, txHash])
+}
+
+model NearWatermark {
+  scope  String @id
+  height BigInt
+  hash   String
+}

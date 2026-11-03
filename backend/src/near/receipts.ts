@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isDeepStrictEqual } from "node:util";
 import { u64, yocto } from "./units.js";
 
 const status = z.union([
@@ -37,7 +38,7 @@ export interface VaultEvent {
 export interface VaultObservation {
   transactionHash: string;
   finalized: boolean;
-  state: "PENDING" | "SETTLED" | "FAILED" | "REJECTED" | "RUNTIME_FAILED" | "UNKNOWN";
+  state: "PENDING" | "SETTLED" | "FAILED" | "REJECTED" | "RUNTIME_FAILED" | "UNKNOWN" | "CONFIRMED";
   reason?: z.infer<typeof reason>;
   events: VaultEvent[];
 }
@@ -77,9 +78,11 @@ export function observeVaultTransaction(input: unknown, contract: string, hash: 
       base.events.push({ id: `${hash}:${receipt.id}:${logIndex}`, receiptId: receipt.id, transactionHash: hash, logIndex, event: event.data.event, data: event.data.data });
     });
   }
-  if (typeof tx.status !== "object" || !("SuccessValue" in tx.status) || !tx.status.SuccessValue) return base;
-  const terminal = intent.safeParse(decodeBase64Json(tx.status.SuccessValue));
-  if (!terminal.success) return base; // e.g. create_grant, revoke, withdrawal; not an agent transfer
+  if (typeof tx.status !== "object" || !("SuccessValue" in tx.status)) return base;
+  if (!tx.status.SuccessValue) return observeOwnerAction(tx, null, base);
+  const returned = decodeBase64Json(tx.status.SuccessValue);
+  const terminal = intent.safeParse(returned);
+  if (!terminal.success) return observeOwnerAction(tx, returned, base);
   if (tx.transaction.actions.length !== 1) return base;
   const action = z.object({ FunctionCall: z.object({ method_name: z.literal("execute_transfer"), args: z.string(), deposit: z.literal("0") }) }).safeParse(tx.transaction.actions[0]);
   if (!action.success) return base;
@@ -99,4 +102,33 @@ export function observeVaultTransaction(input: unknown, contract: string, hash: 
   if (value.status === "FAILED" && value.reason !== "TRANSFER_FAILED") throw new Error("Inconsistent failed-transfer reason");
   if (value.status === "SETTLED" && tx.receipts_outcome.some(r => typeof r.outcome.status === "object" && "Failure" in r.outcome.status)) return base;
   return { ...base, state: value.status, reason: value.reason };
+}
+
+function observeOwnerAction(tx: z.infer<typeof response>, value: unknown, base: VaultObservation): VaultObservation {
+  if (tx.transaction.actions.length !== 1) return base;
+  const call = z.object({ FunctionCall: z.object({ method_name: z.string(), args: z.string(), deposit: z.string() }) }).safeParse(tx.transaction.actions[0]);
+  if (!call.success) return base;
+  const action = call.data.FunctionCall;
+  const args = z.record(z.unknown()).parse(decodeBase64Json(action.args));
+  const matches = (name: string, check: (row: Record<string, unknown>) => boolean) => base.events.some(e => e.event === name && e.data.some(d => {
+    const row = z.record(z.unknown()).safeParse(d); return row.success && check(row.data);
+  }));
+  if (action.method_name === "withdraw") {
+    const withdrawal = z.object({ amount: z.string(), status: z.enum(["SETTLED", "FAILED"]) }).strict().safeParse(value);
+    if (!withdrawal.success || action.deposit !== "0" || withdrawal.data.amount !== args.amount) return base;
+    const match = matches("withdrawal_completed", row => row.owner === tx.transaction.signer_id && row.withdrawal_id === args.withdrawal_id &&
+      isDeepStrictEqual(row.withdrawal, withdrawal.data));
+    return match ? { ...base, state: withdrawal.data.status } : base;
+  }
+  if (tx.receipts_outcome?.some(r => typeof r.outcome.status !== "object" || "Failure" in r.outcome.status)) return base;
+  if (action.method_name === "deposit" && matches("deposit", row => row.owner === tx.transaction.signer_id && row.amount === action.deposit)) return { ...base, state: "CONFIRMED" };
+  if (action.method_name === "create_grant" && action.deposit === "0" && matches("grant_created", row => {
+    const grant = z.object({ owner: z.string(), policy: z.unknown() }).safeParse(row.grant);
+    return row.grant_id === args.grant_id && grant.success && grant.data.owner === tx.transaction.signer_id &&
+      isDeepStrictEqual(grant.data.policy, args.policy);
+  })) return { ...base, state: "CONFIRMED" };
+  if (action.method_name === "revoke_grant" && action.deposit === "0" && matches("grant_revoked", row => row.grant_id === args.grant_id)) return { ...base, state: "CONFIRMED" };
+  // Storage registration returns a validated balance object and transfers no principal.
+  if (action.method_name === "storage_deposit" && z.object({ storage_available: z.string(), credited: z.string() }).safeParse(value).success) return { ...base, state: "CONFIRMED" };
+  return base;
 }

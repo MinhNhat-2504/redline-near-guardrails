@@ -1,0 +1,41 @@
+name: NEAR backend
+on:
+  push:
+    branches: [main, feat/near-mvp]
+    paths: ["backend/**", "docs/evidence/phase2-*.json", ".github/workflows/near-backend.yml"]
+  pull_request:
+    paths: ["backend/**", "docs/evidence/phase2-*.json", ".github/workflows/near-backend.yml"]
+  workflow_dispatch:
+jobs:
+  near-backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-bookworm@sha256:e8a07d2c7579b038938cdba6c539e580e5001caf9ea203d397b5cc83e76bd938
+        env:
+          POSTGRES_USER: redline_test
+          POSTGRES_PASSWORD: testonly_disposable_ci
+          POSTGRES_DB: redline_near_test
+        ports: ["5432:5432"]
+        options: --health-cmd "pg_isready -U redline_test -d redline_near_test" --health-interval 5s --health-retries 12
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      # Public throwaway CI-service credential, never a wallet or production password.
+      DATABASE_URL: postgresql://redline_test:testonly_disposable_ci@127.0.0.1:5432/redline_near_test?schema=public
+      NEAR_TEST_DATABASE_URL: postgresql://redline_test:testonly_disposable_ci@127.0.0.1:5432/redline_near_test?schema=public
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npx prisma generate
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run db:near
+      - run: npm run test:near:db
+      - run: npm run build
