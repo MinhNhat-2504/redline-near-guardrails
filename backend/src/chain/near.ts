@@ -13,6 +13,9 @@ import { broadcastPrepared, NearBroadcastError } from "../near/broadcast.js";
 
 export interface NearConfig { rpcUrl: string; contractId: string; executorId: string; executorPublicKey?: string; credentialPath?: string }
 const allowanceMax = 100000000000000000000000n; // 0.1 NEAR, gas allowance only
+// Protocol88 Testnet buys attached gas at >=1e9 yocto/gas: 100Tgas already
+// consumes the entire 0.1 NEAR allowance before transaction/receipt fees.
+const transferGas = 80_000_000_000_000n; // Contract requires >=60Tgas; includes 20Tgas callback.
 
 export function verifyExecutorPermission(permission: unknown, contract: string): void {
   const key = z.object({ FunctionCall: z.object({ receiver_id: z.literal(contract), method_names: z.tuple([z.literal("execute_transfer")]), allowance: z.string() }).strict() }).strict().parse(permission);
@@ -100,7 +103,7 @@ export class NearChain {
       const nonce = (access.nonce > persisted ? access.nonce : persisted) + 1n;
       if (nonce > U64_MAX) throw new Error("Executor nonce overflow");
       const signed = await signer.signTransaction(createTransaction(this.config.executorId, PublicKey.fromString(keyPublic), this.config.contractId,
-        nonce, [actions.functionCall("execute_transfer", args, 100_000_000_000_000n, 0n)], baseDecode(access.block_hash)));
+        nonce, [actions.functionCall("execute_transfer", args, transferGas, 0n)], baseDecode(access.block_hash)));
       const hash = baseEncode(signed.txHash);
       const row = await tx.nearTransaction.create({ data: { scope: this.store.scope, hash, signerId: this.config.executorId, ownerId: owner, grantId: args.grant_id,
         intentId: args.intent_id, argsJson, signedBase64: Buffer.from(signed.signedTransaction.encode()).toString("base64"), keyPublic,
@@ -122,7 +125,7 @@ export class NearChain {
     const call = tx.actions[0]?.functionCall;
     if (prepared.scope !== this.store.scope || baseEncode(digest) !== prepared.hash || tx.signerId !== this.config.executorId || tx.receiverId !== this.config.contractId ||
         tx.publicKey.toString() !== this.config.executorPublicKey || tx.actions.length !== 1 || !call || call.methodName !== "execute_transfer" || call.deposit !== 0n ||
-        call.gas !== 100_000_000_000_000n || !signed.signature.ed25519Signature || !PublicKey.fromString(tx.publicKey.toString()).verify(digest, Uint8Array.from(signed.signature.ed25519Signature.data)) ||
+        ![transferGas, 100_000_000_000_000n].includes(call.gas) || !signed.signature.ed25519Signature || !PublicKey.fromString(tx.publicKey.toString()).verify(digest, Uint8Array.from(signed.signature.ed25519Signature.data)) ||
         JSON.stringify(transferSchema.parse(JSON.parse(Buffer.from(call.args).toString("utf8")))) !== prepared.argsJson) throw new Error("Persisted executor packet identity mismatch");
     try {
       const current = await this.track(prepared.hash, this.config.executorId);

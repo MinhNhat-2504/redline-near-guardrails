@@ -7,6 +7,6 @@
   "finalized": false,
   "state": "UNKNOWN",
   "phase": "SUBMISSION_UNCERTAIN",
-  "submissionError": "INVALID_TRANSACTION",
+  "submissionError": "INVALID_TRANSACTION:NotEnoughAllowance",
   "needsReconciliation": true
 }

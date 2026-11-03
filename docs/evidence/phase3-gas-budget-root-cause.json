@@ -1,0 +1,12 @@
+{
+  "status": "PASS_ROOT_CAUSE_LOWER_BOUND",
+  "protocol": 88,
+  "allowanceYocto": "100000000000000000000000",
+  "currentBurnGasPrice": "100000000",
+  "minimumPurchaseGasPrice": "1000000000",
+  "old100TgasPurchaseOnlyYocto": "100000000000000000000000",
+  "new80TgasPurchaseOnlyYocto": "80000000000000000000000",
+  "newPurchaseHeadroomBeforeFeesYocto": "20000000000000000000000",
+  "positiveReceiptFeesVerified": true,
+  "limitation": "Gas purchase lower bound only, not a complete cost quote or public transfer proof. Existing signed packet remains unresolved; recovery needs key-owner approval."
+}

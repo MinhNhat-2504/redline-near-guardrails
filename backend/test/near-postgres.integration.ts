@@ -192,6 +192,7 @@ describe("scoped executor preparation and ambiguous transport", () => {
       const hash = baseEncode(createHash("sha256").update(signed.transaction.encode()).digest());
       const row = await db.nearTransaction.findUniqueOrThrow({ where: { scope_hash: { scope: `testnet:${contract}`, hash } } });
       expect(row.signedBase64).toBe(packet);expect(signed.transaction.receiverId).toBe(contract);expect(signed.transaction.nonce).toBe(6n);
+      expect(signed.transaction.actions[0].functionCall?.gas).toBe(80_000_000_000_000n);
       throw new Error("simulated post-accept timeout");
     });
     permission = { FunctionCall: { receiver_id: contract, method_names: ["execute_transfer"], allowance: "100000000000000000000000" } };

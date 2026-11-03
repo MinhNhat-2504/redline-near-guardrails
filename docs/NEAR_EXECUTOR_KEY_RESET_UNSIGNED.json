@@ -1,0 +1,15 @@
+{
+  "status": "UNSIGNED_REVIEW_ONLY_REQUIRES_USER_APPROVAL",
+  "network": "testnet",
+  "signerId": "nhat-redline-agent.testnet",
+  "receiverId": "nhat-redline-agent.testnet",
+  "actions": [
+    {"type": "DeleteKey", "publicKey": "ed25519:9hauPZp4YBAHNMNp8bf4ThyYuSMeVTrKn5twEU2JrCy3"},
+    {"type": "AddKey", "publicKey": "ed25519:9hauPZp4YBAHNMNp8bf4ThyYuSMeVTrKn5twEU2JrCy3", "permission": {"FunctionCall": {"receiver_id": "nhat-redline-vault.testnet", "method_names": ["execute_transfer"], "allowance": "100000000000000000000000"}}}
+  ],
+  "mustBeAtomic": true,
+  "oldTransactionHash": "9ZNGTALnybEr2nPgSS8RRKgn29W18eQScoEnqeqoWrkH",
+  "oldSignedPacketNonce": "276011715000001",
+  "requiredFinalizedNewKeyNonce": "STRICTLY_GREATER_THAN_276011715000001",
+  "automaticSigningOrSubmission": false
+}
