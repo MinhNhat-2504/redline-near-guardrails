@@ -1,0 +1,25 @@
+{
+  "status": "UNSIGNED",
+  "owner": "nhat-redline-owner.testnet",
+  "executor": "nhat-redline-agent.testnet",
+  "contract": "nhat-redline-vault.testnet",
+  "grantId": "grant-5c1326cc5e674f78a82be9fbd26744b2",
+  "policy": {
+    "executor": "nhat-redline-agent.testnet",
+    "policy_hash": "5d1b7b57dfa3e18c6a74b84c58f73cfc8956d2914521923aa77f71a811a9ab13",
+    "spend_cap": "50000000000000000000000",
+    "max_transactions": 3,
+    "recipients": [
+      "nhat-redline-payee.testnet"
+    ],
+    "expires_at_ns": "1793699871496000000",
+    "cooldown_ns": "0"
+  },
+  "plannedTopupYocto": "0",
+  "financialActions": "NONE",
+  "recoveryOf": {
+    "transactionHash": "9ZNGTALnybEr2nPgSS8RRKgn29W18eQScoEnqeqoWrkH",
+    "resetTransactionHash": "AzsMwgFkYMpKPGmah47aNjn8nAbv58hK2BrE7fGRoUo7",
+    "previousPackagePath": "D:\\Project\\AI Engineer\\redline-near-guardrails\\.tooling\\near-api-demo\\api-3366c6bf4fa245a3a447a6614b687295"
+  }
+}

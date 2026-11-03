@@ -1,4 +1,4 @@
-Key reset FINAL and local journal recovery are verified. Do NOT repeat reset, original funding, or the expired original grant/intent. Original packet remains archived as INVALIDATED, not on-chain settlement. Original grant expired November3,2026 at15:20:16.906 UTC+7. Available principal remains0.1 NEAR at recovery verification.
+Key reset FINAL, local journal recovery and NEW owner grant are verified. Do NOT repeat reset, funding or grant creation. New grant grant-5c1326cc5e674f78a82be9fbd26744b2 is active/nonce0 at preflight; cap0.05/max3/payee-only, expires November3,2026 at16:57:51.496 UTC+7. Available principal0.1 NEAR; payee baseline10.05. Original packet remains archived as INVALIDATED, not on-chain settlement.
 
 PowerShell1: start the rebuilt backend and keep this window open:
 
@@ -7,16 +7,19 @@ Set-Location 'D:\Project\AI Engineer\redline-near-guardrails\backend'
 .\scripts\start-near-local.ps1
 ```
 
-PowerShell2: fresh off-chain login, then explicitly prepare a NEW unsigned owner-reviewed grant using retained principal:
+PowerShell2: prepare the new stable0.01 NEAR transfer request (no submission yet):
 
 ```powershell
 Set-Location 'D:\Project\AI Engineer\redline-near-guardrails\backend'
-npx.cmd tsx scripts/near-login-cli.ts
-npx.cmd tsx scripts/prepare-near-api-demo.ts --after-key-reset
+npx.cmd tsx scripts/execute-near-api-demo.ts
 ```
 
-Review cap0.05 native Testnet NEAR, max3, cooldown0, one-hour expiry, executor nhat-redline-agent.testnet, recipient only nhat-redline-payee.testnet. Helper prints create_grant CLI command for owner signature with deposit0; it never signs/submits or prints a recovery topup. Old package/evidence/binding remain intact; new proposal IDs retained on retries. Run the printed create_grant command only after reviewing those values; share its public transaction ID for FINAL verification before submitting a transfer.
+Review amount0.01 native Testnet NEAR, nonce0, NEW grant ID above, recipient nhat-redline-payee.testnet. Explicitly submit through API (executor uses80Tgas/deposit0):
 
-If owner session expired, re-login. If principal differs or proposal expired, stop for reconciliation; never silently replace IDs/fund again. Keep both windows open after startup. Do not run execute-near-api-demo --submit until the NEW grant is verified. Never share session.json or executor.json.
+```powershell
+npx.cmd tsx scripts/execute-near-api-demo.ts --submit
+```
+
+If owner session expired, run npx.cmd tsx scripts/near-login-cli.ts then reuse the same request. Keep both windows open. On timeout/UNKNOWN, retain package/ID and share public transactionHash/state/submissionError; do not generate replacement intent, reset key or fund again. Never share session.json or executor.json.
 
 Successful recovered80Tgas API execution, callback and ledger/payee proofs remain pending. New recovered API response will be saved separately as phase3-api-recovered-safe-response.json. Phase3 remains PARTIAL.
