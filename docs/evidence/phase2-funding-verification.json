@@ -1,0 +1,30 @@
+{
+  "funding_result": "PASS",
+  "verified_transactions": [
+    {
+      "label": "owner-storage",
+      "hash": "5r7ctMmfhMwZre6hhE1UdyP1ecU9uCJfLK5zWLdjJaEV",
+      "finality": "FINAL",
+      "deposit_yocto": "50000000000000000000000"
+    },
+    {
+      "label": "agent-storage",
+      "hash": "Aa9zY4vC5yGFxKdePfGZchqfocvcxCT7ZT2XxZeBTxSR",
+      "finality": "FINAL",
+      "deposit_yocto": "50000000000000000000000"
+    },
+    {
+      "label": "owner-deposit",
+      "hash": "93dMm1H8qBKFiuE5mY76GMbufYoymLH6H9HVqT93B7Pc",
+      "finality": "FINAL",
+      "deposit_yocto": "500000000000000000000000"
+    }
+  ],
+  "owner_principal_near": "0.5",
+  "owner_storage_remaining_near": "0.04833",
+  "agent_storage_remaining_near": "0.04833",
+  "pending_reserved": "0",
+  "grant_proposal_validation": "PASS - unsigned, not submitted",
+  "proposal_hash": "f3d8a0cdec4292b354cf6143073dbd6260fca9b06c1651c533bdc0714a523e03",
+  "proposal_grant_id": "demo-03d6f1ac9cc84551ba5bff807a5ef23f"
+}

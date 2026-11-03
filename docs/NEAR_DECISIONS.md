@@ -25,3 +25,10 @@
 - Deprecated `env::promise_result` replaced by `promise_result_checked(0, 0)`: native transfers return empty results. Only explicit Promise failure releases funds; an unexpected result payload panics and keeps reservation locked.
 - `send_tx` waits until INCLUDED under a nonce ordering lock; then `tx(wait_until=FINAL)` waits outside the lock, allowing receipt overlap while verifying all refunds/callbacks. API source: https://docs.near.org/api/rpc/transactions .
 - Sandbox fast-forward advances height but did not guarantee the assumed timestamp. Expiry tests now observe an actual finalized block timestamp beyond policy expiry before sending; deadline/observed timestamp recorded in JSON evidence.
+
+## Phase 2 unsigned grant preparation
+
+- PowerShell helper only prepares files; never invokes RPC, reads keys or signs. Unique packages preserve earlier proposals. `.tooling/near-testnet/latest-grant-path.txt` points to the newest package; older grants are not overwritten.
+- Canonical `redline.near.policy.v1` is compact UTF-8 JSON with fixed field order: schema, network, contract_id, owner_id, grant_id, executor, asset, spend_cap, max_transactions, recipients, expires_at_ns, cooldown_ns. Arrays preserve reviewed order; amounts and nanosecond times are decimal strings. Hash excludes policy_hash itself; SHA-256 of those exact canonical bytes is attached to the on-chain policy. Owner signs actual contract parameters; an advisory digest never replaces those checks.
+- Demo defaults: Testnet-only fixed roles, total cap 0.2 NEAR, max three transfers (settled plus pending), one named payee, cooldown zero, expiry one hour after preparation. Timestamp calculated via BigInteger from integer Unix milliseconds, without float money/time arithmetic. Duration override accepts 1–24 hours.
+- Initial generated proposal fields/digest/expiry independently validated with Python. Initial receipt-verification assertion used a mistyped expected storage integer; corrected to exact Decimal('0.04833') * 10^24 and reran successfully. This was a local verification-script error, not a chain-accounting failure.

@@ -2,7 +2,7 @@
 
 Updated: 2026-11-03 (Asia/Saigon).
 
-- Goal: migrate REDLINE's bounded agent transfers to a real NEAR Testnet vault for the AI Security & Defense track. Deployment is now verified; funding/grant/transfer/deny demo remains pending.
+- Goal: migrate REDLINE's bounded agent transfers to a real NEAR Testnet vault for the AI Security & Defense track. Deployment and storage/principal funding verified; grant/transfer/deny demo remains pending.
 - Inputs: fully read `NEAR_REDLINE_MIGRATION_PLAN_AGENT.md` and `NEAR_Hackathon_2026_REDLINE_Complete_Playbook.pdf` (19 pages). The Markdown's history-preserving import takes precedence over the PDF's selective-copy suggestion.
 - Provenance: full Git history cloned from `https://github.com/MinhNhat-2504/REDLINE`, baseline `aa0b0b044d9b6e01b71a14791ec68b24385e098b`; previous `2fe62d6`. Original team credits remain in README. No license file found in tracked source; ownership/licensing must be resolved before submission.
 - Remotes: `origin` is MinhNhat-2504/redline-near-guardrails; `upstream` is MinhNhat-2504/REDLINE. Development branch `feat/near-mvp`. Never push upstream or rewrite history.
@@ -14,4 +14,5 @@ Updated: 2026-11-03 (Asia/Saigon).
 - Phase 0 committed/pushed as `a6cabcb`; original baseline also pushed to new origin main. Phase 1 code `9b7ed7b` committed/pushed to `feat/near-mvp`: fmt/Clippy, 21 SDK tests, WASM and real sandbox suite (53 transactions/136 receipts); frontend 163/backend 284 regression tests/builds PASS. Scoped history/index secret scan passed (460 blobs). Canonical logs in `docs/TEST_RESULTS.md`.
 - SDK 5.30.0 requires protocol 88; public Testnet status verified protocol 88/nearcore 2.14.0-rc.5. Use matching sandbox, not npm's default 2.13.4/protocol 86. `.cargo/config.toml` supplies WASM-only `--cfg near`; compile guard prevents wrong host cfg. Source API uses bounded Promise result reads.
 - Sandbox-tested WASM SHA-256: `ae5e7a073b97f1834f245adf74e7a4ac0b1baf6d9f5248cabb7120a55b6c2524`. Public Testnet vault `nhat-redline-vault.testnet` deploy+new tx `F4tTGzL13zDRtWxpgkUod41PQnbkb5XGvLU9eArSiNor` verified FINAL/success, code hash matches artifact and STATE exists. Owner/executor/recipient are `nhat-redline-owner.testnet`, `nhat-redline-agent.testnet`, `nhat-redline-payee.testnet`; user holds local CLI keychain/signatures. No keys read by agent.
-- Next: Phase 2 PARTIAL: user signs separate owner/executor storage allowances and principal deposit, then reviewed grant; collect real transfer/deny/revoke/withdraw proofs. Phase 3 adapter/auth/indexer remains pending. See `docs/PROGRESS.md` and `docs/TESTNET_PROOF.md`.
+- Phase 2 funding verified FINAL: owner principal 0.5 NEAR, no spend/pending; owner and executor storage allowance remaining 0.04833 NEAR each. Raw receipts/views in `docs/evidence/phase2-*`; no agent transfer yet.
+- Next: user reviews/signs grant prepared by `scripts/prepare-near-testnet-grant.ps1` (unsigned, unique ID, canonical SHA-256, 0.2 NEAR total cap/three transfers/one payee/one-hour expiry); collect actual transfer/deny/revoke/withdraw proofs. Phase 3 adapter/auth/indexer remains pending. See `docs/PROGRESS.md` and `docs/TESTNET_PROOF.md`.
