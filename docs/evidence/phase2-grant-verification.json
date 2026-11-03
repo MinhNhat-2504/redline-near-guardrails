@@ -1,0 +1,17 @@
+{
+  "scope": "Finalized public RPC verification; prepared transfer is UNSIGNED and NOT submitted",
+  "transaction": "9guZzifgUg7ZJHcWK8pfLM2ruyUAV5qw2YVJTnRisQAp",
+  "grant_id": "demo-86a101943e5f425e9376a1de84ed66cf",
+  "policy_sha256": "9f4fa4b1dafbf3259571fb15c33776ede95887186e6013ccf8aea9c6f4f7a22e",
+  "grant_view_block": 275995669,
+  "checks": [
+    "FINAL transaction success",
+    "owner signer, vault receiver, create_grant method, zero deposit",
+    "transaction args equal actual local signed package",
+    "canonical SHA256 equals onchain policy_hash",
+    "onchain owner/policy equal signed args",
+    "active grant, nonce zero, no pending or finalized spend",
+    "unsigned transfer amount exactly 0.05 NEAR with persistent intent ID"
+  ],
+  "unsigned_transfer_file": "transfer-safe.json"
+}

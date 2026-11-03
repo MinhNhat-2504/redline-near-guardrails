@@ -1,0 +1,13 @@
+{
+    "jsonrpc":  "2.0",
+    "result":  {
+                   "amount":  "10000000000000000000000000",
+                   "block_hash":  "9gKdStQLPpuXQD3CH5ThaP96ieNLhWM2rCNzf7wPNtHJ",
+                   "block_height":  275995678,
+                   "code_hash":  "11111111111111111111111111111111",
+                   "locked":  "0",
+                   "storage_paid_at":  0,
+                   "storage_usage":  182
+               },
+    "id":  "payee-before-transfer"
+}
