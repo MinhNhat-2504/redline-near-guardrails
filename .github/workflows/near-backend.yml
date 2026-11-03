@@ -2,13 +2,16 @@ name: NEAR backend
 on:
   push:
     branches: [main, feat/near-mvp]
-    paths: ["backend/**", "docs/evidence/phase2-*.json", ".github/workflows/near-backend.yml"]
+    paths: ["backend/**", "docs/evidence/phase2-*.json", "docs/evidence/phase4-web-*-verification.json", ".github/workflows/near-backend.yml"]
   pull_request:
-    paths: ["backend/**", "docs/evidence/phase2-*.json", ".github/workflows/near-backend.yml"]
+    paths: ["backend/**", "docs/evidence/phase2-*.json", "docs/evidence/phase4-web-*-verification.json", ".github/workflows/near-backend.yml"]
   workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   near-backend:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     services:
       postgres:
         image: postgres:16-bookworm@sha256:e8a07d2c7579b038938cdba6c539e580e5001caf9ea203d397b5cc83e76bd938

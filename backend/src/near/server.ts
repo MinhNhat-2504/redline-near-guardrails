@@ -1,4 +1,4 @@
-import Fastify, { type FastifyRequest } from "fastify";
+import Fastify, { type FastifyRequest, type FastifyError } from "fastify";
 import cors from "@fastify/cors";
 import rateLimit from "@fastify/rate-limit";
 import { z } from "zod";
@@ -13,11 +13,17 @@ export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: str
   const app = Fastify({ bodyLimit: 32_768, logger: logging ? { redact: ["req.headers.authorization", "req.headers.cookie"] } : false });
   await app.register(cors, { origin, methods: ["GET", "POST"], allowedHeaders: ["content-type", "authorization"] });
   await app.register(rateLimit, { max: 90, timeWindow: "1 minute" });
+  app.addHook("onSend", async (_req, reply, payload) => {
+    // Sessions and FINAL snapshots must never be served from an HTTP cache.
+    reply.header("Cache-Control", "no-store");
+    reply.header("X-Content-Type-Options", "nosniff");
+    return payload;
+  });
   app.addHook("onRequest", async req => {
     if (req.headers.origin && req.headers.origin !== origin) throw httpError(403, "Unexpected NEAR application origin");
     if (req.method === "POST" && !req.headers["content-type"]?.startsWith("application/json")) throw httpError(415, "JSON content type required");
   });
-  app.setErrorHandler((error, _req, reply) => {
+  app.setErrorHandler<FastifyError>((error, _req, reply) => {
     if (error instanceof z.ZodError) return reply.code(400).send({ error: "Invalid NEAR request or chain data" });
     const status = error.statusCode ?? 503;
     // Never reflect raw SDK, credential-file, Prisma or RPC errors.

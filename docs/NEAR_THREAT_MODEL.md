@@ -1,6 +1,6 @@
 # NEAR vault threat model (implementation review in progress)
 
-Scope: native NEAR Testnet prototype. Contract/public CLI proofs and scoped backend NEP-413/API ALLOW/EXPIRED proofs are verified; browser wallet E2E remains PARTIAL. No independent audit, token transfers, swaps, marketplace payments or mainnet functionality is claimed.
+Scope: native NEAR Testnet prototype. Contract/public CLI proofs, scoped backend API ALLOW/EXPIRED and all nine owner-operated browser financial receipts are independently verified. Browser operation/NEP-413 sign-in are owner-observed; automated real-wallet E2E remains NOT RUN. No independent audit, token transfers, swaps, marketplace payments or mainnet functionality is claimed. Current bounded review, dependencies and test matrix: [Phase5](PHASE5_SECURITY_REVIEW.md).
 
 | Threat | Implementation control | Required evidence |
 | --- | --- | --- |
@@ -32,3 +32,9 @@ Intear's wallet connection uses a local generated app-auth key (not owner FullAc
 Owner deposits have no contract-level idempotency identifier. The browser funding journal is a conservative single-tab guard, not distributed exactly-once execution: manual unknown/cancelled-without-hash recovery and simultaneous tabs remain limitations. Signatures/funding require owner review; current UI only offers the initial fixed demo amounts, not automatic replenishment. Known successful receipts may complete that exact attempt; a changed method, owner, amount, old block or unrelated hash must not unlock it.
 
 Do not use the inherited Solana `tx?.meta?.err ?? null` success fallback or the inherited no-API-key auth bypass for NEAR. Neither is a valid trust boundary.
+
+## Phase5 superseding evidence checkpoint — 2026-11-04
+
+Historical pending labels in the table above describe earlier checkpoints. Browser storage/deposit/create/revoke/ALLOW and cap/recipient/nonce/revoked rejections now have independent FINAL receipt evidence in phase4-web-*-verification.json. This does not establish automated cancellation/reload/multi-tab correctness or historical payee balance deltas. The old MyNearWallet connection path was replaced by Intear; SDK identity is still never a substitute for backend verification.
+
+The security rerun passes448 backend tests,221 frontend tests,25 isolated Postgres tests and21 SDK + real sandbox53 transactions/136 receipts. New HTTP regressions cover owner isolation, auth-before-side-effects, foreign origins, oversized bodies, error redaction and explicit no-store headers. Raw dependency audits remain FAIL:10 frontend low advisories and1 backend high Zod advisory. Major shared-validator migration remains proposed, not applied. Current reviewed source did not reveal a new critical transfer-policy bypass; this bounded review is not assurance that none exists. Hosted CI, fresh-clone newcomer run and automated real-wallet E2E remain unverified.

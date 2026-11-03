@@ -1,0 +1,11 @@
+
+> redline-backend@0.1.0 typecheck
+> tsc --noEmit -p tsconfig.json
+
+src/legacy-server.ts(87,35): error TS18046: 'err' is of type 'unknown'.
+src/legacy-server.ts(87,55): error TS18046: 'err' is of type 'unknown'.
+src/legacy-server.ts(95,21): error TS18046: 'err' is of type 'unknown'.
+src/legacy-server.ts(95,58): error TS18046: 'err' is of type 'unknown'.
+src/near/server.ts(28,20): error TS18046: 'error' is of type 'unknown'.
+src/near/server.ts(30,45): error TS18046: 'error' is of type 'unknown'.
+src/near/server.ts(30,64): error TS18046: 'error' is of type 'unknown'.

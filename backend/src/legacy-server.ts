@@ -1,7 +1,7 @@
 import "./env.js";
 import cors from "@fastify/cors";
 import rateLimit from "@fastify/rate-limit";
-import Fastify from "fastify";
+import Fastify, { type FastifyError } from "fastify";
 import { ZodError } from "zod";
 import { getChain, initChain } from "./chain/index.js";
 import { SolanaChain } from "./chain/solana.js";
@@ -81,7 +81,7 @@ process.on("unhandledRejection", (reason) => {
   app.log.error({ err: safe(reason instanceof Error ? { message: reason.message, stack: reason.stack } : reason) }, "unhandled promise rejection");
 });
 
-app.setErrorHandler((err, _req, reply) => {
+app.setErrorHandler<FastifyError>((err, _req, reply) => {
   if (err instanceof ZodError) return reply.code(400).send({ error: "Invalid input", details: err.issues });
   const context = safe((err as { context?: unknown }).context ?? null);
   app.log.error({ err: { message: err.message, stack: err.stack, context } }, "request failed");

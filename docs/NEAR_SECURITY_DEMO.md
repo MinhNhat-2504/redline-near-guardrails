@@ -2,6 +2,8 @@
 
 Status: PARTIAL; do not present a browser case as on-chain proof until its FINAL receipts and stored intent have been checked. The new UI prepares controlled JSON and requires explicit submission.
 
+Superseding checkpoint2026-11-04: all nine owner-operated browser financial receipts, including public nonce replay and post-revoke denial, are now independently verified in the [browser evidence matrix](NEAR_BROWSER_DEMO.md#verified-browser-financial-walkthrough--2026-11-04). The historical remaining-work column below is retained as earlier scope, not current NOT RUN status. Automated real-wallet E2E and the newcomer guided acceptance are still unverified. [Phase5 security review](PHASE5_SECURITY_REVIEW.md) records the fresh SDK/sandbox/DB/HTTP regression run and open dependency findings.
+
 | Demonstration | Existing verified evidence | Remaining work |
 | --- | --- | --- |
 | Native ALLOW + callback | Phase2 CLI0.05NEAR SETTLED; new scoped API0.01NEAR FINAL/SETTLED `GDDHqqikTtpuH3dcrosMJDDbaXuFf2QkLMvcFh9wPXUZ`, payee10.05→10.06, available0.1→0.09 | Browser signing/transfer still pending |

@@ -27,3 +27,13 @@ On Ubuntu, `sudo apt-get install build-essential python3-cryptography` supplies 
 Build from the repository root: `.cargo/config.toml` supplies `--cfg near` **only for the WASM target**, as required by near-sdk-env 0.1.8 for NEAR host hashing/panic behavior. The contract intentionally refuses WASM compilation without this flag. Do not override its target rustflags with a generic `RUSTFLAGS` environment variable. Native unit tests and the inherited Solana targets do not receive this target-specific cfg.
 
 The script submits each signed transaction through `send_tx` until INCLUDED, then queries `tx` with `wait_until=FINAL`. It checks actual native recipient balance deltas, policy rejection state, failed transfer receipts plus callback release, revocation, caller rejection, storage payer isolation, concurrent cap enforcement and withdrawal/transfer races. Transaction hashes belong only to the generated local chain; they are not public explorer proofs. Raw receipt outcomes are saved even when a scenario fails. SDK unit tests remain explicitly distinct from this runtime suite.
+
+For a combined fmt/unit/Clippy/WASM/sandbox security gate, after installing the pinned toolchain and sandbox above, run from the repository root:
+
+```bash
+bash scripts/verify-near-local-security.sh \
+  .tooling/Linux-x86_64/near-sandbox \
+  docs/evidence/local-security-run.json
+```
+
+Use a new evidence path; the wrapper refuses to overwrite an existing report. `CARGO_TARGET_DIR` is respected when locating the WASM. Set `CARGO_NET_OFFLINE=true` only when the locked dependencies are already cached. This uses a new local chain and generated test credentials; it never loads public wallet credentials or deploys to Testnet. The2026-11-04 run is in `docs/evidence/phase5-contract-security.log` and `phase5-local-sandbox.json` (53 local transactions/136 receipts, unchanged WASM digest).
