@@ -1,0 +1,27 @@
+{
+  "result": "PASS",
+  "scope": "saved finalized public Testnet RPC evidence",
+  "transactions_checked": 10,
+  "transaction_hashes": [
+    "5r7ctMmfhMwZre6hhE1UdyP1ecU9uCJfLK5zWLdjJaEV",
+    "Aa9zY4vC5yGFxKdePfGZchqfocvcxCT7ZT2XxZeBTxSR",
+    "93dMm1H8qBKFiuE5mY76GMbufYoymLH6H9HVqT93B7Pc",
+    "9guZzifgUg7ZJHcWK8pfLM2ruyUAV5qw2YVJTnRisQAp",
+    "3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1",
+    "J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x",
+    "8MCrqH1rQXTPvfuG6Yk9TuAVXgGo7mj55rmfMvNL9DuB",
+    "4huc1hEC2EF3jEft21Ga7xBvoFMCuvzsCTsiLWJkGBU4",
+    "C2tYedjVQycHtCovMXTGr75DLWbmRNawLjkwnSxobCEU",
+    "9cvuomo1TKYbT3UiyEeLVCXiqdX6vnuEJaLkWMqA7c5V"
+  ],
+  "grant_active": false,
+  "withdrawal_status": "SETTLED",
+  "principal_yoctoNEAR": {
+    "credited": "500000000000000000000000",
+    "spent": "50000000000000000000000",
+    "withdrawn": "450000000000000000000000",
+    "available": "0",
+    "pending": "0"
+  },
+  "limitations": "RPC response consistency checks, not cryptographic light-client verification or a professional audit; frontend/API NEAR E2E remains pending."
+}

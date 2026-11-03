@@ -1,0 +1,9 @@
+{
+  "grant_id": "demo-86a101943e5f425e9376a1de84ed66cf",
+  "nonce": "1",
+  "asset": "NEAR",
+  "recipient": "nhat-redline-payee.testnet",
+  "amount": "10000000000000000000000",
+  "policy_hash": "9f4fa4b1dafbf3259571fb15c33776ede95887186e6013ccf8aea9c6f4f7a22e",
+  "intent_id": "after-revoke-31e623e29a8e44efb559375bdb06b2cd"
+}

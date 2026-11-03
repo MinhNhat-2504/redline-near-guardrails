@@ -1,0 +1,255 @@
+{
+    "jsonrpc":  "2.0",
+    "result":  {
+                   "final_execution_status":  "FINAL",
+                   "receipts_outcome":  [
+                                            {
+                                                "block_hash":  "FHma9QAN8cSptEj9Sw8N7QySxqSkoQsooaragK8e6u7h",
+                                                "id":  "6rFNuanPnHobb2bGahh7xeDo2fXCJ4wQN7cz5VrTvxZA",
+                                                "outcome":  {
+                                                                "executor_id":  "nhat-redline-vault.testnet",
+                                                                "gas_burnt":  2328724452254,
+                                                                "logs":  [
+                                                                             "EVENT_JSON:{\"standard\":\"redline\",\"version\":\"1.0.0\",\"event\":\"intent_rejected\",\"data\":[{\"grant_id\":\"demo-86a101943e5f425e9376a1de84ed66cf\",\"intent_id\":\"after-revoke-31e623e29a8e44efb559375bdb06b2cd\",\"intent\":{\"nonce\":\"1\",\"recipient\":\"nhat-redline-payee.testnet\",\"amount\":\"10000000000000000000000\",\"status\":\"REJECTED\",\"reason\":\"REVOKED\"}}]}"
+                                                                         ],
+                                                                "metadata":  {
+                                                                                 "contracts":  [
+                                                                                                   {
+                                                                                                       "local":  "CjfViNvnk8rzPnpPeT5Wv37GA9jc92m5A47RfJHQyodM"
+                                                                                                   }
+                                                                                               ],
+                                                                                 "gas_profile":  [
+                                                                                                     {
+                                                                                                         "cost":  "BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "8207811441"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "CONTRACT_LOADING_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "35445963"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "CONTRACT_LOADING_BYTES",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "378270760290"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "LOG_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "3543313050"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "LOG_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "4447992567"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "READ_CACHED_TRIE_NODE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "66120000000"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "READ_MEMORY_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "36538084800"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "READ_MEMORY_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "3592259685"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "READ_REGISTER_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "20137321488"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "READ_REGISTER_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "94323834"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "SHA256_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "4540970250"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "SHA256_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "2146444239"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "STORAGE_READ_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "281784228745"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "STORAGE_READ_KEY_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "4519069818"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "STORAGE_READ_VALUE_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "2625949872"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "STORAGE_WRITE_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "192590208000"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "STORAGE_WRITE_EVICTED_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "3725607612"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "STORAGE_WRITE_KEY_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "5145249291"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "STORAGE_WRITE_VALUE_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "5335188708"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "TOUCHING_TRIE_NODE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "45600000000"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "UTF8_DECODING_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "3111779061"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "UTF8_DECODING_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "98262621423"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "WASM_INSTRUCTION",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "213390818916"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "WRITE_MEMORY_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "25234153749"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "WRITE_MEMORY_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "2650230156"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "WRITE_REGISTER_BASE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "25789702374"
+                                                                                                     },
+                                                                                                     {
+                                                                                                         "cost":  "WRITE_REGISTER_BYTE",
+                                                                                                         "cost_category":  "WASM_HOST_COST",
+                                                                                                         "gas_used":  "2440604088"
+                                                                                                     }
+                                                                                                 ],
+                                                                                 "version":  4
+                                                                             },
+                                                                "receipt_ids":  [
+                                                                                    "AXGTbuTyZr3zPWm9N8hW2RuEWDT6PfaUSTp8Lv8tAGAn"
+                                                                                ],
+                                                                "status":  {
+                                                                               "SuccessValue":  "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJuaGF0LXJlZGxpbmUtcGF5ZWUudGVzdG5ldCIsImFtb3VudCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJSRVZPS0VEIn0="
+                                                                           },
+                                                                "tokens_burnt":  "232872445225400000000"
+                                                            },
+                                                "proof":  [
+                                                              {
+                                                                  "direction":  "Left",
+                                                                  "hash":  "DPqmwV8YcEeKSQuhKtsxYsrBKYzmamjUcvFxBZX3jHXM"
+                                                              }
+                                                          ]
+                                            },
+                                            {
+                                                "block_hash":  "HuBmp6ujr9Lpg6MT3yXBLxD7nDcD9ksmTVKkq4tkuuk5",
+                                                "id":  "AXGTbuTyZr3zPWm9N8hW2RuEWDT6PfaUSTp8Lv8tAGAn",
+                                                "outcome":  {
+                                                                "executor_id":  "nhat-redline-agent.testnet",
+                                                                "gas_burnt":  223182562500,
+                                                                "logs":  [
+
+                                                                         ],
+                                                                "metadata":  {
+                                                                                 "contracts":  [
+                                                                                                   null
+                                                                                               ],
+                                                                                 "gas_profile":  [
+
+                                                                                                 ],
+                                                                                 "version":  4
+                                                                             },
+                                                                "receipt_ids":  [
+
+                                                                                ],
+                                                                "status":  {
+                                                                               "SuccessValue":  ""
+                                                                           },
+                                                                "tokens_burnt":  "0"
+                                                            },
+                                                "proof":  [
+
+                                                          ]
+                                            }
+                                        ],
+                   "status":  {
+                                  "SuccessValue":  "eyJub25jZSI6IjEiLCJyZWNpcGllbnQiOiJuaGF0LXJlZGxpbmUtcGF5ZWUudGVzdG5ldCIsImFtb3VudCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3RhdHVzIjoiUkVKRUNURUQiLCJyZWFzb24iOiJSRVZPS0VEIn0="
+                              },
+                   "transaction":  {
+                                       "actions":  [
+                                                       {
+                                                           "FunctionCall":  {
+                                                                                "args":  "ew0KICAiZ3JhbnRfaWQiOiAiZGVtby04NmExMDE5NDNlNWY0MjVlOTM3NmExZGU4NGVkNjZjZiIsDQogICJub25jZSI6ICIxIiwNCiAgImFzc2V0IjogIk5FQVIiLA0KICAicmVjaXBpZW50IjogIm5oYXQtcmVkbGluZS1wYXllZS50ZXN0bmV0IiwNCiAgImFtb3VudCI6ICIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsDQogICJwb2xpY3lfaGFzaCI6ICI5ZjRmYTRiMWRhZmJmMzI1OTU3MWZiMTVjMzM3NzZlZGU5NTg4NzE4NmU2MDEzY2NmOGFlYTljNmY0ZjdhMjJlIiwNCiAgImludGVudF9pZCI6ICJhZnRlci1yZXZva2UtMzFlNjIzZTI5YThlNDRlZmI1NTkzNzViZGIwNmIyY2QiDQp9DQo=",
+                                                                                "deposit":  "0",
+                                                                                "gas":  100000000000000,
+                                                                                "method_name":  "execute_transfer"
+                                                                            }
+                                                       }
+                                                   ],
+                                       "hash":  "4huc1hEC2EF3jEft21Ga7xBvoFMCuvzsCTsiLWJkGBU4",
+                                       "nonce":  275991263000005,
+                                       "priority_fee":  0,
+                                       "public_key":  "ed25519:DzLVsdSSeckTyciJDNAd1JEx7ATu9bTTNGXYjzcgk1m2",
+                                       "receiver_id":  "nhat-redline-vault.testnet",
+                                       "signature":  "ed25519:2vUmguUrLHvZBxaTWftA8tHAugnS4djgiuAcK12GuEFrUQNj7VtFQg9WKE8kkt8NH2XbwJC7fCy2JzAcwRdWtKn5",
+                                       "signer_id":  "nhat-redline-agent.testnet"
+                                   },
+                   "transaction_outcome":  {
+                                               "block_hash":  "DwzqjphUw9H4S4au9FbeoXJYECauYHEKN86Ua2o4md3L",
+                                               "id":  "4huc1hEC2EF3jEft21Ga7xBvoFMCuvzsCTsiLWJkGBU4",
+                                               "outcome":  {
+                                                               "executor_id":  "nhat-redline-agent.testnet",
+                                                               "gas_burnt":  324796483965,
+                                                               "logs":  [
+
+                                                                        ],
+                                                               "metadata":  {
+                                                                                "gas_profile":  null,
+                                                                                "version":  1
+                                                                            },
+                                                               "receipt_ids":  [
+                                                                                   "6rFNuanPnHobb2bGahh7xeDo2fXCJ4wQN7cz5VrTvxZA"
+                                                                               ],
+                                                               "status":  {
+                                                                              "SuccessReceiptId":  "6rFNuanPnHobb2bGahh7xeDo2fXCJ4wQN7cz5VrTvxZA"
+                                                                          },
+                                                               "tokens_burnt":  "32479648396500000000"
+                                                           },
+                                               "proof":  [
+
+                                                         ]
+                                           }
+               },
+    "id":  "post-revoke-denial"
+}

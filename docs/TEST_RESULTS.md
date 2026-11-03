@@ -1,6 +1,6 @@
 # Verified results — 2026-11-03 (UTC+7)
 
-All PASS entries below were executed. SDK mock contexts, actual local NEAR receipts and public Testnet evidence are distinct classes. Phase 1 results below are historical; subsequent public deployment/init proof is recorded in `TESTNET_PROOF.md`. Public transfer/deny demo remains pending.
+All PASS entries below were executed. SDK mock contexts, actual local NEAR receipts and public Testnet evidence are distinct classes. Phase 1 results below are historical; subsequent public deployment/init proof is recorded in `TESTNET_PROOF.md`. Public contract transfer/deny/revoke/withdraw proof is now verified in the Phase 2 closeout below.
 
 Environment: Windows/PowerShell Node 24.14.1/npm 11.11.0; Ubuntu WSL Rust/Cargo 1.99.1, Python cryptography 41.0.7; near-sdk 5.30.0; official near-sandbox 2.14.0-rc.5 protocol 88. Cargo invocations used project-local toolchain with Linux temporary cache/target; ordinary Linux reproduction is in `contracts/near-safety-vault/tests/README.md`.
 
@@ -41,7 +41,7 @@ The successful runtime run includes five SETTLED agent transfers, persisted REJE
 | T12 withdraw safety | PASS: SDK pending transfer/withdraw accounting plus actual sandbox concurrent transfer/withdraw ledger race | Same |
 | T13 RPC/indexer restart | NOT RUN: NEAR backend/indexer not implemented (Phase 3) | No claim |
 | T14 TypeScript yocto/timestamp conversion | NOT RUN: NEAR TS adapter absent. Rust JSON-string serialization tested, not a substitute | No claim |
-| T15 public Testnet demo | NOT RUN: accounts/owner signatures required (Phase 2) | `TESTNET_PROOF.md` |
+| T15 public Testnet demo | PARTIAL overall: public contract/receipts PASS (Phase 2); NEAR UI/API matching NOT RUN | `TESTNET_PROOF.md` |
 
 Additional PASS tests: storage allowance shortage, owner/executor storage payer separation, amount/hash validation, available balance isolation, arithmetic overflow, insufficient gas/liquid reserve, failed withdrawal release.
 
@@ -54,4 +54,20 @@ Additional PASS tests: storage allowance shortage, owner/executor storage payer 
 - Initial Clippy flagged needless borrow; `phase1-clippy.log`. Fixed; final warnings-as-errors run PASS.
 - Early offline build lacked cached aws-lc-sys, and early Cargo jobs were stopped to move cache away from Windows filesystem. They are environment failures/interrupted attempts, not completed tests.
 
-NOT RUN: GitHub-hosted CI execution, independent audit, cargo dependency advisory audit, live database/API E2E, public Testnet deployment. npm inherited advisories remain open as documented in `BASELINE.md`.
+NOT RUN: GitHub-hosted CI execution, independent audit, cargo dependency advisory audit, live database/API E2E. Public Testnet deployment and contract proof are now verified (Phase 2). npm inherited advisories remain open as documented in `BASELINE.md`.
+
+## Phase 2 rechecks - executed 2026-11-03
+
+| Command | Actual result | Evidence |
+| --- | --- | --- |
+| `python scripts/verify-near-testnet-proof.py` | PASS: ten finalized public transactions, final views, policy binding, callback status and principal/payee reconciliation | `evidence/phase2-proof-verification.json` + raw RPC responses |
+| `npm.cmd test` (root) | PASS 163 tests | `evidence/phase2-frontend-test.log` |
+| `npm.cmd run build` (root) | PASS typecheck + Vite | `evidence/phase2-frontend-build.log` |
+| `npm.cmd test` (backend) | PASS 284 tests | `evidence/phase2-backend-test.log` |
+| `npm.cmd run build` (backend) | PASS Prisma generate + TypeScript | `evidence/phase2-backend-build.log` |
+| `cargo fmt --manifest-path contracts/near-safety-vault/Cargo.toml -- --check` | PASS | `evidence/phase2-contract-checks.log` |
+| `cargo test --manifest-path contracts/near-safety-vault/Cargo.toml` | PASS 21 SDK tests | Same |
+| `cargo clippy --manifest-path contracts/near-safety-vault/Cargo.toml --all-targets -- -D warnings` | PASS | Same |
+| `cargo build --manifest-path contracts/near-safety-vault/Cargo.toml --target wasm32-unknown-unknown --release` | PASS; rebuilt digest matches deployed artifact | Same; Phase 2 proof |
+
+Rust commands used `wsl bash .tooling/run-rust.sh` with the established project-local toolchain. No contract code changed, so the 53-transaction/136-receipt Phase 1 sandbox suite was not repeated at this checkpoint. Actual public Testnet final receipt/view checks were executed. Earlier usage-limit approval failures are resolved for these queries; no receipt was inferred from screenshot evidence.

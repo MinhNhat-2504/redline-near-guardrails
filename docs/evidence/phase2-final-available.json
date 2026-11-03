@@ -1,0 +1,16 @@
+{
+    "jsonrpc":  "2.0",
+    "result":  {
+                   "block_hash":  "79p8DkVZCzCatHw9qKnQjFvmyyMHVj5quWPEqYbBREzS",
+                   "block_height":  276001312,
+                   "logs":  [
+
+                            ],
+                   "result":  [
+                                  34,
+                                  48,
+                                  34
+                              ]
+               },
+    "id":  "final-available"
+}
