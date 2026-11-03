@@ -1,0 +1,150 @@
+{
+  "result": "PASS",
+  "scope": "live read-only Testnet RPC; no signing, API routes, database or wallet integration",
+  "receipts": [
+    {
+      "transactionHash": "3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1",
+      "finalized": true,
+      "state": "SETTLED",
+      "events": [
+        {
+          "id": "3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1:2WH7CW7AuHz7WSZjLg7TdLSXGaX7vR9HqnyVBzRg7jrc:0",
+          "receiptId": "2WH7CW7AuHz7WSZjLg7TdLSXGaX7vR9HqnyVBzRg7jrc",
+          "transactionHash": "3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1",
+          "logIndex": 0,
+          "event": "intent_pending",
+          "data": [
+            {
+              "grant_id": "demo-86a101943e5f425e9376a1de84ed66cf",
+              "intent_id": "safe-32a0ed10f17f4b7e8abb4c2f0ed8a444",
+              "intent": {
+                "nonce": "0",
+                "recipient": "nhat-redline-payee.testnet",
+                "amount": "50000000000000000000000",
+                "status": "PENDING",
+                "reason": "OK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1:6JGby7BXMC5ZxQ1cWhxHRneN1tbR6KH4pRasbZ9FHqQ6:0",
+          "receiptId": "6JGby7BXMC5ZxQ1cWhxHRneN1tbR6KH4pRasbZ9FHqQ6",
+          "transactionHash": "3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1",
+          "logIndex": 0,
+          "event": "intent_completed",
+          "data": [
+            {
+              "grant_id": "demo-86a101943e5f425e9376a1de84ed66cf",
+              "intent_id": "safe-32a0ed10f17f4b7e8abb4c2f0ed8a444",
+              "intent": {
+                "nonce": "0",
+                "recipient": "nhat-redline-payee.testnet",
+                "amount": "50000000000000000000000",
+                "status": "SETTLED",
+                "reason": "OK"
+              }
+            }
+          ]
+        }
+      ],
+      "reason": "OK"
+    },
+    {
+      "transactionHash": "J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x",
+      "finalized": true,
+      "state": "REJECTED",
+      "events": [
+        {
+          "id": "J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x:54Z7JwL44NnXPtrookcsXZ6NyUacGgotC65dXHPodx2w:0",
+          "receiptId": "54Z7JwL44NnXPtrookcsXZ6NyUacGgotC65dXHPodx2w",
+          "transactionHash": "J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x",
+          "logIndex": 0,
+          "event": "intent_rejected",
+          "data": [
+            {
+              "grant_id": "demo-86a101943e5f425e9376a1de84ed66cf",
+              "intent_id": "deny-cap-0e22d4ec9570481396c6ecea0a489bd6",
+              "intent": {
+                "nonce": "1",
+                "recipient": "nhat-redline-payee.testnet",
+                "amount": "160000000000000000000000",
+                "status": "REJECTED",
+                "reason": "SPEND_CAP_EXCEEDED"
+              }
+            }
+          ]
+        }
+      ],
+      "reason": "SPEND_CAP_EXCEEDED"
+    },
+    {
+      "transactionHash": "8MCrqH1rQXTPvfuG6Yk9TuAVXgGo7mj55rmfMvNL9DuB",
+      "finalized": true,
+      "state": "REJECTED",
+      "events": [
+        {
+          "id": "8MCrqH1rQXTPvfuG6Yk9TuAVXgGo7mj55rmfMvNL9DuB:CqPpErpigdWT9oBoJogotdnHVEkFrmHeTD74mZpx8MDK:0",
+          "receiptId": "CqPpErpigdWT9oBoJogotdnHVEkFrmHeTD74mZpx8MDK",
+          "transactionHash": "8MCrqH1rQXTPvfuG6Yk9TuAVXgGo7mj55rmfMvNL9DuB",
+          "logIndex": 0,
+          "event": "intent_rejected",
+          "data": [
+            {
+              "grant_id": "demo-86a101943e5f425e9376a1de84ed66cf",
+              "intent_id": "deny-recipient-74d138ed8a6448508488ffe9697d32c6",
+              "intent": {
+                "nonce": "1",
+                "recipient": "nhat-redline-owner.testnet",
+                "amount": "10000000000000000000000",
+                "status": "REJECTED",
+                "reason": "DESTINATION_NOT_ALLOWED"
+              }
+            }
+          ]
+        }
+      ],
+      "reason": "DESTINATION_NOT_ALLOWED"
+    },
+    {
+      "transactionHash": "4huc1hEC2EF3jEft21Ga7xBvoFMCuvzsCTsiLWJkGBU4",
+      "finalized": true,
+      "state": "REJECTED",
+      "events": [
+        {
+          "id": "4huc1hEC2EF3jEft21Ga7xBvoFMCuvzsCTsiLWJkGBU4:6rFNuanPnHobb2bGahh7xeDo2fXCJ4wQN7cz5VrTvxZA:0",
+          "receiptId": "6rFNuanPnHobb2bGahh7xeDo2fXCJ4wQN7cz5VrTvxZA",
+          "transactionHash": "4huc1hEC2EF3jEft21Ga7xBvoFMCuvzsCTsiLWJkGBU4",
+          "logIndex": 0,
+          "event": "intent_rejected",
+          "data": [
+            {
+              "grant_id": "demo-86a101943e5f425e9376a1de84ed66cf",
+              "intent_id": "after-revoke-31e623e29a8e44efb559375bdb06b2cd",
+              "intent": {
+                "nonce": "1",
+                "recipient": "nhat-redline-payee.testnet",
+                "amount": "10000000000000000000000",
+                "status": "REJECTED",
+                "reason": "REVOKED"
+              }
+            }
+          ]
+        }
+      ],
+      "reason": "REVOKED"
+    }
+  ],
+  "ledger": {
+    "value": {
+      "credited": "500000000000000000000000",
+      "finalized_spent": "50000000000000000000000",
+      "pending_reserved": "0",
+      "completed_withdrawals": "450000000000000000000000",
+      "pending_withdrawals": "0",
+      "storage_available": "44010000000000000000000"
+    },
+    "blockHeight": 276002311,
+    "blockHash": "2vtxdxKmpYizrf7Ko1pca2gJAi6WPYzpUM5k7U7LtbGd"
+  }
+}

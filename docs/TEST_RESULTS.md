@@ -39,8 +39,8 @@ The successful runtime run includes five SETTLED agent transfers, persisted REJE
 | T10 transfer failure release | PASS: SDK exactly-once callback, missing named sandbox recipient fails transfer and restores available funds | Same |
 | T11 callback authenticity/idempotence | PASS: SDK external/duplicate/missing result/unexpected payload, sandbox external private call rejection | Same |
 | T12 withdraw safety | PASS: SDK pending transfer/withdraw accounting plus actual sandbox concurrent transfer/withdraw ledger race | Same |
-| T13 RPC/indexer restart | NOT RUN: NEAR backend/indexer not implemented (Phase 3) | No claim |
-| T14 TypeScript yocto/timestamp conversion | NOT RUN: NEAR TS adapter absent. Rust JSON-string serialization tested, not a substitute | No claim |
+| T13 RPC/indexer restart | PARTIAL: tracked-journal reader restart/dedupe and failed-store tests PASS; Postgres/account-wide discovery NOT RUN | Phase 3 foundation tests |
+| T14 TypeScript yocto/timestamp conversion | PASS: exact decimal conversions, u128/u64 bounds, invalid input and ns remainder tests | Phase 3 foundation tests |
 | T15 public Testnet demo | PARTIAL overall: public contract/receipts PASS (Phase 2); NEAR UI/API matching NOT RUN | `TESTNET_PROOF.md` |
 
 Additional PASS tests: storage allowance shortage, owner/executor storage payer separation, amount/hash validation, available balance isolation, arithmetic overflow, insufficient gas/liquid reserve, failed withdrawal release.
@@ -71,3 +71,12 @@ NOT RUN: GitHub-hosted CI execution, independent audit, cargo dependency advisor
 | `cargo build --manifest-path contracts/near-safety-vault/Cargo.toml --target wasm32-unknown-unknown --release` | PASS; rebuilt digest matches deployed artifact | Same; Phase 2 proof |
 
 Rust commands used `wsl bash .tooling/run-rust.sh` with the established project-local toolchain. No contract code changed, so the 53-transaction/136-receipt Phase 1 sandbox suite was not repeated at this checkpoint. Actual public Testnet final receipt/view checks were executed. Earlier usage-limit approval failures are resolved for these queries; no receipt was inferred from screenshot evidence.
+
+## Phase 3 read-only foundation - PARTIAL phase
+
+- Backend `npm.cmd run typecheck` PASS, `npm.cmd test` **329 PASS**, `npm.cmd run build` PASS. Logs: `evidence/phase3-foundation-backend-{test,build}.log`. New 45 tests include actual recorded public receipt inputs and explicitly synthetic mutations/transport stores for negative cases; the latter are not claimed as new chain transactions.
+- Live (separate): `npx.cmd tsx scripts/near-read-proof.ts` reads Testnet with new production TS modules, asserts FINAL/SETTLED ALLOW and three exact REJECTED reasons, reads finalized owner ledger; `evidence/phase3-live-read-proof.json`. No signing/broadcast, API routes or database touched.
+- First focused run failed 1/43 due an over-u128 test input; contract/code correctly rejected it. Corrected to a valid exact decimal; added negative overflow coverage and two receipt-boundary tests; final full suite 329/329 PASS. This does not erase the initial failure.
+- No frontend/contract code changed; their Phase 2 tests/builds were not repeated in this foundation checkpoint. Writable NEAR API, wallet auth/signing, Postgres projection and complete T13/T15 E2E remain NOT RUN/unimplemented.
+
+- Phase 3 checkpoint secret-pattern scan PASS across 558 reachable/staged blobs; no new findings, exact inherited TESTONLY exception retained. Evidence `evidence/phase3-secret-scan.json`; pattern-scan limitations apply.

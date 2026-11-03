@@ -283,3 +283,14 @@ The dashboard needs nothing entered by hand — every `VITE_*` value is pulled f
 
 - `npm run db:cleanup` removes intents that never reached a decision (also swept at startup).
 - `scripts/withdraw-check.ts` proves the `withdraw` account order against the live program.
+
+## NEAR migration checkpoint
+
+Phase 2 public Testnet contract proof is verified in [TESTNET_PROOF](../docs/TESTNET_PROOF.md). Backend NEAR support is **read-only foundation**, not a writable API adapter. `CHAIN=near` currently fails explicitly; unknown CHAIN values no longer silently select mock. Existing mock/Solana paths remain available.
+
+- `src/near/units.ts`: exact string/BigInt NEAR, yocto, u128/u64 and nanosecond conversions.
+- `src/near/rpc.ts`: Testnet-verified HTTPS read-only RPC; `src/near/receipts.ts`: FINAL receipt/event/callback interpretation.
+- `src/near/reader.ts`: reconciliation of explicitly tracked transaction hashes. Requires a durable atomically deduping store implementation; no continuous historical discovery or Postgres wiring yet.
+- `npm test` includes offline receipt-fixture and negative security tests; `npx tsx scripts/near-read-proof.ts` is an explicit **live, read-only** Testnet check. Never treat offline fixtures as fresh on-chain transactions.
+
+Owner auth, scoped executor signing, NEAR-safe database fields, routes and UI are pending. See the reviewable [security activation proposal](../docs/PHASE3_SECURITY_REVIEW.md); no owner keys belong on the backend. Existing generic routes/auth/indexer retain Solana semantics and must not be enabled for NEAR without that work.

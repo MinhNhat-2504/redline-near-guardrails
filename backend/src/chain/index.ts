@@ -6,8 +6,16 @@ let instance: ChainAdapter | null = null;
 
 // Call once at startup (server.ts) so route handlers can use getChain() sync.
 export async function initChain(): Promise<ChainAdapter> {
-  if (instance) return instance;
   const kind = process.env.CHAIN ?? "mock";
+  if (kind !== "mock" && kind !== "solana") {
+    throw new Error(kind === "near"
+      ? "CHAIN=near is not enabled: NEAR owner authentication, executor signing and API integration are pending; read-only NEAR modules do not authorize writes"
+      : `Unsupported CHAIN configuration: ${kind}`);
+  }
+  if (instance) {
+    if (instance.kind !== kind) throw new Error("CHAIN changed after startup; restart with the intended configuration");
+    return instance;
+  }
   if (kind === "solana") {
     const programId = process.env.REDLINE_PROGRAM_ID;
     const executorKeypairPath = process.env.EXECUTOR_KEYPAIR_PATH;
