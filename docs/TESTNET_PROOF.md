@@ -1,6 +1,6 @@
 # Public NEAR Testnet proof — DEPLOYED, demo verification pending
 
-Phase 2 is PARTIAL. The user created four dedicated accounts and signed deployment plus `new` using the vault account's local CLI keychain. Deployment, initialized state and code identity have been independently verified through finalized public RPC reads. The first agent transfer is now verified; denial/revoke/withdraw proofs remain pending and the complete Phase 2 gate is not passed.
+Phase 2 is PARTIAL. The user created four dedicated accounts and signed deployment plus `new` using the vault account's local CLI keychain. Deployment, initialized state and code identity have been independently verified through finalized public RPC reads. The first agent transfer is now verified; recipient denial/revoke/withdraw proofs remain pending and the complete Phase 2 gate is not passed.
 
 | Item | Verified state |
 | --- | --- |
@@ -18,7 +18,8 @@ Phase 2 is PARTIAL. The user created four dedicated accounts and signed deployme
 | Owner ledger after funding | credited 0.5 NEAR; spent/pending/withdrawals zero; storage remaining 0.04833 NEAR |
 | Executor ledger after funding | credited zero; storage remaining 0.04833 NEAR |
 | ALLOW transfer | FINAL; intent SETTLED/OK; payee +0.05 NEAR |
-| REJECT / revoke / withdrawal proof | NOT RUN yet |
+| Cap REJECT | FINAL; REJECTED/SPEND_CAP_EXCEEDED; no payout |
+| Recipient REJECT / revoke / withdrawal proof | NOT RUN yet |
 | Built artifact available locally | SHA-256 `ae5e7a073b97f1834f245adf74e7a4ac0b1baf6d9f5248cabb7120a55b6c2524` |
 | Public RPC status query | Protocol 88 / nearcore 2.14.0-rc.5, read-only evidence in `evidence/phase1-testnet-runtime.json` |
 
@@ -39,3 +40,9 @@ Prepared first transfer: 0.05 NEAR to payee, nonce 0, persistent intent ID; `evi
 Transaction [`3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1`](https://explorer.testnet.near.org/transactions/3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1) is FINAL. Signer is agent, receiver vault, arguments exactly match the prepared file. All six receipt outcomes succeeded; callback and finalized intent are SETTLED/OK. Payee balance increased from 10 to 10.05 NEAR, exactly the requested 0.05 NEAR. Grant spent 0.05 NEAR, count 1, next nonce 1, pending zero; owner available principal 0.45 NEAR.
 
 Raw receipts and finalized views are retained in `evidence/phase2-{safe-transfer,safe-intent,grant-after-safe,owner-after-safe,payee-after-safe}.json`; `phase2-safe-transfer-verification.json` records the independent assertions. Previously unsigned snapshots remain historical preparation evidence. Negative attempt files `phase2-transfer-deny-cap.json` and `phase2-transfer-deny-recipient.json` are unsigned proposals only. No contract/application changes or new build results are claimed at this checkpoint.
+
+## Cap denial ? verified
+
+Transaction [`J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x`](https://explorer.testnet.near.org/transactions/J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x) is FINAL with successful contract execution returning REJECTED/SPEND_CAP_EXCEEDED. The attempted 0.16 NEAR exceeds the remaining 0.15 NEAR. Exact signed args match the prepared proposal; finalized intent agrees with the return value. Both receipt outcomes succeeded, with no receipt to payee. Finalized grant and owner ledger are identical to the post-ALLOW snapshot; payee remains 10.05 NEAR, nonce remains 1, pending zero.
+
+Independent assertions and raw responses: `evidence/phase2-{cap-denial,cap-denied-intent,grant-after-cap-denial,owner-after-cap-denial,payee-after-cap-denial,cap-denial-verification}.json`. Cap-denial proposal has now been submitted; recipient-denial proposal remains unsigned. Phase 2 stays PARTIAL until outstanding checks are completed.

@@ -1,0 +1,16 @@
+{
+  "scope": "Finalized public Testnet RPC; actual user-signed cap denial",
+  "transaction": "J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x",
+  "intent_id": "deny-cap-0e22d4ec9570481396c6ecea0a489bd6",
+  "status": "REJECTED",
+  "reason": "SPEND_CAP_EXCEEDED",
+  "attempted_yoctoNEAR": "160000000000000000000000",
+  "grant_remaining_yoctoNEAR": "150000000000000000000000",
+  "payee_yoctoNEAR": "10050000000000000000000000",
+  "payee_delta_from_prior_checkpoint": "0",
+  "grant_and_owner_ledger_unchanged": true,
+  "next_nonce": "1",
+  "receipt_count": 2,
+  "recipient_receipt_present": false,
+  "checks": "FINAL success, exact signer/receiver/args, rejected return and intent, no recipient receipt, unchanged grant/owner ledger/payee balance all asserted"
+}

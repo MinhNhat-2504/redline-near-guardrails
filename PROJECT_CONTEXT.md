@@ -2,7 +2,7 @@
 
 Updated: 2026-11-03 (Asia/Saigon).
 
-- Goal: migrate REDLINE's bounded agent transfers to a real NEAR Testnet vault for the AI Security & Defense track. Deployment and storage/principal funding verified; grant and ALLOW transfer verified; deny/revoke/withdraw demo remains pending.
+- Goal: migrate REDLINE's bounded agent transfers to a real NEAR Testnet vault for the AI Security & Defense track. Deployment and storage/principal funding verified; grant, ALLOW and cap denial verified; recipient/revoke/withdraw demo remains pending.
 - Inputs: fully read `NEAR_REDLINE_MIGRATION_PLAN_AGENT.md` and `NEAR_Hackathon_2026_REDLINE_Complete_Playbook.pdf` (19 pages). The Markdown's history-preserving import takes precedence over the PDF's selective-copy suggestion.
 - Provenance: full Git history cloned from `https://github.com/MinhNhat-2504/REDLINE`, baseline `aa0b0b044d9b6e01b71a14791ec68b24385e098b`; previous `2fe62d6`. Original team credits remain in README. No license file found in tracked source; ownership/licensing must be resolved before submission.
 - Remotes: `origin` is MinhNhat-2504/redline-near-guardrails; `upstream` is MinhNhat-2504/REDLINE. Development branch `feat/near-mvp`. Never push upstream or rewrite history.
@@ -20,3 +20,5 @@ Updated: 2026-11-03 (Asia/Saigon).
 - Phase 2 grant verified FINAL/success: `9guZzifgUg7ZJHcWK8pfLM2ruyUAV5qw2YVJTnRisQAp`, `demo-86a101943e5f425e9376a1de84ed66cf`, canonical hash matches signed args and finalized active grant, nonce 0/spend 0. Expires 2026-11-03 11:53:39 UTC+7. Prepared unsigned `transfer-safe.json` in this grant package, exact 0.05 NEAR to payee; reuse persistent intent ID on retries. The first transfer subsequently settled; see current checkpoint below.
 
 - Phase 2 ALLOW verified FINAL: `3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1`, six successful receipt outcomes, callback and intent SETTLED/OK. Payee 10 -> 10.05 NEAR; grant spent 0.05/0.2, nonce 1, one finalized transfer, zero pending; owner available 0.45 NEAR. Exact RPC/ledger/delta assertions PASS. Prepared persistent unsigned `transfer-deny-cap.json` (0.16 NEAR) and `transfer-deny-recipient.json` (0.01 NEAR to owner) in actual grant package. Next: user signs negative attempts; verify rejects/no payout, then revoke/withdraw. Phase 2 PARTIAL.
+
+- Phase 2 cap denial verified FINAL: `J1P7eMu612YPEaMryf6VrWedmXiM6BazgoQW8mUQwb4x`, REJECTED/SPEND_CAP_EXCEEDED for 0.16 NEAR against 0.15 remaining. Two successful receipts, none to payee. Finalized grant and owner ledger unchanged from ALLOW checkpoint; payee remains 10.05, nonce 1, pending zero. Exact transaction/intent/ledger/balance assertions PASS; raw evidence and verification report retained. Next: user signs existing unsigned `transfer-deny-recipient.json`, then revoke/withdraw proofs. Phase 2 PARTIAL; no application/contract change or new build at this evidence checkpoint.
