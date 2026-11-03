@@ -1,0 +1,13 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "result":  {
+                   "amount":  "10050000000000000000000000",
+                   "block_hash":  "AdyNgTBZvxXDtQcyBr7otXsbwGGG7FgKYZ451ZuLdxPx",
+                   "block_height":  276034791,
+                   "code_hash":  "11111111111111111111111111111111",
+                   "locked":  "0",
+                   "storage_paid_at":  0,
+                   "storage_usage":  182
+               },
+    "id":  "api-expired-payee"
+}

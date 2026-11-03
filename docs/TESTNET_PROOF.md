@@ -75,3 +75,9 @@ After fresh revalidation and stopped-backend guard, approved local journal maint
 User created new grant grant-5c1326cc5e674f78a82be9fbd26744b2 through [FINAL owner transaction](https://explorer.testnet.near.org/transactions/B9HT5FBGAQdp5xnfS4TsfntJA5B5C2PkwsaERP3vTgG1), retaining principal (no topup). Exact args/event/canonical policy hash and all successful receipt outcomes verified. Cap0.05/max3/payee-only/cooldown0, expires16:57:51.496 UTC+7 November3; active nonce0/counts0 at snapshot. Available0.1 NEAR; payee10.05; scoped allowance0.1 and post-reset key nonce unchanged.
 
 Offline check: `python scripts/verify-near-api-recovery-preflight.py`; [report](evidence/phase3-api-recovery-preflight-verification.json), public RPC inputs/canonical policy alongside it. This verifies the owner grant and pre-transfer baselines, not a recovered executor transfer.80Tgas API execution/callback/ledger/payee proof remain pending; Phase3 PARTIAL.
+
+## Real scoped-key API EXPIRED rejection
+
+[Transaction Gqv1YhjYHr9ZVkLnEscPmHFSAWDZ5TcgHhCUxvPPmxGQ](https://explorer.testnet.near.org/transactions/Gqv1YhjYHr9ZVkLnEscPmHFSAWDZ5TcgHhCUxvPPmxGQ) is FINAL, agent signer with installed scoped public key9hau..., execute_transfer80Tgas/deposit0. Returned/stored intent and vault event agree REJECTED/EXPIRED. Vault block276034591 executed17:09:29.167770251 UTC+7, after16:57:51.496 expiry. No payee receipt or pending/completed event; principal available0.1 and payee10.05 unchanged. Gas/intent-storage costs still incurred.
+
+Offline verification using production parser: `cd backend; npx tsx scripts/verify-near-api-expired.ts`. [Report](evidence/phase3-api-expired-verification.json), full actual RPC inputs phase3-api-expired-*.json. Current key allowance0.0997350360765734; no key reset/principal topup required. This proves real scoped-key API REJECT execution. A successful ALLOW/SETTLED transfer and full Phase3 gate remain pending.

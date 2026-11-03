@@ -1,0 +1,13 @@
+{
+  "kind": "verification_summary_not_raw_log",
+  "backendUnitTests": {"passed": 384, "files": 32, "newExpiryGuardRegressions": 4},
+  "backendTypecheck": "PASS",
+  "backendDirectTscBuild": "PASS_NO_PRISMA_REGENERATION",
+  "strictHelperAndVerifierCompile": "PASS",
+  "unsignedRenewalHelp": "PASS_BEFORE_SESSION_ACCESS",
+  "actualSavedRpcExpiredVerification": "PASS_FINAL_EXPIRED_REJECTION",
+  "actualUnsignedRenewalByCodingAgent": "NOT_RUN_USER_ONLY",
+  "actualFinancialSubmissionByCodingAgent": "NONE",
+  "successfulScopedAllow": "NOT_RUN",
+  "prior25PostgresTests": "PRIOR_EVIDENCE_NOT_RERUN_NO_DB_LOGIC_CHANGES"
+}

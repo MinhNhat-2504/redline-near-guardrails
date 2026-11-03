@@ -1,0 +1,19 @@
+{
+  "status": "PASS_FINAL_EXPIRED_REJECTION",
+  "transactionHash": "Gqv1YhjYHr9ZVkLnEscPmHFSAWDZ5TcgHhCUxvPPmxGQ",
+  "grantId": "grant-5c1326cc5e674f78a82be9fbd26744b2",
+  "intentId": "api-safe-154e315287d04a35874bd0e2cd384037",
+  "state": "REJECTED",
+  "reason": "EXPIRED",
+  "finalized": true,
+  "executorPublicKey": "ed25519:9hauPZp4YBAHNMNp8bf4ThyYuSMeVTrKn5twEU2JrCy3",
+  "attachedGasTgas": 80,
+  "expiryNs": "1793699871496000000",
+  "executionTimestampNs": "1793700569167770251",
+  "availableYocto": "100000000000000000000000",
+  "payeeAmount": "10050000000000000000000000",
+  "keyNonce": "276023048000001",
+  "keyAllowanceYocto": "99735036076573400000000",
+  "noPayeeReceipt": true,
+  "scope": "Actual scoped-key API rejection; principal/payee unchanged. Gas and intent storage still cost funds. No ALLOW/settlement proof yet."
+}

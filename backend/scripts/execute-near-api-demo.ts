@@ -6,6 +6,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { resolve, relative, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 import { grantSchema, transferSchema } from "../src/near/types.js";
+import { assertDemoSubmission } from "../src/near/demo-preflight.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const OWNER = "nhat-redline-owner.testnet", AGENT = "nhat-redline-agent.testnet";
@@ -27,6 +28,7 @@ async function main() {
   const preparedPackage = JSON.parse(await readFile(resolve(directory, "package.json"), "utf8"));
   const requestFile = resolve(directory, "transfer-safe.json");
   let args;
+  let currentGrant;
   try { args = transferSchema.parse(JSON.parse(await readFile(requestFile, "utf8"))); }
   catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; }
   if (!args) {
@@ -34,6 +36,7 @@ async function main() {
     const response = await fetch("http://127.0.0.1:8787/near/grants/" + reviewed.grant_id, { signal: AbortSignal.timeout(90_000) });
     if (!response.ok) throw new Error(`Grant read HTTP ${response.status}; no request submitted`);
     const grant = grantSchema.parse((await response.json()).value);
+    currentGrant = grant;
     assert.equal(grant.owner, OWNER); assert.equal(grant.policy.executor, AGENT);
     assert.deepEqual(grant.policy, reviewed.policy);
     assert.equal(grant.policy.spend_cap, "50000000000000000000000");
@@ -47,13 +50,25 @@ async function main() {
   }
   assert.equal(args.grant_id, reviewed.grant_id); assert.equal(args.policy_hash, reviewed.policy.policy_hash);
   assert.equal(args.nonce, "0"); assert.equal(args.amount, AMOUNT); assert.equal(args.recipient, PAYEE);
+  if (!currentGrant) {
+    const response = await fetch("http://127.0.0.1:8787/near/grants/" + args.grant_id, { signal: AbortSignal.timeout(90_000) });
+    if (!response.ok) throw new Error(`Grant read HTTP ${response.status}; no API submission`);
+    currentGrant = grantSchema.parse((await response.json()).value);
+  }
   console.log(JSON.stringify({ contract: VAULT, executor: AGENT, amountNear: "0.01", request: args }, null, 2));
-  if (mode !== "--submit") { console.log("PREPARED ONLY. Review above, then run with --submit. No transaction submitted."); return; }
+  if (mode !== "--submit") { assertDemoSubmission(currentGrant,args,false); console.log("PREPARED ONLY. Review above, then run with --submit. No transaction submitted."); return; }
   let session;
   try { session = JSON.parse(await readFile(resolve(root, ".tooling/near-local/session.json"), "utf8")); }
   catch { throw new Error("Local session unavailable; run near-login-cli.ts. Do not share the session file."); }
   assert.equal(session.accountId, OWNER);
   if (!(Date.parse(session.expiresAt) > Date.now())) throw new Error("Owner session expired; run near-login-cli.ts, then retry this same request");
+  const journal = await fetch("http://127.0.0.1:8787/near/transactions?grantId=" + args.grant_id, {
+    headers: { authorization: "Bearer " + session.token }, signal: AbortSignal.timeout(90_000), redirect: "error",
+  });
+  if (!journal.ok) throw new Error(`Journal read HTTP ${journal.status}; no new API submission`);
+  const rows = await journal.json(); assert(Array.isArray(rows), "Invalid journal response");
+  const durable = rows.some(row => row.grantId === args.grant_id && row.intentId === args.intent_id && row.signerId === AGENT);
+  assertDemoSubmission(currentGrant,args,durable); // Always before the financial POST, even for a saved local request.
   let response: Response;
   try {
     response = await fetch("http://127.0.0.1:8787/near/grants/" + args.grant_id + "/intents", {
@@ -67,7 +82,8 @@ async function main() {
   const report = { grantId: args.grant_id, intentId: args.intent_id, amount: args.amount, recipient: args.recipient,
     transactionHash: observation.transactionHash, finalized: observation.finalized, state: observation.state,
     reason: observation.reason, phase: observation.phase, submissionError: observation.submissionError, needsReconciliation: observation.needsReconciliation };
-  await writeFile(resolve(root, "docs/evidence/" + (preparedPackage.recoveryOf ? "phase3-api-recovered-safe-response.json" : "phase3-api-safe-response.json")), JSON.stringify(report, null, 2) + "\n");
+  await writeFile(resolve(root, "docs/evidence/phase3-api-intent-" + args.intent_id + ".json"), JSON.stringify(report, null, 2) + "\n");
+  await writeFile(resolve(root, "docs/evidence/" + (preparedPackage.renewalOf ? "phase3-api-renewed-safe-response.json" : preparedPackage.recoveryOf ? "phase3-api-recovered-safe-response.json" : "phase3-api-safe-response.json")), JSON.stringify(report, null, 2) + "\n");
   console.log(JSON.stringify(report, null, 2));
   console.log("API observation only; independent FINAL receipt/key/ledger verification still required. Retry uses the same intent ID.");
 }
