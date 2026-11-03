@@ -90,3 +90,5 @@ Date: 2026-11-03 (UTC+7). Full handoff and supplied PDF read before implementati
 - NOT implemented: writable NearChain/API activation, NEAR session endpoints, durable Postgres projection/block discovery, owner wallet UI, writable E2E. `CHAIN=near` intentionally fails with an explicit pending-integration message. Do not label Phase 3 PASS.
 
 - Phase 3 checkpoint secret-pattern scan PASS across 558 reachable/staged blobs; no new findings, exact inherited TESTONLY exception retained. Evidence `evidence/phase3-secret-scan.json`; pattern-scan limitations apply.
+
+- Phase 3 checkpoint committed/pushed as `0918824`. Post-stage whitespace check exposed PowerShell CRCRLF/UTF-16 artifacts in captured evidence; normalized evidence to UTF-8/LF and verified JSON values unchanged. Offline Phase 2 proof revalidated after normalization; no application code or test assertions changed. Follow-up formatting commit preserves Git history.

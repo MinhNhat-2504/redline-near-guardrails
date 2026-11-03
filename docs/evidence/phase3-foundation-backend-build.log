@@ -1,12 +1,11 @@
-
-> redline-backend@0.1.0 build
-> prisma generate && tsc -p tsconfig.json
-
-Prisma schema loaded from prisma\schema.prisma
-
-✔ Generated Prisma Client (v6.5.0) to .\node_modules\@prisma\client in 84ms
-
-Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
-
-Tip: Want to react to database changes in your app as they happen? Discover how with Pulse: https://pris.ly/tip-1-pulse
-
+
+> redline-backend@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.5.0) to .\node_modules\@prisma\client in 84ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to react to database changes in your app as they happen? Discover how with Pulse: https://pris.ly/tip-1-pulse
