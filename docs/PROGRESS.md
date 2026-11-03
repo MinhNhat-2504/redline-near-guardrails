@@ -34,3 +34,12 @@ Date: 2026-11-03 (UTC+7). Full handoff and supplied PDF read before implementati
 - Review correction: intent storage is paid from the executor's own separately registered allowance; owner pays only grants/withdrawals. This prevents a compromised/revoked executor draining owner storage to block withdrawal. Payer isolation verified by SDK and actual runtime assertions.
 - Open limitations: global grant ID squatting (use random IDs), non-refundable storage allowance/retention, direct owner calls only, pending state stays locked on lost callback. See `NEAR_THREAT_MODEL.md`.
 - Next: **Phase 2 — BLOCKED at owner boundary**. Need dedicated Testnet contract/owner/executor/recipient account IDs, secure signing flow, and owner decision on contract deployment/upgrade-key custody. No mainnet, public visibility change or submission performed. See `TESTNET_PROOF.md`.
+
+## Phase 2 — PARTIAL (deployment verified; funding/grant/demo pending)
+
+- User created dedicated `nhat-redline-{owner,vault,agent,payee}.testnet` accounts and signed deploy + `new` through local NEAR CLI 0.30.1/keychain. Agent did not access signing keys.
+- Verified public transaction `F4tTGzL13zDRtWxpgkUod41PQnbkb5XGvLU9eArSiNor`: `FINAL`, successful empty return, vault signer/receiver, two receipt outcomes. `STATE` exists at finalized block 275991839.
+- On-chain code hash `CjfViNvnk8rzPnpPeT5Wv37GA9jc92m5A47RfJHQyodM` independently compared to the SHA-256 of the sandbox-tested WASM: exact match.
+- Evidence: `evidence/phase2-{deploy,account,state}.json`; details and explorer URL in `TESTNET_PROOF.md`. No application source changed; validation consists of actual finalized RPC responses and artifact-hash comparison.
+- Still NOT RUN on Testnet: owner/executor storage funding, principal deposit, grant, successful agent transfer, policy denials, revoke and withdrawal. Phase 2 is not PASS; Phase 3 has not started.
+- Next requires the user's signatures for separate storage allowances and principal deposit, then a reviewed grant. No mainnet, public visibility change or submission performed.

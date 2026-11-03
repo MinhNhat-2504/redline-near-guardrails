@@ -1,0 +1,14 @@
+{
+    "jsonrpc":  "2.0",
+    "result":  {
+                   "block_hash":  "E6ak9W4vkPY6HMJoLEL9FS3pEs3n1D9VMfdWWfVtG3gR",
+                   "block_height":  275991839,
+                   "values":  [
+                                  {
+                                      "key":  "U1RBVEU=",
+                                      "value":  "AQAAAGIBAAAAZwEAAABpAQAAAHc="
+                                  }
+                              ]
+               },
+    "id":  "state"
+}

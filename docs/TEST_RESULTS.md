@@ -1,6 +1,6 @@
 # Verified results — 2026-11-03 (UTC+7)
 
-All PASS entries below were executed. SDK mock contexts, actual local NEAR receipts and public Testnet status are distinct evidence classes. No public NEAR transaction or deployment proof exists.
+All PASS entries below were executed. SDK mock contexts, actual local NEAR receipts and public Testnet evidence are distinct classes. Phase 1 results below are historical; subsequent public deployment/init proof is recorded in `TESTNET_PROOF.md`. Public transfer/deny demo remains pending.
 
 Environment: Windows/PowerShell Node 24.14.1/npm 11.11.0; Ubuntu WSL Rust/Cargo 1.99.1, Python cryptography 41.0.7; near-sdk 5.30.0; official near-sandbox 2.14.0-rc.5 protocol 88. Cargo invocations used project-local toolchain with Linux temporary cache/target; ordinary Linux reproduction is in `contracts/near-safety-vault/tests/README.md`.
 

@@ -1,6 +1,6 @@
 # NEAR Safety Vault (prototype)
 
-Isolated from the inherited Anchor workspace. Native NEAR only. Verified locally with 21 SDK unit tests and real sandbox receipts; no Testnet deployment yet.
+Isolated from the inherited Anchor workspace. Native NEAR only. Verified locally with 21 SDK unit tests and real sandbox receipts. Testnet deployment/init verified at `nhat-redline-vault.testnet`; public transfer/deny demo pending. See `../../docs/TESTNET_PROOF.md`.
 
 ```sh
 cargo test --manifest-path contracts/near-safety-vault/Cargo.toml
