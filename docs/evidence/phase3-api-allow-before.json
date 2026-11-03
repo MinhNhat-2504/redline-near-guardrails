@@ -1,0 +1,80 @@
+{
+  "capturedAt": "2026-11-03T14:08:54.323Z",
+  "network": "testnet",
+  "request": {
+    "grant_id": "grant-fed48ec7b5db4ba59fe224d9f807d64f",
+    "intent_id": "api-safe-517314f69acd437e8b01bfeba3fd45a8",
+    "nonce": "0",
+    "asset": "NEAR",
+    "recipient": "nhat-redline-payee.testnet",
+    "amount": "10000000000000000000000",
+    "policy_hash": "138919a19b9a15eaa1edff9ff8123d1c883d06636b5229d80252edda62062c24"
+  },
+  "blocks": {},
+  "grant": {
+    "value": {
+      "owner": "nhat-redline-owner.testnet",
+      "policy": {
+        "executor": "nhat-redline-agent.testnet",
+        "policy_hash": "138919a19b9a15eaa1edff9ff8123d1c883d06636b5229d80252edda62062c24",
+        "spend_cap": "50000000000000000000000",
+        "max_transactions": 3,
+        "recipients": [
+          "nhat-redline-payee.testnet"
+        ],
+        "expires_at_ns": "1793738771164000000",
+        "cooldown_ns": "0"
+      },
+      "active": true,
+      "finalized_spent": "0",
+      "pending_reserved": "0",
+      "finalized_transactions": 0,
+      "pending_transactions": 0,
+      "next_nonce": "0",
+      "has_reserved": false,
+      "last_reserved_ns": "0"
+    },
+    "blockHeight": 276059242,
+    "blockHash": "EdVX26pXdEamTm66F7zjgo9Gy6bE3F9WvT2wKfm6iHfc"
+  },
+  "intent": {
+    "value": null,
+    "blockHeight": 276059245,
+    "blockHash": "vZHAVtPEas8sz1AE2xtyRebdNaHghmp4tpFtMrqUcDB"
+  },
+  "owner": {
+    "value": {
+      "credited": "600000000000000000000000",
+      "finalized_spent": "50000000000000000000000",
+      "pending_reserved": "0",
+      "completed_withdrawals": "450000000000000000000000",
+      "pending_withdrawals": "0",
+      "storage_available": "30450000000000000000000"
+    },
+    "blockHeight": 276059249,
+    "blockHash": "DFzwVEEE3Ln2YBSRv4H7GiMoU6hQAJpAXgMMsQu3K7gS"
+  },
+  "key": {
+    "block_hash": "7hTvwj1VFUDEmdFnJctsrNstLoyvmmwsotnKr3XLQfqR",
+    "block_height": 276059252,
+    "nonce": "276023048000001",
+    "permission": {
+      "FunctionCall": {
+        "allowance": "99735036076573400000000",
+        "method_names": [
+          "execute_transfer"
+        ],
+        "receiver_id": "nhat-redline-vault.testnet"
+      }
+    }
+  },
+  "payee": {
+    "amount": "10050000000000000000000000",
+    "block_hash": "2vaguKYjys1pvWGDoNDqPoZaymNAKv8JcsazkP1Wo5vA",
+    "block_height": 276059257,
+    "code_hash": "11111111111111111111111111111111",
+    "locked": "0",
+    "storage_paid_at": 0,
+    "storage_usage": 182
+  }
+}
