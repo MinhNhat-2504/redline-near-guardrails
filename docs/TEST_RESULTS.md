@@ -100,3 +100,10 @@ Resolved failed checks: first new signature revalidation failed because Borsh de
 NOT RUN: real owner-wallet NEP-413 login, scoped-key API execution on public Testnet, full historical block scan, Phase 4 NEAR UI E2E and hosted workflow execution. These keep Phase 3 PARTIAL. Frontend/Rust source unchanged; their Phase 2 test/build logs are not relabeled as new runs.
 
 - Approved implementation pre-commit secret-pattern scan PASS: 617 reachable/staged blobs, no new findings, exact inherited TESTONLY exception only. Evidence `evidence/phase3-implementation-secret-scan.json`; pattern-scan limitations apply. All disposable test containers/server processes were stopped with identity guards; the temporary initial connection file was removed. No existing database or real executor key was touched.
+
+## CLI sign-in compatibility checkpoint
+
+- PASS 344 unit tests, 17 real Postgres tests: exact public CLI signature normalization, explicitly issued callback-less payload, strict wallet/CLI cross-mode refusal and prior regression coverage. `phase3-cli-auth-{unit,postgres}.log`.
+- PASS npm run typecheck and npx tsc -p tsconfig.json (`phase3-cli-auth-{typecheck,ts-build}.log`). Direct TS compile avoids regenerating a Prisma DLL held by the running user server; no schema change. This is not falsely recorded as npm run build.
+- Independent installed-key GET /health PASS (`phase3-installed-key-health.json`). Actual CLI path/version --check-cli PASS (`phase3-cli-login-path-check.log`), no key read/signature. Known restricted esbuild EPERM attempt resolved with permitted check-only execution.
+- Actual owner CLI sign-in helper NOT RUN by agent, no session token read, no new financial action. User restart/signature required next. Phase 3 PARTIAL.

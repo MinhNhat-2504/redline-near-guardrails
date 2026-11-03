@@ -40,29 +40,30 @@ export class NearAuth {
     private readonly now: () => number = Date.now,
   ) {}
 
-  async challenge(account: string) {
+  async challenge(account: string, clientType: "wallet" | "cli" = "wallet") {
     accountId.parse(account);
     const id = randomBytes(32).toString("hex");
     const state = randomBytes(32).toString("base64url");
     const nonce = randomBytes(32).toString("base64");
     const expiresAt = new Date(this.now() + 5 * 60_000);
-    const message = ["REDLINE NEAR sign-in", `Account: ${account}`, "Network: testnet", `Recipient: ${this.recipient}`,
+    const callbackUrl = clientType === "cli" ? "" : this.callbackUrl;
+    const message = ["REDLINE NEAR sign-in", `Account: ${account}`, "Network: testnet", `Client: ${clientType}`, `Recipient: ${this.recipient}`,
       `State: ${state}`, `Expires: ${expiresAt.toISOString()}`, "Sign-in only. This does not authorize a transfer."].join("\n");
-    await this.db.nearChallenge.create({ data: { id, accountId: account, message, nonce, stateHash: hash(state), recipient: this.recipient, callbackUrl: this.callbackUrl, expiresAt } });
-    return { challengeId: id, state, accountId: account, message, recipient: this.recipient, nonce, callbackUrl: this.callbackUrl, expiresAt: expiresAt.toISOString() };
+    await this.db.nearChallenge.create({ data: { id, accountId: account, message, nonce, stateHash: hash(state), recipient: this.recipient, callbackUrl, expiresAt } });
+    return { challengeId: id, state, accountId: account, message, recipient: this.recipient, nonce, callbackUrl: callbackUrl || undefined, clientType, expiresAt: expiresAt.toISOString() };
   }
 
   async verify(input: unknown) {
     const body = signedBody.parse(input);
     const challenge = await this.db.nearChallenge.findUnique({ where: { id: body.challengeId } });
     if (!challenge || challenge.usedAt || challenge.expiresAt.getTime() <= this.now() || challenge.accountId !== body.accountId ||
-        challenge.stateHash !== hash(body.state) || challenge.recipient !== this.recipient || challenge.callbackUrl !== this.callbackUrl) {
+        challenge.stateHash !== hash(body.state) || challenge.recipient !== this.recipient || (challenge.callbackUrl !== this.callbackUrl && challenge.callbackUrl !== "")) {
       throw httpError(401, "Invalid or expired NEAR challenge");
     }
     try {
       await verifyMessage({ signerAccountId: body.accountId, signerPublicKey: body.publicKey,
         signature: Buffer.from(body.signature, "base64"), provider: this.provider,
-        payload: { message: challenge.message, nonce: Buffer.from(challenge.nonce, "base64"), recipient: challenge.recipient, callbackUrl: challenge.callbackUrl } });
+        payload: { message: challenge.message, nonce: Buffer.from(challenge.nonce, "base64"), recipient: challenge.recipient, callbackUrl: challenge.callbackUrl || undefined } });
     } catch { throw httpError(401, "NEAR signature or finalized key ownership could not be verified"); }
     const token = randomBytes(32).toString("base64url");
     const expiresAt = new Date(this.now() + 30 * 60_000);

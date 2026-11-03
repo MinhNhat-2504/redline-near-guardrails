@@ -116,3 +116,15 @@ For this Windows workspace, persistent local database setup has been performed s
 ```
 
 It reuses the labeled local development DB and volume, exports local process config and starts compiled Node server. Runtime first verifies public on-chain scope before loading the explicitly configured new executor file. Keep that window open. Visit `http://127.0.0.1:8787/health`; expect chain=near, network=testnet, signingEnabled=true. No transfer occurs on startup. `-SetupOnly` was executed/verified without opening the executor credential or starting the API. Actual installed-key startup, owner sign-in and writable E2E remain pending. Local DB metadata/credential stays in ignored `.tooling/near-local/`; do not share or commit it. Stopping the API leaves DB data intact.
+
+## CLI owner sign-in (near-cli-rs 0.30.1)
+
+Installed-key server health is now independently verified with signingEnabled=true. To load CLI-login support, restart the API after the compiled update. Keep that window running and open a second PowerShell in backend:
+
+```powershell
+npx.cmd tsx scripts/near-login-cli.ts
+```
+
+This USER-run command prints an off-chain sign-in challenge, delegates signing to the owner's local NEAR CLI keychain, converts the CLI's public ed25519:base58 signature to the API's base64 encoding, verifies it and checks /me. It never reads an owner secret file or sends a transaction. Token is saved only in ignored `.tooling/near-local/session.json`, never printed or placed in committed evidence. Only account/public key/challenge ID/expiry/authenticated status can be recorded as a public outcome. Do not share session.json.
+
+CLI 0.30.1 source uses callback_url=None: [tagged signer source](https://github.com/near/near-cli-rs/blob/v0.30.1/src/commands/message/sign_nep413/signer/mod.rs), [tagged signature output](https://github.com/near/near-cli-rs/blob/v0.30.1/src/commands/message/sign_nep413/signature_options/sign_with_keychain.rs). Explicit clientType=cli is therefore selected when issuing the challenge and retained server-side, rather than trying both signature payloads. Browser-wallet default still signs the exact configured callback. Mixed payloads are rejected; one-time nonce/state/recipient/network/account/expiry and finalized FullAccess ownership checks remain mandatory. Real owner helper signing is not claimed until user executes it. `--check-cli` only checks executable version and does not issue/sign a challenge.

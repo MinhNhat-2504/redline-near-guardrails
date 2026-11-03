@@ -39,8 +39,8 @@ const provider = new FinalAccessProvider({ url: "https://rpc.testnet.near.org" }
 const access = vi.spyOn(provider, "viewAccessKey").mockImplementation(async () => ({ permission: permission as never, nonce: 5n, block_hash: fixture("final-grant").block_hash, block_height: 100 }));
 const auth = new NearAuth(db, provider, "redline.test", "https://redline.test/near/auth/callback", () => now);
 
-async function proof(account = OWNER) {
-  const challenge = await auth.challenge(account); challengeIds.push(challenge.challengeId);
+async function proof(account = OWNER, clientType: "wallet" | "cli" = "wallet") {
+  const challenge = await auth.challenge(account, clientType); challengeIds.push(challenge.challengeId);
   const signed = await signer.signNep413Message(account, { message: challenge.message, recipient: challenge.recipient,
     nonce: Buffer.from(challenge.nonce, "base64"), callbackUrl: challenge.callbackUrl });
   return { challenge, body: { challengeId: challenge.challengeId, state: challenge.state, accountId: account, publicKey, signature: Buffer.from(signed.signature).toString("base64") } };
@@ -65,6 +65,22 @@ afterAll(async () => {
 });
 
 describe("NEP-413 SDK crypto + Postgres session atomicity", () => {
+  it("accepts explicitly issued callback-less CLI payload without changing wallet defaults", async () => {
+    permission="FullAccess";const p=await proof(OWNER,"cli");
+    expect(p.challenge.callbackUrl).toBeUndefined();expect(p.challenge.clientType).toBe("cli");expect(p.challenge.message).toContain("Client: cli");
+    expect((await db.nearChallenge.findUniqueOrThrow({where:{id:p.challenge.challengeId}})).callbackUrl).toBe("");
+    const session=await auth.verify(p.body);sessionIds.push(createHash("sha256").update(session.token).digest("hex"));
+    expect((await auth.requireSession(`Bearer ${session.token}`)).accountId).toBe(OWNER);
+  });
+  it("never falls back between browser callback and CLI payload after failed verification", async () => {
+    permission="FullAccess";
+    for(const clientType of ["wallet","cli"] as const){
+      const p=await proof(OWNER,clientType);
+      const signed=await signer.signNep413Message(OWNER,{message:p.challenge.message,recipient:p.challenge.recipient,nonce:Buffer.from(p.challenge.nonce,"base64"),callbackUrl:clientType==="wallet"?undefined:"https://redline.test/near/auth/callback"});
+      await expect(auth.verify({...p.body,signature:Buffer.from(signed.signature).toString("base64")})).rejects.toThrow();
+      expect((await db.nearChallenge.findUniqueOrThrow({where:{id:p.challenge.challengeId}})).usedAt).toBeNull();
+    }
+  });
   it("issues a bound 32-byte challenge, authenticates and stores only token hash", async () => {
     permission = "FullAccess";
     const p = await proof(); expect(Buffer.from(p.challenge.nonce, "base64")).toHaveLength(32);

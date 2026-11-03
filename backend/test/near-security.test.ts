@@ -9,8 +9,25 @@ import { prepareExecutor } from "../scripts/prepare-near-executor.js";
 import { mkdtemp, readFile, unlink, rmdir } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { cliLoginProof } from "../src/near/cli-login.js";
+import { KeyPair, KeyPairSigner, baseEncode } from "near-api-js";
 
 const fixture = (n: string) => JSON.parse(readFileSync(new URL(`../../docs/evidence/phase2-${n}.json`, import.meta.url), "utf8")).result;
+
+describe("CLI 0.30.1 signature normalization, ephemeral SDK key only",()=>{
+  it("converts CLI ed25519:base58 to the API's exact 64-byte base64 signature",async()=>{
+    const signer=new KeyPairSigner(KeyPair.fromRandom("ed25519"));
+    const signed=await signer.signNep413Message("owner.testnet",{message:"test",nonce:new Uint8Array(32),recipient:"localhost:5173"});
+    const challenge={accountId:"owner.testnet",challengeId:"challenge",state:"state"};
+    const stdout=JSON.stringify({accountId:challenge.accountId,publicKey:signed.publicKey.toString(),signature:"ed25519:"+baseEncode(signed.signature)});
+    expect(cliLoginProof(stdout,challenge)).toEqual({...challenge,publicKey:signed.publicKey.toString(),signature:Buffer.from(signed.signature).toString("base64")});
+    expect(()=>cliLoginProof(stdout,{...challenge,accountId:"stranger.testnet"})).toThrow("different account");
+  });
+  it("rejects wrong signature length instead of guessing an encoding",()=>{
+    const key=KeyPair.fromRandom("ed25519");
+    expect(()=>cliLoginProof(JSON.stringify({accountId:"owner.testnet",publicKey:key.getPublicKey().toString(),signature:"ed25519:1111"}),{accountId:"owner.testnet",challengeId:"x",state:"s"})).toThrow("length");
+  });
+});
 
 describe("finalized key ownership transport and exact nonce", () => {
   it("preserves a JSON u64 nonce at maximum, before IEEE-754 rounding", () => {

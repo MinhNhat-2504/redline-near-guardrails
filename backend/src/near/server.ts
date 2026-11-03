@@ -24,7 +24,10 @@ export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: str
   });
   const session = (req: FastifyRequest) => auth.requireSession(req.headers.authorization);
   app.get("/health", async () => ({ ok: true, chain: "near", network: "testnet", contractId: chain.config.contractId, executorId: chain.config.executorId, identityEnforced: true, signingEnabled: chain.signingEnabled }));
-  app.post("/near/auth/challenge", async req => auth.challenge(z.object({ accountId }).strict().parse(req.body).accountId));
+  app.post("/near/auth/challenge", async req => {
+    const body = z.object({ accountId, clientType: z.enum(["wallet", "cli"]).optional() }).strict().parse(req.body);
+    return auth.challenge(body.accountId, body.clientType);
+  });
   app.post("/near/auth/verify", async req => auth.verify(req.body));
   app.post("/near/auth/logout", async req => { await auth.logout(req.headers.authorization ?? ""); return { ok: true }; });
   app.get("/near/auth/me", async req => { const s = await session(req); return { accountId: s.accountId, expiresAt: s.expiresAt.toISOString() }; });
