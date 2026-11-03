@@ -118,6 +118,17 @@ describe("bounded persisted-packet broadcast transport (mock fetch, no chain sub
     vi.stubGlobal('fetch',vi.fn(async()=>{throw new Error('secret URL in transport error');}));
     await expect(broadcastPrepared('https://rpc.testnet.near.org','test-packet')).rejects.toMatchObject({code:'TRANSPORT_OR_TIMEOUT',message:'NEAR submission unavailable: TRANSPORT_OR_TIMEOUT'});
   });
+  it.each([
+    ['InvalidSignature','InvalidSignature'],
+    ['Expired','Expired'],
+    [{InvalidNonce:{ak_nonce:99,tx_nonce:1}},'InvalidNonce'],
+    [{InvalidAccessKeyError:{NotEnoughAllowance:{allowance:'0',secret:'never reflect'}}},'NotEnoughAllowance'],
+    [{InvalidAccessKeyError:{ReceiverMismatch:{ak_receiver:'private',tx_receiver:'private'}}},'ReceiverMismatch'],
+    [{UnexpectedSecret:'do not reflect'},undefined],
+  ])("extracts only whitelisted invalid transaction category %#",async(invalid,category)=>{
+    vi.stubGlobal('fetch',vi.fn(async()=>Response.json({id:'redline-prepared',error:{cause:{name:'INVALID_TRANSACTION'},data:{TxExecutionError:{InvalidTxError:invalid}}}})));
+    await expect(broadcastPrepared('https://rpc.testnet.near.org','test-packet')).rejects.toMatchObject({code:category?`INVALID_TRANSACTION:${category}`:'INVALID_TRANSACTION'});
+  });
 });
 
 describe('local executor candidate helper (temporary test directory only)',()=>{
