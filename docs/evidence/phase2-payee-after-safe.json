@@ -1,0 +1,13 @@
+{
+    "jsonrpc":  "2.0",
+    "result":  {
+                   "amount":  "10050000000000000000000000",
+                   "block_hash":  "BW2r38aiDxWLtadLnnmcTbkoQWeubZ1WDGdkbxvvjMPq",
+                   "block_height":  275996781,
+                   "code_hash":  "11111111111111111111111111111111",
+                   "locked":  "0",
+                   "storage_paid_at":  0,
+                   "storage_usage":  182
+               },
+    "id":  "payee-after-safe"
+}

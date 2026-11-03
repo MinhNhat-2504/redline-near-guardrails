@@ -1,0 +1,17 @@
+{
+  "scope": "Finalized public Testnet RPC; actual signed transfer and callback",
+  "transaction": "3MVR1WBn7C5XLk9KriUuT2ujqqkZPkTqnnNVdEgQMrg1",
+  "intent_id": "safe-32a0ed10f17f4b7e8abb4c2f0ed8a444",
+  "status": "SETTLED",
+  "reason": "OK",
+  "all_receipt_outcomes_successful": true,
+  "receipt_count": 6,
+  "payee_before_yoctoNEAR": "10000000000000000000000000",
+  "payee_after_yoctoNEAR": "10050000000000000000000000",
+  "payee_delta_yoctoNEAR": "50000000000000000000000",
+  "grant_spent_yoctoNEAR": "50000000000000000000000",
+  "owner_available_yoctoNEAR": "450000000000000000000000",
+  "grant_next_nonce": "1",
+  "pending_amount": "0",
+  "checks": "transaction identity and exact args, final return, intent view, callback, grant and owner ledgers, payee delta all asserted"
+}
