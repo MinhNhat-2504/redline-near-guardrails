@@ -1,0 +1,20 @@
+{
+  "status": "UNSIGNED",
+  "owner": "nhat-redline-owner.testnet",
+  "executor": "nhat-redline-agent.testnet",
+  "contract": "nhat-redline-vault.testnet",
+  "grantId": "grant-1a0c71424cd843fc84e1ae1ecfc5f193",
+  "policy": {
+    "executor": "nhat-redline-agent.testnet",
+    "policy_hash": "73b99e159ead96098dc95b117346b3a866183bef3195840f6c09658b4ab41c07",
+    "spend_cap": "50000000000000000000000",
+    "max_transactions": 3,
+    "recipients": [
+      "nhat-redline-payee.testnet"
+    ],
+    "expires_at_ns": "1793694016906000000",
+    "cooldown_ns": "0"
+  },
+  "plannedTopupYocto": "100000000000000000000000",
+  "financialActions": "NONE"
+}

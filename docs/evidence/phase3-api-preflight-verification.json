@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "scope": "Two FINAL owner transactions and pre-transfer snapshots only; API executor transfer NOT RUN",
+  "hashes": {
+    "owner-deposit": "EwAtGZnEMncRqcgFH6PznBiMiVr8opi8wZRjjfzHL5hR",
+    "grant-created": "7ELKNpW6W67jpy2FUpzPvUTmkmVfsh1JejzTonVHdMXt"
+  },
+  "grantId": "grant-1a0c71424cd843fc84e1ae1ecfc5f193",
+  "availableYocto": "100000000000000000000000",
+  "payeeBaselineYocto": "10050000000000000000000000",
+  "evidenceSha256": {
+    "phase3-api-demo-prepared.json": "2ddfda526268f5ab9a736bef8c1d6d9c87f28098d039dc96e7eaf9fca4f55772",
+    "phase3-api-grant-before-transfer.json": "c188d8687d643b2371255ae744cbbf91e0f69c7448a7a5331aafd1c3cab91af7",
+    "phase3-api-grant-created.json": "7c88889987f9ec7a0180a65542278198cb681e0908628fc8cce67a404ba97d46",
+    "phase3-api-owner-before-transfer.json": "ffd22bfbe374d6cde6d1a68fc7572c37ee918fa2ee8c03ccf71ecbe2d3baad30",
+    "phase3-api-owner-deposit.json": "f63f33dc6beb8bc6486577b930e720266169bac2aaa4ced561a5140a7a143cc5",
+    "phase3-api-payee-before-transfer.json": "9764405173d79b750a9cada8270c09ff32ec14dbb3c9b72a1785f597431ed4cb"
+  }
+}

@@ -55,3 +55,9 @@ The earlier automatic approval usage-limit error prevented collection temporaril
 Owner signed all owner actions locally; agent signed executor actions locally. No signing keys were read by the coding agent, copied into the backend or committed. Do not repeat funding, grant creation, transfer or withdrawal to reproduce offline verification. The immutable demonstration grant is revoked and expired; a future live demo needs a new owner-reviewed grant.
 
 Unit/regression/build rechecks and exact logs are listed in `TEST_RESULTS.md`. All seven gates and concurrency/failure cases were tested in the real local sandbox in Phase 1; public Testnet specifically proves ALLOW, spend cap, destination, revoke and withdrawal. Public replay/concurrency/failure scenarios were not separately run. GitHub CI execution, live database/API/UI NEAR E2E and independent audit remain NOT RUN.
+
+## Phase 3 API demo preparation: independently verified owner actions
+
+Additional owner deposit0.1 NEAR [transaction](https://explorer.testnet.near.org/transactions/EwAtGZnEMncRqcgFH6PznBiMiVr8opi8wZRjjfzHL5hR) and new grant [transaction](https://explorer.testnet.near.org/transactions/7ELKNpW6W67jpy2FUpzPvUTmkmVfsh1JejzTonVHdMXt) independently verified FINAL with exact arguments and successful receipt outcomes. Grant grant-1a0c71424cd843fc84e1ae1ecfc5f193: cap0.05, max3, only payee, executor agent, active/nonce0/spent0 at finalized snapshot; expiry November3 15:20:16.906 UTC+7. Owner available0.1; payee baseline10.05 native NEAR.
+
+Run `python scripts/verify-near-api-demo-preflight.py` for offline consistency checks; report [phase3-api-preflight-verification.json](evidence/phase3-api-preflight-verification.json). These owner actions do not prove scoped executor API execution. That transfer remains NOT RUN; user steps in [NEAR_API_DEMO_NEXT.md](NEAR_API_DEMO_NEXT.md). Do not repeat deposit/create_grant.
