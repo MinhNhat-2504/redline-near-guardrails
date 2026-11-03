@@ -104,3 +104,15 @@ Executed results: **342 unit tests**, **15 real Postgres integration tests**, ty
 Live proof separately exercised actual public RPC, real isolated Postgres and NEAR API reads: seven existing FINAL transactions, finalized ledger/grant, a live public FullAccess-key query, durable restart/dedupe and two finalized discovery blocks. A separately started compiled `CHAIN=near` server reported signing disabled, rejected an unauthenticated owner action (401) and did not expose legacy routes (404). This is not a full deployment-history backfill or public writable/authenticated-wallet E2E proof. See `docs/evidence/phase3-{live-api-proof,startup-smoke}.json` and `PROGRESS.md`.
 
 CI workflow `near-backend.yml` adds a disposable PostgreSQL service, units, migration, DB tests and build. Hosted CI result is not yet verified. Public Testnet signing/NEP-413 browser login, Phase 4 UI, professional audit and existing npm advisories remain open. No swap/NEP-141/marketplace support is claimed.
+
+## Current scoped-key/local-start checkpoint
+
+User's AddKey is independently verified FINAL: [5KvXEx522c69FErHRmrxDahpMA8XzxFKXuKXAsnUA1BZ](https://explorer.testnet.near.org/transactions/5KvXEx522c69FErHRmrxDahpMA8XzxFKXuKXAsnUA1BZ). Current permission matches exactly vault/execute_transfer/0.1 NEAR allowance. Do not add the same key again. The coding agent has not read its private file.
+
+For this Windows workspace, persistent local database setup has been performed separately from disposable tests. From backend, the USER can start the API with:
+
+```powershell
+.\scripts\start-near-local.ps1
+```
+
+It reuses the labeled local development DB and volume, exports local process config and starts compiled Node server. Runtime first verifies public on-chain scope before loading the explicitly configured new executor file. Keep that window open. Visit `http://127.0.0.1:8787/health`; expect chain=near, network=testnet, signingEnabled=true. No transfer occurs on startup. `-SetupOnly` was executed/verified without opening the executor credential or starting the API. Actual installed-key startup, owner sign-in and writable E2E remain pending. Local DB metadata/credential stays in ignored `.tooling/near-local/`; do not share or commit it. Stopping the API leaves DB data intact.

@@ -1,0 +1,131 @@
+{
+    "jsonrpc":  "2.0",
+    "result":  {
+                   "final_execution_status":  "FINAL",
+                   "receipts_outcome":  [
+                                            {
+                                                "block_hash":  "4hS86AZjMJZDBDj972t5vv6u4bTTtCo7Xae3VHgeKwqa",
+                                                "id":  "5JUzEFH8G1hS4bC1QNQxtifqkX5sipdwDhdU2oGTHKDE",
+                                                "outcome":  {
+                                                                "executor_id":  "nhat-redline-agent.testnet",
+                                                                "gas_burnt":  210309855627,
+                                                                "logs":  [
+
+                                                                         ],
+                                                                "metadata":  {
+                                                                                 "contracts":  [
+                                                                                                   null
+                                                                                               ],
+                                                                                 "gas_profile":  [
+
+                                                                                                 ],
+                                                                                 "version":  4
+                                                                             },
+                                                                "receipt_ids":  [
+                                                                                    "Tt8rraBTJ7MKdoUowqRvB2hPjquFimbM2Zi83MHwwVj"
+                                                                                ],
+                                                                "status":  {
+                                                                               "SuccessValue":  ""
+                                                                           },
+                                                                "tokens_burnt":  "21030985562700000000"
+                                                            },
+                                                "proof":  [
+                                                              {
+                                                                  "direction":  "Left",
+                                                                  "hash":  "GF3rV4KMjV7WHuxnmu9dC2Maq2A5TwJeEhYQL9DXTNsP"
+                                                              }
+                                                          ]
+                                            },
+                                            {
+                                                "block_hash":  "HfsNLjkcGrbmRLrnUQF5eUsEnEAxbTFFxdGtnJd34cYQ",
+                                                "id":  "Tt8rraBTJ7MKdoUowqRvB2hPjquFimbM2Zi83MHwwVj",
+                                                "outcome":  {
+                                                                "executor_id":  "nhat-redline-agent.testnet",
+                                                                "gas_burnt":  223182562500,
+                                                                "logs":  [
+
+                                                                         ],
+                                                                "metadata":  {
+                                                                                 "contracts":  [
+                                                                                                   null
+                                                                                               ],
+                                                                                 "gas_profile":  [
+
+                                                                                                 ],
+                                                                                 "version":  4
+                                                                             },
+                                                                "receipt_ids":  [
+
+                                                                                ],
+                                                                "status":  {
+                                                                               "SuccessValue":  ""
+                                                                           },
+                                                                "tokens_burnt":  "0"
+                                                            },
+                                                "proof":  [
+
+                                                          ]
+                                            }
+                                        ],
+                   "status":  {
+                                  "SuccessValue":  ""
+                              },
+                   "transaction":  {
+                                       "actions":  [
+                                                       {
+                                                           "AddKey":  {
+                                                                          "access_key":  {
+                                                                                             "nonce":  0,
+                                                                                             "permission":  {
+                                                                                                                "FunctionCall":  {
+                                                                                                                                     "allowance":  "100000000000000000000000",
+                                                                                                                                     "method_names":  [
+                                                                                                                                                          "execute_transfer"
+                                                                                                                                                      ],
+                                                                                                                                     "receiver_id":  "nhat-redline-vault.testnet"
+                                                                                                                                 }
+                                                                                                            }
+                                                                                         },
+                                                                          "public_key":  "ed25519:9hauPZp4YBAHNMNp8bf4ThyYuSMeVTrKn5twEU2JrCy3"
+                                                                      }
+                                                       }
+                                                   ],
+                                       "hash":  "5KvXEx522c69FErHRmrxDahpMA8XzxFKXuKXAsnUA1BZ",
+                                       "nonce":  275991263000006,
+                                       "priority_fee":  0,
+                                       "public_key":  "ed25519:DzLVsdSSeckTyciJDNAd1JEx7ATu9bTTNGXYjzcgk1m2",
+                                       "receiver_id":  "nhat-redline-agent.testnet",
+                                       "signature":  "ed25519:5BcQy1dx22N4jrhLihYrbQTuhgTQGwhwCucrqQNezHeMzqKVBs78MUCmmMgUmTh85BLb7hfmxFSS12EJbKJKsBM8",
+                                       "signer_id":  "nhat-redline-agent.testnet"
+                                   },
+                   "transaction_outcome":  {
+                                               "block_hash":  "4hS86AZjMJZDBDj972t5vv6u4bTTtCo7Xae3VHgeKwqa",
+                                               "id":  "5KvXEx522c69FErHRmrxDahpMA8XzxFKXuKXAsnUA1BZ",
+                                               "outcome":  {
+                                                               "executor_id":  "nhat-redline-agent.testnet",
+                                                               "gas_burnt":  210309855627,
+                                                               "logs":  [
+
+                                                                        ],
+                                                               "metadata":  {
+                                                                                "gas_profile":  null,
+                                                                                "version":  1
+                                                                            },
+                                                               "receipt_ids":  [
+                                                                                   "5JUzEFH8G1hS4bC1QNQxtifqkX5sipdwDhdU2oGTHKDE"
+                                                                               ],
+                                                               "status":  {
+                                                                              "SuccessReceiptId":  "5JUzEFH8G1hS4bC1QNQxtifqkX5sipdwDhdU2oGTHKDE"
+                                                                          },
+                                                               "tokens_burnt":  "21030985562700000000"
+                                                           },
+                                               "proof":  [
+                                                             {
+                                                                 "direction":  "Right",
+                                                                 "hash":  "GVm8AsS7V8P9cfWdnP1avnrLmX6UmYTKjEnTmaUWS8hy"
+                                                             }
+                                                         ]
+                                           }
+               },
+    "id":  "executor-add-key"
+}

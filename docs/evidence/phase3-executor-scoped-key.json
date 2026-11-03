@@ -1,0 +1,18 @@
+{
+    "jsonrpc":  "2.0",
+    "result":  {
+                   "block_hash":  "4MsCcE3R1wkBsvCwSM3dy3QwtjbckKCfT6hHnNAgzFSN",
+                   "block_height":  276011787,
+                   "nonce":  276011715000000,
+                   "permission":  {
+                                      "FunctionCall":  {
+                                                           "allowance":  "100000000000000000000000",
+                                                           "method_names":  [
+                                                                                "execute_transfer"
+                                                                            ],
+                                                           "receiver_id":  "nhat-redline-vault.testnet"
+                                                       }
+                                  }
+               },
+    "id":  "executor-scoped-key"
+}

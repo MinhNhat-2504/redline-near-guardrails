@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "transaction": "5KvXEx522c69FErHRmrxDahpMA8XzxFKXuKXAsnUA1BZ",
+  "final_execution_status": "FINAL",
+  "account_id": "nhat-redline-agent.testnet",
+  "public_key": "ed25519:9hauPZp4YBAHNMNp8bf4ThyYuSMeVTrKn5twEU2JrCy3",
+  "permission": {
+    "FunctionCall": {
+      "allowance": "100000000000000000000000",
+      "method_names": [
+        "execute_transfer"
+      ],
+      "receiver_id": "nhat-redline-vault.testnet"
+    }
+  },
+  "view_block_height": 276011787,
+  "checks": "exact signer/receiver/single AddKey/public key/FunctionCall receiver+single method+0.1 NEAR allowance; all receipts successful; finalized current permission matches",
+  "private_key_access": "NONE",
+  "backend_activation": "NOT RUN"
+}

@@ -1,0 +1,17 @@
+{
+  "result": "PASS",
+  "scope": "new persistent localhost NEAR development DB only",
+  "tables": [
+    "NearChallenge",
+    "NearGrant",
+    "NearIntentRequest",
+    "NearReceiptEvent",
+    "NearSession",
+    "NearTransaction",
+    "NearWatermark"
+  ],
+  "repeatedSetup": "PASS, same stored metadata and existing volume reused",
+  "executorCredentialRead": "NONE",
+  "backendStartup": "NOT RUN",
+  "chainWrites": "NONE"
+}
