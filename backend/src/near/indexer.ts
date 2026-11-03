@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Prisma } from "@prisma/client";
 import type { NearChain } from "../chain/near.js";
 import { accountId, hashId } from "./types.js";
-import { terminalStates } from "./store.js";
+import { terminalStates, nonRetryableStates } from "./store.js";
 import { NearRpcError } from "./rpc.js";
 
 const blockSchema = z.object({ header: z.object({ height: z.number().int().nonnegative().safe(), hash: hashId, prev_hash: hashId }),
@@ -24,7 +24,7 @@ export class NearIndexer {
   }
 
   async reconcileJournal(limit = 25): Promise<number> {
-    const rows = await this.chain.db.nearTransaction.findMany({ where: { scope: this.chain.store.scope, state: { notIn: terminalStates } }, orderBy: { createdAt: "asc" }, take: limit });
+    const rows = await this.chain.db.nearTransaction.findMany({ where: { scope: this.chain.store.scope, state: { notIn: nonRetryableStates } }, orderBy: { createdAt: "asc" }, take: limit });
     let resolved = 0;
     for (const row of rows) {
       try {

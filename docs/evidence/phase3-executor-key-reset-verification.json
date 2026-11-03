@@ -1,0 +1,20 @@
+{
+  "status": "VERIFIED_KEY_RESET_ONLY",
+  "network": "testnet",
+  "executor": "nhat-redline-agent.testnet",
+  "contract": "nhat-redline-vault.testnet",
+  "publicKey": "ed25519:9hauPZp4YBAHNMNp8bf4ThyYuSMeVTrKn5twEU2JrCy3",
+  "oldTransactionHash": "9ZNGTALnybEr2nPgSS8RRKgn29W18eQScoEnqeqoWrkH",
+  "oldKeyNonce": "276011715000001",
+  "resetTransactionHash": "AzsMwgFkYMpKPGmah47aNjn8nAbv58hK2BrE7fGRoUo7",
+  "resetExecutionHeight": 276023050,
+  "finalizedKeyNonce": "276023048000000",
+  "grantId": "grant-1a0c71424cd843fc84e1ae1ecfc5f193",
+  "intentId": "api-safe-4aac73cbc3d84ef3a49341bc82b5ec1f",
+  "grantExpiredAtVerification": false,
+  "originalIntentAbsent": true,
+  "financialBaselinesUnchanged": true,
+  "journalChanged": false,
+  "replacementSigned": false,
+  "limitation": "Collected FINAL public RPC consistency checks, not light-client proof. Old packet cannot pass current nonce; journal retirement/replacement requires a separate guarded step."
+}

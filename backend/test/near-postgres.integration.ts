@@ -19,6 +19,8 @@ import { buildNearApp } from "../src/near/server.js";
 import { nearConfig } from "../src/near/config.js";
 import { NearRpcError } from "../src/near/rpc.js";
 import { prepareOwnerAction } from "../src/near/owner-actions.js";
+import { invalidateResetPacket } from "../src/near/key-recovery.js";
+import { fixture as resetFixture } from "./near-key-reset-fixture.js";
 
 const database = process.env.NEAR_TEST_DATABASE_URL;
 if (!database) throw new Error("NEAR_TEST_DATABASE_URL required; never run these integration tests against an existing database");
@@ -62,6 +64,62 @@ afterAll(async () => {
   await db.nearChallenge.deleteMany({ where: { id: { in: challengeIds } } });
   await db.nearSession.deleteMany({ where: { tokenHash: { in: sessionIds } } });
   access.mockRestore(); await db.$disconnect();
+});
+
+describe("explicit key reset journal recovery (synthetic RPC, real isolated Postgres)", () => {
+  async function scenario() {
+    const { plan, input } = resetFixture();
+    plan.contract = `recovery-${randomUUID().slice(0,8)}.testnet`;
+    (input.access as any).permission.FunctionCall.receiver_id = plan.contract;
+    const localScope = `testnet:${plan.contract}`; testScopes.push(localScope);
+    const argsJson = JSON.stringify(plan.args);
+    await db.nearTransaction.create({ data: { scope: localScope, hash: plan.oldHash, signerId: plan.executor,
+      ownerId: plan.owner, grantId: plan.args.grant_id, intentId: plan.args.intent_id, argsJson,
+      keyPublic: plan.publicKey, keyNonce: 10, signedBase64: "synthetic-packet-must-be-preserved", state: "SUBMISSION_UNKNOWN" } });
+    await db.nearIntentRequest.create({ data: { scope: localScope, grantId: plan.args.grant_id, intentId: plan.args.intent_id, ownerId: plan.owner, argsJson, txHash: plan.oldHash } });
+    const rpc = new NearReadOnlyRpc();
+    vi.spyOn(rpc,"transaction").mockImplementation(async hash => {
+      if (hash === plan.resetHash) return input.reset;
+      throw new NearRpcError("REMOTE_ERROR","UNKNOWN_TRANSACTION");
+    });
+    vi.spyOn(rpc,"blockAtHash").mockResolvedValue(input.blocks[0]);
+    vi.spyOn(rpc,"accessKey").mockImplementation(async (_account,key) => key === plan.publicKey ? input.access : input.signingAccess);
+    vi.spyOn(rpc,"view").mockImplementation(async (_contract,method) => method === "get_grant" ? input.grant : method === "get_owner_balance" ? input.ledger : input.intent);
+    vi.spyOn(rpc,"account").mockResolvedValue(input.payee);
+    const where = { scope_hash: { scope: localScope, hash: plan.oldHash } };
+    return { plan, input, rpc, localScope, where };
+  }
+  it("invalidates only after fresh proof, preserves packet/binding, skips retries and is idempotent",async()=>{
+    const {plan,rpc,localScope,where}=await scenario();const guard=vi.fn();
+    const result=await invalidateResetPacket(db,rpc,plan,guard);
+    expect(result).toMatchObject({state:"INVALIDATED",finalized:false,events:[],keyResetProof:{resetTransactionHash:plan.resetHash}});
+    const row=await db.nearTransaction.findUniqueOrThrow({where});
+    expect(row.signedBase64).toBe("synthetic-packet-must-be-preserved");expect(row.keyNonce?.toFixed()).toBe("10");
+    expect((await db.nearIntentRequest.findUniqueOrThrow({where:{scope_grantId_intentId:{scope:localScope,grantId:plan.args.grant_id,intentId:plan.args.intent_id}}})).txHash).toBe(plan.oldHash);
+    const transactionReads=vi.mocked(rpc.transaction).mock.calls.length;
+    expect(await invalidateResetPacket(db,rpc,plan,guard)).toEqual(result);
+    expect(vi.mocked(rpc.transaction).mock.calls.length).toBe(transactionReads);
+    const broadcast=vi.fn();const chain=new NearChain({contractId:plan.contract,executorId:plan.executor,rpcUrl:"https://rpc.testnet.near.org"},rpc,provider,db,broadcast);
+    expect(await chain.resumePrepared(row)).toEqual(result);
+    expect(await chain.track(plan.oldHash,plan.executor)).toEqual(result);
+    expect(await new NearIndexer(chain,1).reconcileJournal()).toBe(0);
+    expect(broadcast).not.toHaveBeenCalled();expect(vi.mocked(rpc.transaction).mock.calls.length).toBe(transactionReads);
+    await expect(chain.store.commit(plan.oldHash,{transactionHash:plan.oldHash,finalized:true,state:"SETTLED",events:[]})).rejects.toThrow("contradictory");
+    expect((await db.nearTransaction.findUniqueOrThrow({where})).state).toBe("INVALIDATED");expect(guard).toHaveBeenCalledTimes(3);
+  });
+  it.each(["unchanged nonce","RPC transport failure","old transaction exists","backend restarted","intent rebound","already settled"])("refuses %s without mutating journal",async kind=>{
+    const {plan,input,rpc,localScope,where}=await scenario();const guard=vi.fn();
+    if(kind==="unchanged nonce") (input.access as any).nonce="10";
+    if(kind==="RPC transport failure") vi.mocked(rpc.transaction).mockImplementation(async hash=>{if(hash===plan.resetHash)return input.reset;throw new NearRpcError("TRANSPORT");});
+    if(kind==="old transaction exists") vi.mocked(rpc.transaction).mockResolvedValue(input.reset);
+    if(kind==="backend restarted") guard.mockImplementationOnce(()=>{}).mockImplementation(()=>{throw new Error("backend open");});
+    if(kind==="intent rebound") await db.nearIntentRequest.update({where:{scope_grantId_intentId:{scope:localScope,grantId:plan.args.grant_id,intentId:plan.args.intent_id}},data:{txHash:"7".repeat(43)}});
+    if(kind==="already settled") await db.nearTransaction.update({where,data:{state:"SETTLED"}});
+    await expect(invalidateResetPacket(db,rpc,plan,guard)).rejects.toThrow();
+    const row=await db.nearTransaction.findUniqueOrThrow({where});
+    expect(row.state).toBe(kind==="already settled"?"SETTLED":"SUBMISSION_UNKNOWN");expect(row.observation).toBeNull();
+    expect(row.signedBase64).toBe("synthetic-packet-must-be-preserved");
+  });
 });
 
 describe("NEP-413 SDK crypto + Postgres session atomicity", () => {

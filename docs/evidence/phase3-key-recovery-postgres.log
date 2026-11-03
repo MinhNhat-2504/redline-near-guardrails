@@ -1,0 +1,29 @@
+Script executed successfully.
+npx.cmd : ┌─────────────────────────────────────────────────────────┐
+At D:\Project\AI Engineer\redline-near-guardrails\backend\scripts\test-near-db.ps1:8 char:9
++         & $Command @Arguments
++         ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (┌──────────────...──────────────┐:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+│  Update available 6.5.0 -> 8.0.0-rc.29                  │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+
+> redline-backend@0.1.0 test:near:db
+> vitest run --config vitest.near-db.config.ts
+
+
+ RUN  v4.1.11 D:/Project/AI Engineer/redline-near-guardrails/backend
+
+
+ Test Files  1 passed (1)
+      Tests  25 passed (25)
+   Start at  15:30:18
+   Duration  3.15s (transform 139ms, setup 0ms, import 729ms, tests 2.28s, environment 0ms)

@@ -4,13 +4,15 @@ import type { ReceiptCheckpointStore } from "./reader.js";
 import { grantSchema, viewSchema } from "./types.js";
 
 export const terminalStates = ["SETTLED", "FAILED", "REJECTED", "RUNTIME_FAILED", "CONFIRMED"];
+// INVALIDATED is a verified local packet disposition, never a chain settlement.
+export const nonRetryableStates = [...terminalStates, "INVALIDATED"];
 
 export class NearStore implements ReceiptCheckpointStore {
   constructor(readonly db: PrismaClient, readonly scope: string) {}
 
   async has(hash: string): Promise<boolean> {
     const row = await this.db.nearTransaction.findUnique({ where: { scope_hash: { scope: this.scope, hash } } });
-    return Boolean(row && terminalStates.includes(row.state));
+    return Boolean(row && nonRetryableStates.includes(row.state));
   }
 
   async track(hash: string, signerId: string) {
@@ -25,6 +27,7 @@ export class NearStore implements ReceiptCheckpointStore {
     await this.db.$transaction(async tx => {
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${this.scope + ":tx:" + hash}, 0))`;
       const row = await tx.nearTransaction.findUniqueOrThrow({ where: { scope_hash: { scope: this.scope, hash } } });
+      if (row.state === "INVALIDATED") throw new Error("Invalidated packet has contradictory chain observation; manual reconciliation required");
       if (terminalStates.includes(row.state)) {
         if (row.observation !== JSON.stringify(observation)) throw new Error("Conflicting finalized observation");
         return;

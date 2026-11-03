@@ -5,7 +5,7 @@ import { Prisma, type PrismaClient, type NearTransaction } from "@prisma/client"
 import { z } from "zod";
 import { FinalAccessProvider } from "../near/auth.js";
 import { NearReadOnlyRpc } from "../near/rpc.js";
-import { NearStore, terminalStates } from "../near/store.js";
+import { NearStore, terminalStates, nonRetryableStates } from "../near/store.js";
 import { NearReceiptReader } from "../near/reader.js";
 import { accountId, grantSchema, httpError, ledgerSchema, transferSchema, viewSchema, type TransferArgs } from "../near/types.js";
 import { u64, U64_MAX } from "../near/units.js";
@@ -90,7 +90,7 @@ export class NearChain {
         if (existing.ownerId !== owner || existing.argsJson !== argsJson) throw httpError(409, "Intent ID already binds different arguments");
         return tx.nearTransaction.findUniqueOrThrow({ where: { scope_hash: { scope: this.store.scope, hash: existing.txHash } } });
       }
-      const unresolved = await tx.nearTransaction.findFirst({ where: { scope: this.store.scope, signerId: this.config.executorId, keyPublic: { not: null }, state: { notIn: terminalStates } } });
+      const unresolved = await tx.nearTransaction.findFirst({ where: { scope: this.store.scope, signerId: this.config.executorId, keyPublic: { not: null }, state: { notIn: nonRetryableStates } } });
       if (unresolved) throw httpError(409, "Previous executor transaction is unresolved; reconcile it before preparing another intent");
       const snapshot = viewSchema(grantSchema.nullable()).parse(await this.rpc.view(this.config.contractId, "get_grant", { grant_id: args.grant_id }));
       if (!snapshot.value || snapshot.value.owner !== owner || snapshot.value.policy.executor !== this.config.executorId) throw httpError(403, "Grant owner/executor mismatch");
@@ -111,12 +111,12 @@ export class NearChain {
       await tx.nearIntentRequest.create({ data: { ...id, ownerId: owner, argsJson, txHash: hash } });
       return row; // committed before any broadcast
     }, { timeout: 60_000 });
-    if (terminalStates.includes(prepared.state)) return JSON.parse(prepared.observation!);
+    if (nonRetryableStates.includes(prepared.state)) return JSON.parse(prepared.observation!);
     return this.resumePrepared(prepared);
   }
 
   async resumePrepared(prepared: NearTransaction) {
-    if (terminalStates.includes(prepared.state)) return JSON.parse(prepared.observation!);
+    if (nonRetryableStates.includes(prepared.state)) return JSON.parse(prepared.observation!);
     if (!prepared.signedBase64 || !this.signingEnabled) return this.track(prepared.hash, prepared.signerId);
     // Validate persisted packet identity and exact scope before every retry/restart.
     const signed = SignedTransaction.decode(Buffer.from(prepared.signedBase64, "base64"));

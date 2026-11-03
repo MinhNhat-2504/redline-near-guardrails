@@ -35,4 +35,14 @@ npx.cmd tsx scripts/verify-near-executor-reset.ts <RESET_TRANSACTION_HASH>
 
 It independently queries FINAL reset/results, every execution block, current scoped and FullAccess signing keys, explicit UNKNOWN_TRANSACTION for old hash, absent old intent, unchanged grant nonce/counters/policy and owner/payee financial baselines, with all finalized snapshots at/after reset execution. Only a full pass writes VERIFIED_KEY_RESET_ONLY evidence. It never reads session/wallet/executor secrets or accesses/mutates DB. Expiry is flagged, not replaced automatically.
 
-Keep backend stopped after signing/verifying. Guarded journal disposition and recovered transfer remain dependent work AFTER the real reset proof is available; they have NOT run and are NOT claimed finished. Do not run execute-near-api-demo --submit yet.
+Keep backend stopped after signing/verifying until guarded journal recovery is verified. At that handoff checkpoint the journal step had not run. The verified execution below supersedes that pending status; recovered transfer remains pending.
+
+## Executed reset and journal recovery (2026-11-03)
+
+User signed reset [AzsMwgFkYMpKPGmah47aNjn8nAbv58hK2BrE7fGRoUo7](https://explorer.testnet.near.org/transactions/AzsMwgFkYMpKPGmah47aNjn8nAbv58hK2BrE7fGRoUo7). Independent FINAL proof PASS: exact two actions/same scope/allowance; reset execution height276023050, finalized scoped-key nonce276023048000000 > old276011715000001. Old intent absent, grant nonce0/counters0, owner/payee baselines unchanged. Raw inputs and report phase3-executor-key-reset-{inputs,verification}.json.
+
+Implemented apply-near-executor-reset.ts (default read-only, explicit --apply local DB maintenance). It verifies fresh RPC proof inside executor+transaction advisory locks; checks journal identity/args/owner/key/nonce and original intent binding; stopped-backend guard before proof and immediately before writing. Writes only old row state/reason/observation, preserving packet, binding and financial accounting. INVALIDATED is a non-retryable local disposition with finalized=false/events[], distinct from on-chain terminal states. Reader/runtime/indexer skip old retries; contradictory chain observations are refused for manual reconciliation.
+
+Actual approved --apply completed on separately labeled localhost dev DB, after SetupOnly (no executor credential loaded). Independent SELECT confirmed INVALIDATED/KEY_RESET_NONCE, old nonce/binding unchanged, zero vault events for old hash. Report phase3-executor-journal-recovery.json. No replacement signing/broadcast performed. Idempotency and failure/rollback guards tested against isolated real Postgres with synthetic RPC fixtures.
+
+Grant expired15:20:16.906 UTC+7 before recovery finished. Backend may now restart on the new compiled code. USER runs prepare-near-api-demo.ts --after-key-reset after fresh login to request a NEW unsigned owner-reviewed grant using retained principal. This explicit mode preserves old package/proofs, creates a separate recovery pointer, refuses any topup instruction and retains new IDs on retry. It does NOT create/sign the on-chain grant or transfer. See NEAR_API_DEMO_NEXT.md.

@@ -1,15 +1,22 @@
-Run in a second PowerShell while the backend stays open. The owner deposit and grant are now independently verified; do not repeat either transaction. Grant expires November 3, 2026 at 15:20:16.906 UTC+7.
+Key reset FINAL and local journal recovery are verified. Do NOT repeat reset, original funding, or the expired original grant/intent. Original packet remains archived as INVALIDATED, not on-chain settlement. Original grant expired November3,2026 at15:20:16.906 UTC+7. Available principal remains0.1 NEAR at recovery verification.
+
+PowerShell1: start the rebuilt backend and keep this window open:
+
+```powershell
+Set-Location 'D:\Project\AI Engineer\redline-near-guardrails\backend'
+.\scripts\start-near-local.ps1
+```
+
+PowerShell2: fresh off-chain login, then explicitly prepare a NEW unsigned owner-reviewed grant using retained principal:
 
 ```powershell
 Set-Location 'D:\Project\AI Engineer\redline-near-guardrails\backend'
 npx.cmd tsx scripts/near-login-cli.ts
-npx.cmd tsx scripts/execute-near-api-demo.ts
+npx.cmd tsx scripts/prepare-near-api-demo.ts --after-key-reset
 ```
 
-Login is off-chain. Default execution prepares a public request only. Review amount0.01 native Testnet NEAR, recipient nhat-redline-payee.testnet, nonce0, the existing grant ID and its policy hash. Then explicitly submit through the installed scoped executor key:
+Review cap0.05 native Testnet NEAR, max3, cooldown0, one-hour expiry, executor nhat-redline-agent.testnet, recipient only nhat-redline-payee.testnet. Helper prints create_grant CLI command for owner signature with deposit0; it never signs/submits or prints a recovery topup. Old package/evidence/binding remain intact; new proposal IDs retained on retries. Run the printed create_grant command only after reviewing those values; share its public transaction ID for FINAL verification before submitting a transfer.
 
-```powershell
-npx.cmd tsx scripts/execute-near-api-demo.ts --submit
-```
+If owner session expired, re-login. If principal differs or proposal expired, stop for reconciliation; never silently replace IDs/fund again. Keep both windows open after startup. Do not run execute-near-api-demo --submit until the NEW grant is verified. Never share session.json or executor.json.
 
-Keep the same request/package on retries. On timeout or UNKNOWN, do not generate a new intent or fund again. The same --submit retries the persisted request; backend retains the same signed packet/hash. An expired/revoked grant requires review, not automatic replacement. Share only the printed public transactionHash/state/reason; never session.json or executor.json. A returned API state still needs independent FINAL receipt/public-key/callback and ledger/payee verification. Phase3 remains PARTIAL until that evidence exists.
+Successful recovered80Tgas API execution, callback and ledger/payee proofs remain pending. New recovered API response will be saved separately as phase3-api-recovered-safe-response.json. Phase3 remains PARTIAL.

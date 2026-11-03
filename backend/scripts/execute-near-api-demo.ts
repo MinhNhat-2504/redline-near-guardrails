@@ -24,6 +24,7 @@ async function main() {
   const child = relative(base, directory);
   assert(child && !child.startsWith("..") && !isAbsolute(child), "Unexpected package pointer");
   const reviewed = JSON.parse(await readFile(resolve(directory, "grant.json"), "utf8"));
+  const preparedPackage = JSON.parse(await readFile(resolve(directory, "package.json"), "utf8"));
   const requestFile = resolve(directory, "transfer-safe.json");
   let args;
   try { args = transferSchema.parse(JSON.parse(await readFile(requestFile, "utf8"))); }
@@ -66,7 +67,7 @@ async function main() {
   const report = { grantId: args.grant_id, intentId: args.intent_id, amount: args.amount, recipient: args.recipient,
     transactionHash: observation.transactionHash, finalized: observation.finalized, state: observation.state,
     reason: observation.reason, phase: observation.phase, submissionError: observation.submissionError, needsReconciliation: observation.needsReconciliation };
-  await writeFile(resolve(root, "docs/evidence/phase3-api-safe-response.json"), JSON.stringify(report, null, 2) + "\n");
+  await writeFile(resolve(root, "docs/evidence/" + (preparedPackage.recoveryOf ? "phase3-api-recovered-safe-response.json" : "phase3-api-safe-response.json")), JSON.stringify(report, null, 2) + "\n");
   console.log(JSON.stringify(report, null, 2));
   console.log("API observation only; independent FINAL receipt/key/ledger verification still required. Retry uses the same intent ID.");
 }

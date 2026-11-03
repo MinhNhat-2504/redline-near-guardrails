@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { z } from "zod";
 import { accountId, hashId, grantSchema, ledgerSchema, transferSchema, uint64, viewSchema } from "./types.js";
+import { NearReadOnlyRpc, NearRpcError } from "./rpc.js";
 
 export interface ResetPlan {
   executor: string; contract: string; owner: string; publicKey: string;
@@ -15,6 +16,28 @@ export interface ResetInputs {
 }
 const accessSchema = z.object({ nonce: uint64, block_height: z.number().int().safe().nonnegative(), block_hash: hashId, permission: z.unknown() });
 const outcomeSchema = z.object({ block_hash: hashId, outcome: z.object({ status: z.record(z.unknown()) }) });
+
+/** Fresh public reads. A transport failure is never treated as missing history. */
+export async function collectKeyResetInputs(rpc: NearReadOnlyRpc, plan: ResetPlan): Promise<ResetInputs> {
+  const reset = await rpc.transaction(plan.resetHash, plan.executor) as any;
+  assert.equal(reset.final_execution_status, "FINAL", "Reset is not FINAL");
+  const blocks = [];
+  const hashes = new Set<string>([reset.transaction_outcome.block_hash, ...reset.receipts_outcome.map((r: any) => r.block_hash)]);
+  for (const hash of hashes) blocks.push(await rpc.blockAtHash(hash));
+  const access = await rpc.accessKey(plan.executor, plan.publicKey);
+  const signingAccess = await rpc.accessKey(plan.executor, reset.transaction.public_key);
+  let originalUnknown = false;
+  try { await rpc.transaction(plan.oldHash, plan.executor, "NONE"); }
+  catch (error) {
+    if (error instanceof NearRpcError && error.code === "REMOTE_ERROR" && error.remoteName === "UNKNOWN_TRANSACTION") originalUnknown = true;
+    else throw new Error("Original transaction lookup unavailable; no invalidation inferred");
+  }
+  const grant = await rpc.view(plan.contract, "get_grant", { grant_id: plan.args.grant_id });
+  const ledger = await rpc.view(plan.contract, "get_owner_balance", { owner: plan.owner });
+  const intent = await rpc.view(plan.contract, "get_intent", { grant_id: plan.args.grant_id, intent_id: plan.args.intent_id });
+  const payee = await rpc.account(plan.args.recipient);
+  return { reset, blocks, access, signingAccess, grant, ledger, intent, payee, originalUnknown };
+}
 
 /** Verify public FINAL reset proof and absence of financial effects. Never signs or changes DB. */
 export function verifyKeyReset(plan: ResetPlan, input: ResetInputs) {
