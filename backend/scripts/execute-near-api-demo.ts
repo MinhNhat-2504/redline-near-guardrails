@@ -65,7 +65,7 @@ async function main() {
   // Persist only selected public fields, never raw headers, tokens or signed packets.
   const report = { grantId: args.grant_id, intentId: args.intent_id, amount: args.amount, recipient: args.recipient,
     transactionHash: observation.transactionHash, finalized: observation.finalized, state: observation.state,
-    reason: observation.reason, phase: observation.phase, needsReconciliation: observation.needsReconciliation };
+    reason: observation.reason, phase: observation.phase, submissionError: observation.submissionError, needsReconciliation: observation.needsReconciliation };
   await writeFile(resolve(root, "docs/evidence/phase3-api-safe-response.json"), JSON.stringify(report, null, 2) + "\n");
   console.log(JSON.stringify(report, null, 2));
   console.log("API observation only; independent FINAL receipt/key/ledger verification still required. Retry uses the same intent ID.");

@@ -9,7 +9,7 @@ import { NearStore, terminalStates } from "../near/store.js";
 import { NearReceiptReader } from "../near/reader.js";
 import { accountId, grantSchema, httpError, ledgerSchema, transferSchema, viewSchema, type TransferArgs } from "../near/types.js";
 import { u64, U64_MAX } from "../near/units.js";
-import { broadcastPrepared } from "../near/broadcast.js";
+import { broadcastPrepared, NearBroadcastError } from "../near/broadcast.js";
 
 export interface NearConfig { rpcUrl: string; contractId: string; executorId: string; executorPublicKey?: string; credentialPath?: string }
 const allowanceMax = 100000000000000000000000n; // 0.1 NEAR, gas allowance only
@@ -131,13 +131,15 @@ export class NearChain {
     const access = await this.provider.viewAccessKey({ accountId: this.config.executorId, publicKey: this.config.executorPublicKey!, finalityQuery: { finality: "final" } });
     verifyExecutorPermission(access.permission, this.config.contractId);
     // Never re-sign or replace the intent, even if its block hash has expired.
+    let submissionError: string | undefined;
     try {
       await this.broadcast(prepared.signedBase64);
-      await this.db.nearTransaction.updateMany({ where: { scope: this.store.scope, hash: prepared.hash, state: { in: ["PREPARED", "SUBMISSION_UNKNOWN"] } }, data: { state: "SUBMITTED" } });
-    } catch {
-      await this.db.nearTransaction.updateMany({ where: { scope: this.store.scope, hash: prepared.hash, state: "PREPARED" }, data: { state: "SUBMISSION_UNKNOWN" } });
+      await this.db.nearTransaction.updateMany({ where: { scope: this.store.scope, hash: prepared.hash, state: { in: ["PREPARED", "SUBMISSION_UNKNOWN"] } }, data: { state: "SUBMITTED", reason: null } });
+    } catch (error) {
+      submissionError = error instanceof NearBroadcastError ? error.code : "BROADCAST_UNAVAILABLE";
+      await this.db.nearTransaction.updateMany({ where: { scope: this.store.scope, hash: prepared.hash, state: { in: ["PREPARED", "SUBMISSION_UNKNOWN"] } }, data: { state: "SUBMISSION_UNKNOWN", reason: submissionError } });
     }
     try { return await this.track(prepared.hash, this.config.executorId); }
-    catch { return { transactionHash: prepared.hash, finalized: false, state: "UNKNOWN", phase: "SUBMISSION_UNCERTAIN", events: [], needsReconciliation: true }; }
+    catch { return { transactionHash: prepared.hash, finalized: false, state: "UNKNOWN", phase: "SUBMISSION_UNCERTAIN", submissionError, events: [], needsReconciliation: true }; }
   }
 }

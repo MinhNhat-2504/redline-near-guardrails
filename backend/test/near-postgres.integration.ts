@@ -199,6 +199,9 @@ describe("scoped executor preparation and ambiguous transport", () => {
     try {
       const first = new NearChain(config, rpc, provider, db, broadcast);await first.connect();
       const a = await first.executeTransfer(OWNER, args);expect(a).toMatchObject({state:"UNKNOWN",phase:"SUBMISSION_UNCERTAIN",finalized:false});
+      expect(a).toMatchObject({submissionError:"BROADCAST_UNAVAILABLE"});
+      const diagnostic=await db.nearTransaction.findUniqueOrThrow({where:{scope_hash:{scope:`testnet:${contract}`,hash:a.transactionHash}}});
+      expect(diagnostic.reason).toBe("BROADCAST_UNAVAILABLE");expect(diagnostic.state).toBe("SUBMISSION_UNKNOWN");
       const restarted = new NearChain(config, rpc, provider, db, broadcast);await restarted.connect();
       const b = await restarted.executeTransfer(OWNER, args);expect(b.transactionHash).toBe(a.transactionHash);
       expect(packets).toHaveLength(2);expect(packets[0]).toBe(packets[1]);

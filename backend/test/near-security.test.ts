@@ -101,6 +101,23 @@ describe("bounded persisted-packet broadcast transport (mock fetch, no chain sub
     vi.stubGlobal('fetch',vi.fn(async()=>Response.json({id:'wrong',result:{}})));
     await expect(broadcastPrepared('https://rpc.testnet.near.org','test-packet')).rejects.toThrow();
   });
+  it("reports HTTP status without leaking response text or retrying",async()=>{
+    const fake=vi.fn(async()=>new Response('sensitive upstream diagnostic',{status:403}));vi.stubGlobal('fetch',fake);
+    await expect(broadcastPrepared('https://rpc.testnet.near.org','test-packet')).rejects.toMatchObject({code:'HTTP_403',message:'NEAR submission unavailable: HTTP_403'});
+    expect(fake).toHaveBeenCalledTimes(1);
+  });
+  it("whitelists RPC rejection categories and strips arbitrary error payloads",async()=>{
+    vi.stubGlobal('fetch',vi.fn(async()=>Response.json({id:'redline-prepared',error:{cause:{name:'INVALID_TRANSACTION',info:'private upstream data'}}})));
+    await expect(broadcastPrepared('https://rpc.testnet.near.org','test-packet')).rejects.toMatchObject({code:'INVALID_TRANSACTION',message:'NEAR submission unavailable: INVALID_TRANSACTION'});
+    vi.stubGlobal('fetch',vi.fn(async()=>Response.json({id:'redline-prepared',error:{cause:{name:'DO_NOT_REFLECT_THIS_SECRET'}}})));
+    await expect(broadcastPrepared('https://rpc.testnet.near.org','test-packet')).rejects.toMatchObject({code:'RPC_REJECTED'});
+  });
+  it("categorizes malformed responses and transport uncertainty without raw errors",async()=>{
+    vi.stubGlobal('fetch',vi.fn(async()=>new Response('bad upstream body')));
+    await expect(broadcastPrepared('https://rpc.testnet.near.org','test-packet')).rejects.toMatchObject({code:'INVALID_RESPONSE'});
+    vi.stubGlobal('fetch',vi.fn(async()=>{throw new Error('secret URL in transport error');}));
+    await expect(broadcastPrepared('https://rpc.testnet.near.org','test-packet')).rejects.toMatchObject({code:'TRANSPORT_OR_TIMEOUT',message:'NEAR submission unavailable: TRANSPORT_OR_TIMEOUT'});
+  });
 });
 
 describe('local executor candidate helper (temporary test directory only)',()=>{

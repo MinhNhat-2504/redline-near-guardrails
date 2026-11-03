@@ -1,0 +1,16 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "error":  {
+                  "name":  "HANDLER_ERROR",
+                  "cause":  {
+                                "info":  {
+                                             "requested_transaction_hash":  "9ZNGTALnybEr2nPgSS8RRKgn29W18eQScoEnqeqoWrkH"
+                                         },
+                                "name":  "UNKNOWN_TRANSACTION"
+                            },
+                  "code":  -32000,
+                  "message":  "Server error",
+                  "data":  "Transaction 9ZNGTALnybEr2nPgSS8RRKgn29W18eQScoEnqeqoWrkH doesn\u0027t exist"
+              },
+    "id":  "redline-api-safe-status"
+}
