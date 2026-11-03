@@ -1,0 +1,14 @@
+{
+  "kind": "verification_summary_not_raw_log",
+  "latestOwnerDesign": "MAXIMUM8H_DEMO_VALIDITY_APPROVED_IN_CHAT",
+  "backendUnitTests": {"passed": 399, "files": 33, "newValidityCases": 15},
+  "backendTypecheck": "PASS",
+  "backendDirectTscBuild": "PASS_NO_PRISMA_REGENERATION",
+  "standaloneHelperStrictCompile": "PASS_AFTER_CORRECTING_MODE_TYPE_NARROWING",
+  "helpBeforeSessionAccess": "PASS",
+  "scope": "1..8 integer hours explicitly selected; new default1h, retries preserve exact deadline, cap0.05/max3/one payee unchanged",
+  "actualEightHourPreparationByCodingAgent": "NOT_RUN",
+  "actualGrantSignatureOrFinancialSubmissionByCodingAgent": "NONE",
+  "prior25PostgresTests": "PRIOR_EVIDENCE_NOT_RERUN_NO_DB_CHANGES",
+  "phase3": "PARTIAL_ALLOW_PENDING"
+}

@@ -7,6 +7,7 @@ import { createHash, randomUUID } from "node:crypto";
 import assert from "node:assert/strict";
 import { formatNear } from "../src/near/units.js";
 import { ledgerSchema, policySchema, recordId } from "../src/near/types.js";
+import { parseDemoGrantOptions, makeDemoValidity, checkStoredDemoValidity } from "../src/near/demo-validity.js";
 
 const OWNER="nhat-redline-owner.testnet", VAULT="nhat-redline-vault.testnet", AGENT="nhat-redline-agent.testnet", PAYEE="nhat-redline-payee.testnet";
 const PRINCIPAL=100000000000000000000000n, CAP="50000000000000000000000";
@@ -16,11 +17,11 @@ const quote=(value:string)=>"'"+value.replace(/'/g,"''")+"'";
 
 async function main(){
   if(process.argv[2]==='--help'){
-    console.log('USER-RUN: unsigned demo target0.1/cap0.05/max3/payee-only/1h. --after-key-reset or explicit --renew-expired-grant preserves prior packages/evidence, never recovery topups. Renewal refuses unresolved/revoked grants; no signing/submission.');return;
+    console.log('USER-RUN: unsigned demo target0.1/cap0.05/max3/payee-only. --grant-hours <1..8>, default1h for NEW proposals; retries preserve exact stored deadline. --after-key-reset or --renew-expired-grant preserves old packages, never recovery topups. No signing/submission.');return;
   }
-  const renewing=process.argv[2]==='--renew-expired-grant';
-  const recovering=process.argv[2]==='--after-key-reset'||renewing;
-  if(process.argv.length>2&&!recovering||process.argv.length>3)throw new Error('Use no argument, --help, --after-key-reset or --renew-expired-grant');
+  const options=parseDemoGrantOptions(process.argv.slice(2));
+  const renewing=options.mode==='renew-expired-grant';
+  const recovering=options.mode==='after-key-reset'||renewing;
   let pointer=recovering?resolve(directory,'recovery-package.txt'):latestPointer;
   let recovery:any;
   if(recovering){
@@ -74,7 +75,8 @@ async function main(){
     if(!resolve(packagePath).startsWith(directory+"\\")&&!resolve(packagePath).startsWith(directory+"/"))throw new Error('Unexpected package pointer');
     prepared=JSON.parse(await readFile(resolve(packagePath,'package.json'),'utf8'));
   }else{
-    const expires=(BigInt(Date.now())+3600000n)*1000000n;
+    const validity=makeDemoValidity(options.hours??1);
+    const expires=BigInt(validity.expiresAtNs);
     const draft=await api('/near/owner-actions',{method:'create_grant',policy:{spend_cap:CAP,max_transactions:3,recipients:[PAYEE],expires_at_ns:expires.toString(),cooldown_ns:'0'}});
     assert.equal(draft.unsigned,true);assert.equal(draft.signerId,OWNER);assert.equal(draft.transaction.receiverId,VAULT);
     assert.equal(draft.transaction.actions.length,1);
@@ -85,7 +87,7 @@ async function main(){
     assert.equal(policy.expires_at_ns,expires.toString());
     const canonical=JSON.parse(draft.canonicalPolicy);assert.equal(canonical.network,'testnet');assert.equal(canonical.contract_id,VAULT);assert.equal(canonical.owner_id,OWNER);assert.equal(canonical.grant_id,call.args.grant_id);
     packagePath=resolve(directory,'api-'+randomUUID().replace(/-/g,''));await mkdir(packagePath,{recursive:true});
-    prepared={grantArgs:call.args,canonical:draft.canonicalPolicy,depositInstructionIssued:false,
+    prepared={grantArgs:call.args,canonical:draft.canonicalPolicy,depositInstructionIssued:false,validity,
       ...(recovering?{recoveryOf:{transactionHash:recovery.originalTransactionHash,resetTransactionHash:recovery.resetTransactionHash,previousPackagePath:(await readFile(latestPointer,'utf8')).trim()}}:{}),...(renewing?{renewalOf:renewal}:{})};
     await writeFile(resolve(packagePath,'grant.json'),JSON.stringify(call.args,null,2));
     await writeFile(resolve(packagePath,'policy-canonical.json'),draft.canonicalPolicy);
@@ -93,6 +95,7 @@ async function main(){
     await writeFile(pointer,packagePath);
   }
   const policy=policySchema.parse(prepared.grantArgs.policy);recordId.parse(prepared.grantArgs.grant_id);
+  const validityHours=checkStoredDemoValidity(prepared.validity,policy.expires_at_ns,options.hours);
   assert.equal(policy.executor,AGENT);assert.equal(policy.spend_cap,CAP);assert.deepEqual(policy.recipients,[PAYEE]);assert.equal(policy.max_transactions,3);
   assert.equal(policy.cooldown_ns,'0');assert.equal(createHash('sha256').update(prepared.canonical).digest('hex'),policy.policy_hash);
   const canonical=JSON.parse(prepared.canonical);
@@ -115,7 +118,7 @@ async function main(){
   if(recovering&&needed>0n)throw new Error('Recovery principal differs from expected0.1. Reconcile first; no topup instruction generated.');
   if(recovering)await writeFile(latestPointer,packagePath!); // Explicit recovery only; old package stays untouched.
   console.log('UNSIGNED API demo: owner '+OWNER+', executor '+AGENT+', only payee '+PAYEE);
-  console.log('Grant total cap 0.05 NEAR; max3; cooldown0; expires '+new Date(Number(BigInt(policy.expires_at_ns)/1000000n)).toISOString());
+  console.log('Grant total cap 0.05 NEAR; max3; cooldown0; validity '+validityHours+'h; expires '+new Date(Number(BigInt(policy.expires_at_ns)/1000000n)).toISOString());
   console.log('Deadline (UTC+7): '+new Date(Number(BigInt(policy.expires_at_ns)/1000000n)).toLocaleString('vi-VN',{timeZone:'Asia/Ho_Chi_Minh'})+'. Login does not extend this grant.');
   console.log('Review grant: '+resolve(packagePath!,'grant.json'));
   if(needed>0n){
@@ -129,7 +132,7 @@ async function main(){
   }else console.log('Principal already sufficient; skip deposit.');
   console.log(recovering?'\nReview and owner-sign this NEW grant (no deposit required):':'\n2. After deposit succeeds, review grant.json then owner-sign this grant:');
   console.log(`near contract call-function as-transaction ${VAULT} create_grant file-args ${quote(resolve(packagePath!,'grant.json'))} prepaid-gas '100 Tgas' attached-deposit '0 NEAR' sign-as ${OWNER} network-config testnet sign-with-keychain send`);
-  const report=JSON.stringify({status:'UNSIGNED',owner:OWNER,executor:AGENT,contract:VAULT,grantId:prepared.grantArgs.grant_id,policy,plannedTopupYocto:needed.toString(),financialActions:'NONE',...(recovering?{recoveryOf:prepared.recoveryOf}:{}),...(renewing?{renewalOf:prepared.renewalOf}:{})},null,2)+'\n';
+  const report=JSON.stringify({status:'UNSIGNED',owner:OWNER,executor:AGENT,contract:VAULT,grantId:prepared.grantArgs.grant_id,policy,validityHours,validity:prepared.validity,plannedTopupYocto:needed.toString(),financialActions:'NONE',...(recovering?{recoveryOf:prepared.recoveryOf}:{}),...(renewing?{renewalOf:prepared.renewalOf}:{})},null,2)+'\n';
   await writeFile(resolve(root,'docs/evidence',renewing?'phase3-api-renewal-prepared.json':recovering?'phase3-api-recovery-prepared.json':'phase3-api-demo-prepared.json'),report);
   await writeFile(resolve(root,'docs/evidence','phase3-api-grant-'+prepared.grantArgs.grant_id+'-prepared.json'),report);
   console.log('\nNo transaction was submitted by this helper. Keep the package/IDs unchanged on retries.');

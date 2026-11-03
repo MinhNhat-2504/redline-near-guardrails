@@ -124,4 +124,9 @@ NOT RUN: real owner-wallet NEP-413 login, scoped-key API execution on public Tes
 ## Phase3 actual API EXPIRED proof and safe-client regression
 
 - Actual USER-run scoped-key80Tgas API tx Gqv1YhjYHr9ZVkLnEscPmHFSAWDZ5TcgHhCUxvPPmxGQ independently verified FINAL REJECTED/EXPIRED with production receipt parser, stored intent, vault event and execution block after deadline. Principal/payee unchanged, no payee receipt; gas/storage charged. phase3-api-expired-verification.json and actual RPC responses. This proves real API rejection, not ALLOW/settlement.
--384 unit tests/32 files + typecheck/direct build PASS;4 new guard regressions cover saved local expiry,30s boundary, preserved durable reconciliation and nonce/hash mismatch. Helper/verifier strict compile and unsigned renewal help PASS. Prior25 Postgres tests not rerun; no DB logic changed. Real renewal preparation/signature/new successful transfer pending USER actions. Phase3 PARTIAL.
+- 384 unit tests/32 files + typecheck/direct build PASS;4 new guard regressions cover saved local expiry,30s boundary, preserved durable reconciliation and nonce/hash mismatch. Helper/verifier strict compile and unsigned renewal help PASS. Prior25 Postgres tests not rerun; no DB logic changed. Real renewal preparation/signature/new successful transfer pending USER actions. Phase3 PARTIAL.
+
+## Approved maximum8h demo option
+
+- 399 unit tests/33 files, typecheck/direct build, standalone strict helper compile and --help PASS.15 new cases cover bounded whole-hour CLI input/order/duplicates, exact8h nanoseconds/u64 overflow, unchanged retry/legacy deadlines, forged/future metadata and actual unsigned-owner canonical hash binding. Fixed-clock/mock-config only; no public8h grant/key/token/signature used. First standalone helper compile caught narrowed CLI-mode type, corrected and rerun PASS.
+- Prior25 Postgres tests remain earlier evidence, no DB/schema/server/contract change. USER must explicitly choose --grant-hours8 (space before8) and owner-sign new policy; default1h and existing proposals unchanged. Actual8h proposal/grant/ALLOW proof NOT RUN by coding agent; Phase3 PARTIAL.

@@ -1,0 +1,14 @@
+﻿{
+    "expiryNs":  "1793705689317000000",
+    "grantId":  "grant-c6acee2055d848febbdafce9eba0ed49",
+    "finalBlock":  {
+                       "hash":  "8wxjt8cx3CeBznNTWmFva7DGoT8Y51UNVRj1AxFf2Cth",
+                       "timestampNs":  "1793707317049095961",
+                       "height":  276046208
+                   },
+    "eightHourProposal":  "NOT_APPLIED_AWAITING_OWNER_DESIGN_APPROVAL",
+    "kind":  "public_rpc_and_local_clock_observation",
+    "localTransferRequestExists":  false,
+    "localUnixMilliseconds":  "1793707318885",
+    "localTime":  "2026-11-03T19:01:58.8854129+07:00"
+}
