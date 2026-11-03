@@ -1,0 +1,55 @@
+
+> redline@0.0.1 build
+> npm run typecheck && vite build
+
+
+> redline@0.0.1 typecheck
+> tsc --noEmit
+
+vite v6.4.3 building for production...
+transforming...
+npm.cmd : [plugin vite:resolve] Module "util" has been externalized for browser compatibility, imported by
+"D:/Project/AI Engineer/redline-near-guardrails/node_modules/generate-function/index.js". See
+https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+At line:2 char:1
++ npm.cmd run build *> docs/evidence/phase4-frontend-build.log; $result ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([plugin vite:re...r more details.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+✓ 3248 modules transformed.
+node_modules/js-sha256/src/sha256.js (83:17): Use of eval in "node_modules/js-sha256/src/sha256.js" is strongly
+discouraged as it poses security risks and may cause issues with minification.
+node_modules/js-sha256/src/sha256.js (84:17): Use of eval in "node_modules/js-sha256/src/sha256.js" is strongly
+discouraged as it poses security risks and may cause issues with minification.
+rendering chunks...
+computing gzip size...
+dist/index.html                                           1.54 kB │ gzip:   0.70 kB
+dist/assets/redline-guardrails-citadel-CD0vtStf.webp    117.49 kB
+dist/assets/redline-evidence-observatory-CzLnXlqt.webp  145.67 kB
+dist/assets/redline-treasury-core-Fq_6m3dk.webp         146.32 kB
+dist/assets/redline-celestial-vault-hero-DW9yYLVm.webp  148.68 kB
+dist/assets/NearApp-4xE_EMGE.css                          2.16 kB │ gzip:   0.89 kB
+dist/assets/index-lmcYX33x.css                          448.59 kB │ gzip:  65.24 kB
+dist/assets/triangle-alert-DXht7H9D.js                    0.44 kB │ gzip:   0.32 kB
+dist/assets/agents-B8BtkTfL.js                            1.73 kB │ gzip:   0.93 kB
+dist/assets/wallets-D0JxI8sH.js                           5.64 kB │ gzip:   2.26 kB
+dist/assets/GuidePage-zDBMfxmg.js                         7.91 kB │ gzip:   3.42 kB
+dist/assets/index-CYcHMMOq.js                             8.60 kB │ gzip:   3.32 kB
+dist/assets/ArtifactPages-Z1SkJKue.js                    24.39 kB │ gzip:   8.40 kB
+dist/assets/agent-access-Nuibja0C.js                     24.58 kB │ gzip:   8.84 kB
+dist/assets/Pages-DuVJAy5F.js                            62.55 kB │ gzip:  21.34 kB
+dist/assets/index-B6SiSJeF.js                            80.74 kB │ gzip:  28.02 kB
+dist/assets/solana-B0uE_Lw7.js                          109.39 kB │ gzip:  32.96 kB
+dist/assets/OperationalPages-hZStep8o.js                138.93 kB │ gzip:  44.07 kB
+dist/assets/index-DNB3cSSS.js                           188.28 kB │ gzip:  59.26 kB
+dist/assets/LegacyRoot-CV2xoZD0.js                      251.73 kB │ gzip:  81.50 kB
+dist/assets/charts-CWSqMJs1.js                          305.42 kB │ gzip:  79.28 kB
+dist/assets/NearApp-B068s4_V.js                         611.42 kB │ gzip: 197.19 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking:
+https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 6.91s

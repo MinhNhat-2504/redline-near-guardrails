@@ -1,0 +1,2 @@
+PUBLIC RPC only. before <public-request.json> <new-output.json>; after <public-request.json> <new-output.json> <txHash>; verify <before.json> <after.json>. No keys, sessions or transactions submitted.
+Read-only: <public-package-directory> <owner-create-grant-tx-hash> <new-evidence-prefix>

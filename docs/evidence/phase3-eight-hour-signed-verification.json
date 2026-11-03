@@ -1,0 +1,10 @@
+{
+  "status": "PASS_FINAL_OWNER_GRANT_PREFLIGHT",
+  "grantId": "grant-fed48ec7b5db4ba59fe224d9f807d64f",
+  "transactionHash": "3q9hhGTRCS3UNn2V3PZndzzzsxYgYPnZD7vPKUzT147R",
+  "policyHash": "138919a19b9a15eaa1edff9ff8123d1c883d06636b5229d80252edda62062c24",
+  "expiresAtNs": "1793738771164000000",
+  "availableYocto": "100000000000000000000000",
+  "keyNonce": "276023048000001",
+  "scope": "FINAL owner grant and pre-transfer public snapshots. No transfer or API ALLOW proof."
+}

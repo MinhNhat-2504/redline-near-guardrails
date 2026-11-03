@@ -130,3 +130,13 @@ NOT RUN: real owner-wallet NEP-413 login, scoped-key API execution on public Tes
 
 - 399 unit tests/33 files, typecheck/direct build, standalone strict helper compile and --help PASS.15 new cases cover bounded whole-hour CLI input/order/duplicates, exact8h nanoseconds/u64 overflow, unchanged retry/legacy deadlines, forged/future metadata and actual unsigned-owner canonical hash binding. Fixed-clock/mock-config only; no public8h grant/key/token/signature used. First standalone helper compile caught narrowed CLI-mode type, corrected and rerun PASS.
 - Prior25 Postgres tests remain earlier evidence, no DB/schema/server/contract change. USER must explicitly choose --grant-hours8 (space before8) and owner-sign new policy; default1h and existing proposals unchanged. Actual8h proposal/grant/ALLOW proof NOT RUN by coding agent; Phase3 PARTIAL.
+# Phase4 browser implementation checkpoint — 2026-11-03
+
+- `npm.cmd run test`: PASS183 tests/25 files;20 new browser model/wallet tests. Wallet transport is mocked, not public wallet proof. Raw `docs/evidence/phase4-frontend-tests.log`.
+- `npm.cmd run build`: PASS root typecheck + Vite production build; wallet chunk warning >500kB retained in `phase4-frontend-build.log`.
+- Backend `npm.cmd run test`: PASS411 tests/34 files;12 new ALLOW consistency tests use synthetic vectors, never transaction evidence. `phase4-backend-regression.log`.
+- Backend `npm.cmd run typecheck`, `npx.cmd tsc -p tsconfig.json`, standalone `npx.cmd tsc --noEmit --strict --skipLibCheck --target ES2022 --module NodeNext --moduleResolution NodeNext scripts/capture-near-allow-proof.ts scripts/verify-near-owner-grant.ts`: PASS; `phase4-backend-build.log`. First helper compile caught unknown RPC view types; corrected with runtime viewSchema parsing, then rerun. Direct compile avoids regenerating Prisma DLL while owner backend may run.
+- Public helper `--help`: PASS outside sandbox after initial tsx/esbuild spawn EPERM; `phase4-public-helper-help.log`. No wallet/session access or submission.
+- Actual `verify-near-owner-grant.ts <public-package> 3q9hhGTRCS3UNn2V3PZndzzzsxYgYPnZD7vPKUzT147R <new-prefix>`: PASS_FINAL_OWNER_GRANT_PREFLIGHT, actual RPC inputs/report `phase3-eight-hour-signed-*`. ALLOW is still pending.
+- `npm.cmd audit --json`: completed, exit1 due16 advisories (10low/3moderate/3high/0critical), `phase4-dependency-audit.json`; not a clean audit PASS.
+- Browser E2E/signing, scoped API ALLOW, fresh DB integration, Rust/sandbox: NOT RUN at this checkpoint. Existing Phase2/public expiry/local sandbox evidence retained separately; no claims of a rerun or completed migration.
