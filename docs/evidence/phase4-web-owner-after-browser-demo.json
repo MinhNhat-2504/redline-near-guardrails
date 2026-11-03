@@ -1,0 +1,29 @@
+{
+  "status": "PUBLIC_BASELINE_ONLY",
+  "capturedAt": "2026-11-03T17:10:41.153Z",
+  "network": "testnet",
+  "accountId": "nhat-redline-web.testnet",
+  "contractId": "nhat-redline-vault.testnet",
+  "account": {
+    "amount": "2349061124304574600000000",
+    "block_hash": "9M6tqtHyLmoFzHmNivnUqu4UY3ZK2MKoXSXWy5b4f79N",
+    "block_height": 276077380,
+    "code_hash": "11111111111111111111111111111111",
+    "locked": "0",
+    "storage_paid_at": 0,
+    "storage_usage": 182
+  },
+  "balance": {
+    "registered": true,
+    "value": {
+      "credited": "100000000000000000000000",
+      "finalized_spent": "10000000000000000000000",
+      "pending_reserved": "0",
+      "completed_withdrawals": "0",
+      "pending_withdrawals": "0",
+      "storage_available": "44980000000000000000000"
+    },
+    "blockHeight": 276077384,
+    "blockHash": "G8QP7xsK8i9U3qEUs8iq8TCSD26MzBA92KcycANs2eGM"
+  }
+}
