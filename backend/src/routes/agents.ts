@@ -38,7 +38,7 @@ export async function agentRoutes(app: FastifyInstance) {
       strategy: z.string().min(1).max(200),
       modelRef: z.string().min(1).max(120),   // e.g. "openai:gpt-5.4-mini" or a weights CID
       codeRef: z.string().min(1).max(120),    // e.g. git commit of the runtime
-      config: z.record(z.unknown()).default({}),
+      config: z.record(z.string(), z.unknown()).default({}),
     }).parse(req.body);
 
     // Publishing puts something on a marketplace under a name that will be

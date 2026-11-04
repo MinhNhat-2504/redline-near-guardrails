@@ -2,9 +2,9 @@ name: NEAR backend
 on:
   push:
     branches: [main, feat/near-mvp]
-    paths: ["backend/**", "docs/evidence/phase2-*.json", "docs/evidence/phase4-web-*-verification.json", ".github/workflows/near-backend.yml"]
+    paths: ["backend/**", "docs/evidence/phase2-*.json", "docs/evidence/phase4-web-*-verification.json", "docs/evidence/phase5-zod3-compat-before.json", ".github/workflows/near-backend.yml"]
   pull_request:
-    paths: ["backend/**", "docs/evidence/phase2-*.json", "docs/evidence/phase4-web-*-verification.json", ".github/workflows/near-backend.yml"]
+    paths: ["backend/**", "docs/evidence/phase2-*.json", "docs/evidence/phase4-web-*-verification.json", "docs/evidence/phase5-zod3-compat-before.json", ".github/workflows/near-backend.yml"]
   workflow_dispatch:
 permissions:
   contents: read

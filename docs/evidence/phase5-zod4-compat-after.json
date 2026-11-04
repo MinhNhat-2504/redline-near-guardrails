@@ -1,0 +1,364 @@
+{
+  "version": "4.6.7",
+  "scope": "Offline synthetic input corpus; errors normalized, no chain evidence",
+  "cases": [
+    {
+      "name": "yocto:\"0\"",
+      "accepted": true,
+      "value": "0"
+    },
+    {
+      "name": "yocto:\"1\"",
+      "accepted": true,
+      "value": "1"
+    },
+    {
+      "name": "yocto:\"340282366920938463463374607431768211455\"",
+      "accepted": true,
+      "value": "340282366920938463463374607431768211455"
+    },
+    {
+      "name": "yocto:\"340282366920938463463374607431768211456\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "yocto:\"01\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "yocto:\"-1\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "yocto:\"1.1\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "yocto:\"1e3\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "yocto:\" 1\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "yocto:\"NaN\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "yocto:1",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "yocto:null",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "nonce:\"0\"",
+      "accepted": true,
+      "value": "0"
+    },
+    {
+      "name": "nonce:\"1\"",
+      "accepted": true,
+      "value": "1"
+    },
+    {
+      "name": "nonce:\"18446744073709551615\"",
+      "accepted": true,
+      "value": "18446744073709551615"
+    },
+    {
+      "name": "nonce:\"18446744073709551616\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "nonce:\"01\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "nonce:\"-1\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "nonce:\"1.1\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "nonce:\"1e3\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "nonce:\" 1\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "nonce:\"NaN\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "nonce:1",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "nonce:null",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:\"0\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:\"1\"",
+      "accepted": true,
+      "value": "1"
+    },
+    {
+      "name": "legacy-u64:\"18446744073709551615\"",
+      "accepted": true,
+      "value": "18446744073709551615"
+    },
+    {
+      "name": "legacy-u64:\"18446744073709551616\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:\"01\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:\"-1\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:\"1.1\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:\"1e3\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:\" 1\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:\"NaN\"",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:1",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy-u64:null",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "transfer:valid",
+      "accepted": true,
+      "value": {
+        "grant_id": "grant",
+        "intent_id": "intent",
+        "nonce": "18446744073709551615",
+        "asset": "NEAR",
+        "recipient": "payee.testnet",
+        "amount": "1",
+        "policy_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "name": "transfer:{\"amount\":\"0\"}",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "transfer:{\"asset\":\"USDC\"}",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "transfer:{\"nonce\":\"01\"}",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "transfer:{\"amount\":\"bad\"}",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "transfer:{\"injected\":true}",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "policy:valid",
+      "accepted": true,
+      "value": {
+        "executor": "executor.testnet",
+        "policy_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "spend_cap": "100",
+        "max_transactions": 3,
+        "recipients": [
+          "payee.testnet"
+        ],
+        "expires_at_ns": "18446744073709551615",
+        "cooldown_ns": "0"
+      }
+    },
+    {
+      "name": "policy:unknown-key",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "policy:too-many-recipients",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "grant:valid",
+      "accepted": true,
+      "value": {
+        "owner": "owner.testnet",
+        "policy": {
+          "executor": "executor.testnet",
+          "policy_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "spend_cap": "100",
+          "max_transactions": 3,
+          "recipients": [
+            "payee.testnet"
+          ],
+          "expires_at_ns": "18446744073709551615",
+          "cooldown_ns": "0"
+        },
+        "active": true,
+        "finalized_spent": "1",
+        "pending_reserved": "2",
+        "finalized_transactions": 1,
+        "pending_transactions": 1,
+        "next_nonce": "1",
+        "has_reserved": true,
+        "last_reserved_ns": "0"
+      }
+    },
+    {
+      "name": "grant:overspend",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "grant:overslots",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "grant:bad-decimal",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "ledger:valid",
+      "accepted": true,
+      "value": {
+        "credited": "10",
+        "finalized_spent": "1",
+        "pending_reserved": "2",
+        "completed_withdrawals": "3",
+        "pending_withdrawals": "1",
+        "storage_available": "1"
+      }
+    },
+    {
+      "name": "ledger:overspend",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "ledger:bad-decimal",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "view:valid",
+      "accepted": true,
+      "value": {
+        "value": {
+          "credited": "10",
+          "finalized_spent": "1",
+          "pending_reserved": "2",
+          "completed_withdrawals": "3",
+          "pending_withdrawals": "1",
+          "storage_available": "1"
+        },
+        "blockHeight": 42,
+        "blockHash": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+      }
+    },
+    {
+      "name": "view:unsafe-height",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy:valid-address",
+      "accepted": true,
+      "value": "Fj7MV8Z2a3RdH4W8VF2XKfWAsWHT3jxhoqGMcmb4WbS4"
+    },
+    {
+      "name": "legacy:invalid-address",
+      "accepted": false,
+      "threw": false
+    },
+    {
+      "name": "legacy:simulation-defaults",
+      "accepted": true,
+      "value": {
+        "policy": {
+          "spendCapUnits": "1000",
+          "maxTransactions": 3,
+          "cooldownSeconds": 0,
+          "durationSeconds": 100
+        },
+        "proposal": {
+          "amountUnits": "10",
+          "attempts": 2,
+          "intervalSeconds": 0,
+          "destinationAllowed": true,
+          "mintAllowed": true,
+          "active": true,
+          "replayNonce": false
+        }
+      }
+    }
+  ]
+}

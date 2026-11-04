@@ -109,9 +109,9 @@ function observeOwnerAction(tx: z.infer<typeof response>, value: unknown, base: 
   const call = z.object({ FunctionCall: z.object({ method_name: z.string(), args: z.string(), deposit: z.string() }) }).safeParse(tx.transaction.actions[0]);
   if (!call.success) return base;
   const action = call.data.FunctionCall;
-  const args = z.record(z.unknown()).parse(decodeBase64Json(action.args));
+  const args = z.record(z.string(), z.unknown()).parse(decodeBase64Json(action.args));
   const matches = (name: string, check: (row: Record<string, unknown>) => boolean) => base.events.some(e => e.event === name && e.data.some(d => {
-    const row = z.record(z.unknown()).safeParse(d); return row.success && check(row.data);
+    const row = z.record(z.string(), z.unknown()).safeParse(d); return row.success && check(row.data);
   }));
   if (action.method_name === "withdraw") {
     const withdrawal = z.object({ amount: z.string(), status: z.enum(["SETTLED", "FAILED"]) }).strict().safeParse(value);

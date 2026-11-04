@@ -15,7 +15,7 @@ export interface ResetInputs {
   originalUnknown: boolean;
 }
 const accessSchema = z.object({ nonce: uint64, block_height: z.number().int().safe().nonnegative(), block_hash: hashId, permission: z.unknown() });
-const outcomeSchema = z.object({ block_hash: hashId, outcome: z.object({ status: z.record(z.unknown()) }) });
+const outcomeSchema = z.object({ block_hash: hashId, outcome: z.object({ status: z.record(z.string(), z.unknown()) }) });
 
 /** Fresh public reads. A transport failure is never treated as missing history. */
 export async function collectKeyResetInputs(rpc: NearReadOnlyRpc, plan: ResetPlan): Promise<ResetInputs> {

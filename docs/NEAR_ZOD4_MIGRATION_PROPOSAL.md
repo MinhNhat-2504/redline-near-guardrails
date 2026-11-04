@@ -1,6 +1,6 @@
 # Review boundary: Zod3 → 4
 
-Status: PROPOSED, not applied. Date:2026-11-04. This is a shared validation compatibility/security decision, not a wallet authorization. No owner key, network signature, grant change, funding or deployment is requested.
+Status: APPROVED by owner in chat and IMPLEMENTED2026-11-04. Backend pinned Zod4.6.7;57 before/after cases preserve acceptance and successful outputs,509 backend tests/25 isolated Postgres tests/221 frontend tests/typechecks/builds PASS. Backend npm audit now exits0 with0 advisories. Details and limitations: [migration results](ZOD4_MIGRATION_RESULTS.md). The scope below records the approved plan; no wallet authorization or public transaction was performed.
 
 ## Concrete problem
 

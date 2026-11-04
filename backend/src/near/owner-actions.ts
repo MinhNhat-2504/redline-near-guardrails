@@ -1,15 +1,15 @@
 import { createHash, randomUUID } from "node:crypto";
 import { z } from "zod";
-import { accountId, amount, grantSchema, httpError, policySchema, recordId, uint64, viewSchema } from "./types.js";
+import { accountId, positiveAmount, grantSchema, httpError, policySchema, recordId, uint64, viewSchema } from "./types.js";
 import type { NearChain } from "../chain/near.js";
 
 const createPolicy = policySchema.omit({ executor: true, policy_hash: true }).strict();
 export const ownerActionSchema = z.discriminatedUnion("method", [
   z.object({ method: z.literal("create_grant"), policy: createPolicy }).strict(),
-  z.object({ method: z.literal("deposit"), amount: amount.refine(v => BigInt(v) > 0n) }).strict(),
-  z.object({ method: z.literal("storage_deposit"), amount: amount.refine(v => BigInt(v) > 0n) }).strict(),
+  z.object({ method: z.literal("deposit"), amount: positiveAmount }).strict(),
+  z.object({ method: z.literal("storage_deposit"), amount: positiveAmount }).strict(),
   z.object({ method: z.literal("revoke_grant"), grantId: recordId }).strict(),
-  z.object({ method: z.literal("withdraw"), withdrawalId: recordId, amount: amount.refine(v => BigInt(v) > 0n) }).strict(),
+  z.object({ method: z.literal("withdraw"), withdrawalId: recordId, amount: positiveAmount }).strict(),
 ]);
 
 export async function prepareOwnerAction(chain: NearChain, owner: string, input: unknown, nowMs = Date.now()) {

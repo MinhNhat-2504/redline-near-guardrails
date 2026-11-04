@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { NearViewError, type NearReadOnlyRpc } from "./rpc.js";
-import { accountId, amount, hashId, httpError, ledgerSchema, viewSchema } from "./types.js";
+import { accountId, positiveAmount, hashId, httpError, ledgerSchema, viewSchema } from "./types.js";
 import { decodeBase64Json, observeVaultTransaction } from "./receipts.js";
 import type { NearChain } from "../chain/near.js";
 
@@ -12,12 +12,12 @@ export async function fundingStatus(rpc: NearReadOnlyRpc, contract: string, owne
     throw error; // RPC outage and unknown panic must never become an invented zero ledger.
   }
 }
-export const reconcileFundingSchema = z.object({ hash: hashId, method: z.enum(["storage_deposit", "deposit"]), amount: amount.refine(v => BigInt(v) > 0n), minBlockHeight: z.number().int().nonnegative().safe() }).strict();
+export const reconcileFundingSchema = z.object({ hash: hashId, method: z.enum(["storage_deposit", "deposit"]), amount: positiveAmount, minBlockHeight: z.number().int().nonnegative().safe() }).strict();
 export function observeFunding(input: unknown, contract: string, owner: string, expected: z.infer<typeof reconcileFundingSchema>) {
   const observation = observeVaultTransaction(input, contract, expected.hash, owner);
   const tx = z.object({ transaction: z.object({ actions: z.array(z.object({ FunctionCall: z.object({ method_name: z.string(), deposit: z.string(), args: z.string(), gas: z.union([z.string(), z.number().int().safe()]) }) }).strict()).length(1) }) }).parse(input);
   const call = tx.transaction.actions[0].FunctionCall;
-  const args = z.record(z.unknown()).parse(decodeBase64Json(call.args));
+  const args = z.record(z.string(), z.unknown()).parse(decodeBase64Json(call.args));
   if (call.method_name !== expected.method || call.deposit !== expected.amount || BigInt(call.gas) !== 100000000000000n || Object.keys(args).length !== 0) throw httpError(409, "Transaction does not match reviewed owner funding action");
   if (observation.finalized && observation.state === "CONFIRMED") {
     const status = z.object({ status: z.object({ SuccessValue: z.string() }) }).parse(input).status;
