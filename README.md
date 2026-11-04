@@ -2,7 +2,7 @@
 
 ## NEAR Testnet entry point
 
-Use [NEAR browser setup and walkthrough](docs/NEAR_BROWSER_DEMO.md) and [backend setup](docs/NEAR_BACKEND_SETUP.md), not the inherited Solana quick start below. The NEAR UI is `http://localhost:5173/near`; API health is `http://127.0.0.1:8787/health`. Keep both local servers open. `/` retains the original dashboard/Policy Lab; those tools are not connected to NEAR grants.
+Start with [NEAR first run](docs/NEAR_FIRST_RUN.md): review existing evidence without signing, resume the configured local servers, or follow the explicit prerequisites for a fresh signed demo. Detailed [browser walkthrough](docs/NEAR_BROWSER_DEMO.md) and [backend setup](docs/NEAR_BACKEND_SETUP.md) are separate from the inherited Solana quick start below. The NEAR UI is `http://localhost:5173/near`; API health is `http://127.0.0.1:8787/health`. Keep both local servers open. `/` retains the original dashboard/Policy Lab; those tools are not connected to NEAR grants. New next-step guidance, native wallet balance, owner funding history and receipt-copy controls are documented in the [onboarding checkpoint](docs/NEAR_ONBOARDING_CHECKPOINT.md).
 
 - **Review without signing:** [browser proof matrix](docs/NEAR_BROWSER_DEMO.md#verified-browser-financial-walkthrough--2026-11-04), [raw Testnet proof](docs/TESTNET_PROOF.md), [security demo scope](docs/NEAR_SECURITY_DEMO.md).
 - **Run local checks:** root `npm ci` then `npm run check`; backend `npm ci`, `npm run typecheck`, `npm test`, `npm run build`. Initial backend build generates Prisma; do not regenerate its Windows DLL while an existing backend process is using it. Isolated Postgres and local NEAR sandbox reproduction are in the [Phase5 review](docs/PHASE5_SECURITY_REVIEW.md).

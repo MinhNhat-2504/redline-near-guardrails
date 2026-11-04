@@ -7,3 +7,6 @@
   overflow-y: auto;
   overscroll-behavior-y: contain;
 }
+
+.near-app section { scroll-margin-top: 16px; }
+.near-hash { display: block; user-select: all; }

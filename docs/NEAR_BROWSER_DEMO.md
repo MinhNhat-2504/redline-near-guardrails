@@ -2,6 +2,8 @@
 
 Status: PARTIAL for the full Phase4 acceptance gate. The owner completed the browser financial walkthrough on 2026-11-04; all nine financial transactions below are independently FINAL-verified through public RPC. Browser NEP-413 interoperability and UI operation are owner-observed, not an automated browser test. Unit tests/build remain separate from Testnet evidence. The newcomer/README-only guided-demo acceptance still needs validation.
 
+New users: start with [NEAR first run](NEAR_FIRST_RUN.md). The UI now provides next-step guidance, native wallet balance reads, owner funding history and copy hash/link controls. [Onboarding checkpoint](NEAR_ONBOARDING_CHECKPOINT.md) records actual tests and remaining browser/integration gaps. The new backend routes require a local backend restart; do not re-fund or sign another grant just to inspect them.
+
 ## Verified browser financial walkthrough — 2026-11-04
 
 Owner: `nhat-redline-web.testnet`; grant: `grant-1b031438090c4fa1902eb9ddcbd1f47c`.

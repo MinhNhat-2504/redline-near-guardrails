@@ -282,6 +282,23 @@ describe("scoped executor preparation and ambiguous transport", () => {
 });
 
 describe("NEAR-only API routing/auth (real DB, SDK signatures; chain transport stubbed)", () => {
+  it("includes grantless owner funding in history without exposing another signer or packet", async () => {
+    const s = scope(); const session = await login();
+    const ownHash = baseEncode(createHash("sha256").update(s + "own").digest());
+    const foreignHash = baseEncode(createHash("sha256").update(s + "foreign").digest());
+    await db.nearTransaction.createMany({ data: [
+      { scope: s, hash: ownHash, signerId: OWNER, state: "CONFIRMED", signedBase64: "synthetic-test-packet-never-broadcast" },
+      { scope: s, hash: foreignHash, signerId: "foreign.testnet", state: "CONFIRMED" },
+    ] });
+    const app = await buildNearApp({ config: { contractId: VAULT, executorId: AGENT }, store: { scope: s }, db } as any, auth, "https://redline.test", false);
+    try {
+      expect((await app.inject({ method: "GET", url: "/near/owner-transactions" })).statusCode).toBe(401);
+      const response = await app.inject({ method: "GET", url: "/near/owner-transactions?ownerId=foreign.testnet", headers: { authorization: `Bearer ${session.token}` } });
+      expect(response.statusCode).toBe(200);
+      expect(response.json()).toHaveLength(1); expect(response.json()[0]).toMatchObject({ hash: ownHash, signerId: OWNER, grantId: null });
+      expect(response.json()[0]).not.toHaveProperty("signedBase64"); expect(response.json()[0]).not.toHaveProperty("argsJson");
+    } finally { await app.close(); }
+  });
   it("never accepts an API-key or Solana-session fallback, and keeps wallet calls unsigned", async () => {
     permission = "FullAccess";
     const rpc = new NearReadOnlyRpc();const contract = `vault-${randomUUID().slice(0,8)}.testnet`;testScopes.push(`testnet:${contract}`);

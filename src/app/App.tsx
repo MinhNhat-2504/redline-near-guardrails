@@ -322,6 +322,7 @@ export default function App() {
           {menu ? <X size={16} /> : <Menu size={16} />}
         </button>
         <nav className="nav" aria-label={tr("Primary navigation")}>
+          <a href="/near" target="_blank" rel="noreferrer" title="NEAR Testnet · mở riêng, không đổi mạng hay quyền ví Solana">NEAR Testnet ↗</a>
           {headerOrder.map((i) => (
             <button
               key={i}

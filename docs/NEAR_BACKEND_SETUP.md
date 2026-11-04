@@ -1,12 +1,12 @@
 # NEAR backend - Phase 3 implementation checkpoint
 
-Status: **PARTIAL phase**. NEAR-native API/auth/adapter and durable receipt reader are implemented and tested. Actual public Testnet API execution with a newly installed scoped executor key and a new owner-signed grant is **NOT RUN**. Frontend wallet onboarding/callback UI remains Phase 4. No mainnet support.
+Current status2026-11-04: Phase3 API gate PASS, including actual scoped executor ALLOW/EXPIRED receipts. All nine owner-operated browser financial transactions are independently verified. Phase4/5 remain PARTIAL; [first run](NEAR_FIRST_RUN.md) and [onboarding checkpoint](NEAR_ONBOARDING_CHECKPOINT.md) describe the current frontend. No mainnet support. Historical implementation notes below are retained with their original scope.
 
 ## Runtime and startup
 
 - Node **>=22.22.2** required by pinned official `near-api-js@7.4.0`; verified locally with Node 24.14.1/npm 11.11.0. CI uses Node 24.
 - PostgreSQL is required. Keep the connection credential in your local environment/deployment secret store; never send it in chat or commit it.
-- `backend/src/server.ts` dispatches `CHAIN=near` to the NEAR server, otherwise to the preserved legacy server. The legacy server blob is unchanged (`101d667a6b9143fc497fa58bc2c230b28486b5f8`). Existing mock/Solana adapters and routes retain their behavior in the legacy server.
+- `backend/src/server.ts` dispatches `CHAIN=near` to the NEAR server, otherwise to the preserved legacy server. Its original blob remains in Git (`101d667a6b9143fc497fa58bc2c230b28486b5f8`); Phase5 added only a type import/generic for Fastify compatibility. Existing mock/Solana adapters and routes retain their behavior in the legacy server.
 - `npm start` no longer executes the inherited `prisma db push --accept-data-loss` at startup. Schema changes are explicit. For an inherited local mock/Solana database, run its documented setup separately. Starting the NEAR API must never silently alter/drop inherited tables.
 
 From `backend/`:

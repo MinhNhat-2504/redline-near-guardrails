@@ -2,7 +2,7 @@ import type { Grant } from "./model";
 
 export type IntentRequest = { grant_id: string; intent_id: string; nonce: string; asset: "NEAR"; recipient: string; amount: string; policy_hash: string };
 type StoragePort = Pick<Storage, "getItem" | "setItem" | "removeItem">;
-export type JournalRow = { hash: string; grantId?: string | null; intentId?: string | null; state: string; reason?: string | null; observation?: unknown };
+export type JournalRow = { hash: string; signerId?: string; grantId?: string | null; intentId?: string | null; state: string; reason?: string | null; observation?: unknown };
 const key = "near-pending-request";
 const fields = ["grant_id", "intent_id", "nonce", "asset", "recipient", "amount", "policy_hash"];
 const id = (v: unknown) => typeof v === "string" && /^[A-Za-z0-9_-]{1,64}$/.test(v);

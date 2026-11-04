@@ -62,3 +62,7 @@ Sources checked 2026-11-04: [NEAR private callbacks](https://docs.near.org/smart
 ## Superseding checkpoint: approved Zod4 migration — 2026-11-04
 
 Owner approved and implementation completed; Zod4.6.7 migration PASS.57 captured before/after cases preserve acceptance and valid outputs; three native malformed-decimal exceptions now controlled rejection. Backend509 tests/37 files+typecheck/direct build,25 real isolated Postgres tests, frontend221 tests/29 files+typecheck/build PASS. Backend npm audit now0 findings/exit0, frontend10low/exit1. Original high-Zod finding is RESOLVED; historical rows above record its prior state. No security exception, wallet operation or contract change. Current evidence and limitations: [Zod4 migration results](ZOD4_MIGRATION_RESULTS.md). Overall Phase4/5 remain PARTIAL for documented integration/newcomer/hosted/browser automation work; no new approval required for the already-approved migration.
+
+## Onboarding follow-up — 2026-11-04
+
+Native account balance, next-step/restart guidance, proof-only path, owner funding journal and copy hash/link controls are now implemented with frontend228/backend517/Postgres26 passing tests. NEAR/legacy navigation is explicit; Mainnet remains unsupported. Earlier gaps for those functions are superseded; full live/newcomer/clipboard acceptance is still pending, and legacy PolicyLab/copilot are not connected to NEAR signing. See NEAR_ONBOARDING_CHECKPOINT.md for evidence and remaining scope. No new owner signature or funding was used.

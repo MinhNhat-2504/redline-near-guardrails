@@ -1,0 +1,13 @@
+{
+  "capturedAt": "2026-11-04T07:13:26.748Z",
+  "scope": "PUBLIC_FINAL_ACCOUNT_ONLY",
+  "snapshot": {
+    "network": "testnet",
+    "accountId": "nhat-redline-web.testnet",
+    "amount": "2349061124304574600000000",
+    "locked": "0",
+    "storageUsage": 182,
+    "blockHeight": 276162643,
+    "blockHash": "BtiTtkjniNufjYEu4osL66d2hsJDuRnxYrBqCPs4k9hH"
+  }
+}

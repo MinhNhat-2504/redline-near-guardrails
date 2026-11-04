@@ -1,0 +1,16 @@
+
+> redline-backend@0.1.0 typecheck
+> tsc --noEmit -p tsconfig.json
+
+
+> redline-backend@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 D:/Project/AI Engineer/redline-near-guardrails/backend
+
+
+ Test Files  38 passed (38)
+      Tests  517 passed (517)
+   Start at  14:12:04
+   Duration  2.00s (transform 4.26s, setup 0ms, import 11.21s, tests 4.16s, environment 4ms)

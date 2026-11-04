@@ -8,6 +8,7 @@ import { accountId, hashId, httpError, recordId, transferSchema } from "./types.
 import { prepareOwnerAction } from "./owner-actions.js";
 import { fundingStatus, reconcileFunding } from "./funding.js";
 import type { NearChain } from "../chain/near.js";
+import { accountSnapshot } from "./account.js";
 
 export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: string, logging = true) {
   const app = Fastify({ bodyLimit: 32_768, logger: logging ? { redact: ["req.headers.authorization", "req.headers.cookie"] } : false });
@@ -46,6 +47,12 @@ export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: str
   });
   app.get("/near/owners/:account/balance", async req => chain.readBalance(z.object({ account: accountId }).parse(req.params).account));
   app.get("/near/owners/:account/funding", async req => fundingStatus(chain.rpc, chain.config.contractId, z.object({ account: accountId }).parse(req.params).account));
+  app.get("/near/accounts/:account", async req => accountSnapshot(chain.rpc, z.object({ account: accountId }).parse(req.params).account));
+  app.get("/near/owner-transactions", async req => {
+    const owner = (await session(req)).accountId;
+    return chain.db.nearTransaction.findMany({ where: { scope: chain.store.scope, signerId: owner }, orderBy: { createdAt: "desc" }, take: 100,
+      select: { hash: true, signerId: true, grantId: true, intentId: true, state: true, reason: true, observation: true, createdAt: true } });
+  });
   app.post("/near/owner-actions", async req => prepareOwnerAction(chain, (await session(req)).accountId, req.body));
   app.post("/near/owner-actions/reconcile", async req => reconcileFunding(chain, (await session(req)).accountId, req.body));
   app.post("/near/grants/:id/intents", async req => {
