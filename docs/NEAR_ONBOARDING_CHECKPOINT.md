@@ -36,3 +36,9 @@ For review in the existing environment: restart backend with `start-near-local.p
 Account query source checked2026-11-04: [official NEAR view_account RPC](https://docs.near.org/api/rpc/contracts). Snapshot `amount`/`locked` are account fields, never labelled vault principal or guaranteed spendable gas.
 
 - Onboarding pre-commit: staged whitespace PASS; scoped Git history/index credential-pattern scan PASS, 1067 blobs/0 findings; exact inherited TESTONLY fixture exception retained. Report phase4-onboarding-secret-scan.json. Pattern scope only; user-modified login report excluded.
+
+## Owner-observed browser acceptance follow-up — 2026-11-04
+
+Owner supplied screenshots after restarting the local services: native account balance2.3490611243045746NEAR Testnet at FINAL block276164651; own vault principal0.09/storage0.04498; grant owner matches nhat-redline-web.testnet, revoked, nonce1/spent0.01/pending0. Earlier screenshot shows four owner-action journal rows including funding and copy controls. Owner then used copy hash and pasted FJ83pdozw6gNZdcDoVrJZLLjKVkBsta6CxoTqt6YbeJP, exactly matching the independently verified post-revoke rejection. Native-balance display, owner history, vault/grant refresh and copy-hash are now USER-observed working in this browser. No new transaction was needed.
+
+This supersedes pending manual verification for those specific controls only. Copy-link, clipboard-denied fallback, startup/reload/cancel/recovery branches, automated browser E2E, fresh-clone newcomer acceptance and NEAR PolicyLab/copilot integration remain unverified/incomplete. The timer0h0m0s is consistent with the recorded deadline having elapsed; grant remains revoked. No need to renew it, create another grant or fund again. Source/tests unchanged, so no test/build rerun for this evidence-only note. Phase4/5 remain PARTIAL; previous frontend228/backend517/Postgres26 PASS retained.
