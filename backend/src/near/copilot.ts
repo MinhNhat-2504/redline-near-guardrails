@@ -2,6 +2,7 @@ import { z } from "zod";
 import { analyzeNearPolicy, labInput } from "./policy-lab.js";
 import { httpError } from "./types.js";
 import type { NearReadOnlyRpc } from "./rpc.js";
+import { CopilotError } from "./copilot-errors.js";
 
 export const copilotInput = z.object({ candidate: labInput, topic: z.enum(["explain", "risks", "next_steps"]), consent: z.literal(true) }).strict();
 const answerSchema = z.object({ summary: z.string().min(1).max(2000), risks: z.array(z.string().min(1).max(500)).max(5), nextSteps: z.array(z.string().min(1).max(500)).max(5) }).strict();
@@ -35,11 +36,16 @@ export class NearCopilot {
     // Charge the local attempt budget even if RPC/provider fails; no automatic retries/fallbacks.
     this.inflight = true; this.used++; this.owners.set(owner, [...recent, now]);
     try {
-      const report = await analyzeNearPolicy(rpc, contract, request.candidate);
+      let report: Report;
+      try { report = await analyzeNearPolicy(rpc, contract, request.candidate); }
+      catch { throw new CopilotError("SNAPSHOT_UNAVAILABLE"); }
       if (report.owner !== owner) throw httpError(403, "Only the grant owner can request model explanation");
       let answer: CopilotAnswer;
-      try { answer = answerSchema.parse(await this.model.generate(copilotContext(report, request.topic))); }
-      catch { throw httpError(503, "Copilot response unavailable or invalid; no authorization or settlement inferred"); }
+      let generated: unknown;
+      try { generated = await this.model.generate(copilotContext(report, request.topic)); }
+      catch (e) { throw e instanceof CopilotError ? e : new CopilotError("PROVIDER_UNAVAILABLE"); }
+      try { answer = answerSchema.parse(generated); }
+      catch { throw new CopilotError("INVALID_RESPONSE"); }
       return { source: "llm", provider: "gemini", model: this.model.name, network: report.network, contractId: contract,
         grantId: report.grantId, blockHeight: report.blockHeight, blockHash: report.blockHash, predicted: report.predicted, topic: request.topic,
         advisory: answer, notice: "Lời giải thích do LLM tạo, có thể sai. Kết luận quy tắc và receipt FINAL được kiểm tra riêng; AI không ký hoặc gửi giao dịch." };
@@ -54,20 +60,32 @@ export function configuredNearCopilot(env: NodeJS.ProcessEnv = process.env, fetc
   const key = env.GEMINI_API_KEY?.trim(), model = env.NEAR_COPILOT_MODEL;
   if (!key || !model || !/^[a-zA-Z0-9._-]{1,100}$/.test(model)) throw Error("NEAR copilot requires a server-side GEMINI_API_KEY and explicit NEAR_COPILOT_MODEL");
   return new NearCopilot({ name: model, async generate(context) {
-    const response = await fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-      method: "POST", redirect: "error", signal: AbortSignal.timeout(15000), headers: { "content-type": "application/json", "x-goog-api-key": key },
+    const signal = AbortSignal.timeout(15000);
+    let response: Response;
+    try { response = await fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+      method: "POST", redirect: "error", signal, headers: { "content-type": "application/json", "x-goog-api-key": key },
       body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: "user", parts: [{ text: JSON.stringify(context) }] }],
         generationConfig: { maxOutputTokens: 1200, candidateCount: 1, responseMimeType: "application/json", responseJsonSchema: { type: "object", additionalProperties: false,
-          properties: { summary: { type: "string" }, risks: { type: "array", items: { type: "string" } }, nextSteps: { type: "array", items: { type: "string" } } }, required: ["summary", "risks", "nextSteps"] } } }) });
-    if (!response.ok) { await response.body?.cancel(); throw Error("Provider unavailable"); }
+          properties: { summary: { type: "string" }, risks: { type: "array", items: { type: "string" } }, nextSteps: { type: "array", items: { type: "string" } } }, required: ["summary", "risks", "nextSteps"] } } }) }); }
+    catch (e) { throw new CopilotError(signal.aborted || (e instanceof Error && ["AbortError", "TimeoutError"].includes(e.name)) ? "PROVIDER_TIMEOUT" : "PROVIDER_UNAVAILABLE"); }
+    if (!response.ok) {
+      await response.body?.cancel().catch(() => {});
+      throw new CopilotError(response.status === 401 ? "PROVIDER_KEY_REJECTED" : response.status === 403 ? "PROVIDER_ACCESS_DENIED" : response.status === 404 ? "PROVIDER_MODEL_UNAVAILABLE" : response.status === 429 ? "PROVIDER_QUOTA" : response.status === 400 ? "PROVIDER_REQUEST_REJECTED" : "PROVIDER_UNAVAILABLE");
+    }
     // Stream-bound the response instead of buffering an unbounded provider error/output.
-    const reader = response.body?.getReader(); if (!reader) throw Error("Missing model response");
+    const reader = response.body?.getReader(); if (!reader) throw new CopilotError("INVALID_RESPONSE");
     let total = 0; const chunks: Uint8Array[] = [];
-    try { while (true) { const part = await reader.read(); if (part.done) break; total += part.value.length; if (total > 32768) throw Error("Model response too large"); chunks.push(part.value); } }
-    finally { await reader.cancel(); }
+    try { while (true) { const part = await reader.read(); if (part.done) break; total += part.value.length; if (total > 32768) throw new CopilotError("INVALID_RESPONSE"); chunks.push(part.value); } }
+    catch (e) { throw signal.aborted ? new CopilotError("PROVIDER_TIMEOUT") : e; }
+    finally { await reader.cancel().catch(() => {}); }
+    try {
     const raw = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+    const finish = raw?.candidates?.[0]?.finishReason;
+    if (finish === "MAX_TOKENS") throw new CopilotError("RESPONSE_TRUNCATED");
+    if (raw?.promptFeedback?.blockReason || ["SAFETY", "BLOCKLIST", "PROHIBITED_CONTENT", "RECITATION"].includes(finish)) throw new CopilotError("RESPONSE_BLOCKED");
     const content = z.object({ candidates: z.array(z.object({ finishReason: z.literal("STOP"), content: z.object({ parts: z.array(z.object({ text: z.string(), thought: z.boolean().optional() })).min(1).max(8) }) })).length(1) }).parse(raw);
     // Ignore any provider thought text/signature; only final answer text is returned.
     return JSON.parse(content.candidates[0].content.parts.filter(p => !p.thought).map(p => p.text).join(""));
+    } catch (e) { throw e instanceof CopilotError ? e : new CopilotError("INVALID_RESPONSE"); }
   } });
 }

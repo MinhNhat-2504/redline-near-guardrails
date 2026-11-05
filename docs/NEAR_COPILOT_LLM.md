@@ -2,6 +2,10 @@
 
 Ngày 2026-11-05. Tích hợp chỉ đọc; mặc định tắt. Chưa có bằng chứng phản hồi model thật.
 
+Owner walkthrough update: owner supplied screenshots showing enabled=true/Gemini/gemini-3.8-flash, authenticated web owner, historical revoked grant and deterministic REVOKED, then clicked the consented AI control and received generic API503. Configuration/render/click failure are owner-observed; no successful provider response or root cause independently captured. Do not treat that failed attempt as LLM acceptance PASS.
+
+Diagnostic fix: copilot errors now return only a fixed whitelisted code, never raw provider bodies/keys. UI distinguishes SNAPSHOT_UNAVAILABLE, PROVIDER_KEY_REJECTED, PROVIDER_ACCESS_DENIED, PROVIDER_MODEL_UNAVAILABLE, PROVIDER_QUOTA, PROVIDER_REQUEST_REJECTED, PROVIDER_UNAVAILABLE, PROVIDER_TIMEOUT, RESPONSE_TRUNCATED, RESPONSE_BLOCKED and INVALID_RESPONSE. HTTP400 remains ambiguous (key/project/model/schema may need checking); no automatic key/model/token-limit/billing change or retry. Financial endpoint errors retain the prior uncertainty wording. Restart backend to use the compiled fix; a new owner-triggered request is needed to learn the current failure code.
+
 ## Luồng đã triển khai
 
 Trong **Policy Lab**, phân tích bằng quy tắc trước. Phần **Hỏi copilot về đề xuất này** cho chọn giải thích kết quả, rủi ro hoặc bước kiểm tra tiếp theo. Chủ grant đăng nhập, đồng ý gửi dữ liệu và chủ động bấm **Hỏi AI · không ký giao dịch**.

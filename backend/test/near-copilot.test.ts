@@ -30,7 +30,7 @@ describe("read-only NEAR generative copilot, synthetic provider only", () => {
   });
   it("checks ownership before model egress", async () => { const m = model(); await expect(new NearCopilot(m).explain(rpc() as any, contract, "other.testnet", input)).rejects.toThrow("owner"); expect(m.generate).not.toHaveBeenCalled(); });
   it.each([{ consent: false }, { topic: "transfer" }, { approve: true }, { candidate: { ...candidate, policy: {} } }])("rejects missing consent or extra authority %#", patch => expect(new NearCopilot(model()).explain(rpc() as any, contract, owner, { ...input, ...patch })).rejects.toThrow());
-  it("RPC outage never reaches model or becomes invented explanation", async () => { const m = model(), source = rpc(); source.finalBlock.mockRejectedValue(Error("offline")); await expect(new NearCopilot(m).explain(source as any, contract, owner, input)).rejects.toThrow("offline"); expect(m.generate).not.toHaveBeenCalled(); });
+  it("RPC outage never reaches model or becomes invented explanation", async () => { const m = model(), source = rpc(); source.finalBlock.mockRejectedValue(Error("offline")); await expect(new NearCopilot(m).explain(source as any, contract, owner, input)).rejects.toMatchObject({ code: "SNAPSHOT_UNAVAILABLE" }); expect(m.generate).not.toHaveBeenCalled(); });
   it.each([{ ...answer, transaction: {} }, { ...answer, predicted: "ALLOW" }, { ...answer, summary: "x".repeat(2001) }, { ...answer, risks: Array(6).fill("risk") }, { summary: "missing fields" }])("rejects malformed model output %#", async value => { const m = { name: "test-model", generate: vi.fn(async () => value) }; await expect(new NearCopilot(m).explain(rpc() as any, contract, owner, input)).rejects.toThrow("unavailable or invalid"); });
   it("limits each owner to three attempts/minute and resets after window", async () => {
     let now = 1000; const m = model(), service = new NearCopilot(m, () => now);
@@ -74,6 +74,18 @@ describe("read-only NEAR generative copilot, synthetic provider only", () => {
   it("authenticated model errors are sanitized through the HTTP route", async () => {
     const m = { name: "test-model", generate: async () => { throw Error("secret-provider-error"); } };
     const app = await buildNearApp({ config: { contractId: contract }, rpc: rpc() } as any, { requireSession: async () => ({ accountId: owner }) } as any, "http://localhost:5173", false, new NearCopilot(m));
-    try { const r = await app.inject({ method: "POST", url: "/near/copilot/explain", payload: input }); expect(r.statusCode).toBe(503); expect(r.body).not.toContain("secret-provider-error"); expect(r.headers["cache-control"]).toBe("no-store"); } finally { await app.close(); }
+    try { const r = await app.inject({ method: "POST", url: "/near/copilot/explain", payload: input }); expect(r.statusCode).toBe(503); expect(r.json().code).toBe("PROVIDER_UNAVAILABLE"); expect(r.body).not.toContain("secret-provider-error"); expect(r.headers["cache-control"]).toBe("no-store"); } finally { await app.close(); }
+  });
+  it.each([[400, "PROVIDER_REQUEST_REJECTED"], [401, "PROVIDER_KEY_REJECTED"], [403, "PROVIDER_ACCESS_DENIED"], [404, "PROVIDER_MODEL_UNAVAILABLE"], [429, "PROVIDER_QUOTA"], [500, "PROVIDER_UNAVAILABLE"]])("classifies HTTP %s without exposing provider response", async (status, code) => {
+    const fetcher = vi.fn(async () => new Response("secret-provider-error and private key", { status: status as number }));
+    await expect(configured(fetcher as any).explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ statusCode: 503, code }); expect(fetcher).toHaveBeenCalledOnce();
+  });
+  it.each([["MAX_TOKENS", "RESPONSE_TRUNCATED"], ["SAFETY", "RESPONSE_BLOCKED"], ["STOP", "INVALID_RESPONSE"]])("classifies finish %s without treating it as success", async (finish, code) => {
+    const fetcher = vi.fn(async () => response({ bad: true }, finish));
+    await expect(configured(fetcher as any).explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code });
+  });
+  it("classifies timeouts without leaking transport details", async () => {
+    const fetcher = vi.fn(async () => { const e = new Error("secret-provider-error"); e.name = "TimeoutError"; throw e; });
+    await expect(configured(fetcher as any).explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_TIMEOUT" }); expect(fetcher).toHaveBeenCalledOnce();
   });
 });

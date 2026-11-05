@@ -12,6 +12,7 @@ import { accountSnapshot } from "./account.js";
 import { analyzeNearPolicy } from "./policy-lab.js";
 import { reconcileWithdrawal } from "./withdrawal.js";
 import { configuredNearCopilot, type NearCopilot } from "./copilot.js";
+import { CopilotError } from "./copilot-errors.js";
 
 export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: string, logging = true, copilot: NearCopilot = configuredNearCopilot()) {
   const app = Fastify({ bodyLimit: 32_768, logger: logging ? { redact: ["req.headers.authorization", "req.headers.cookie"] } : false });
@@ -28,6 +29,7 @@ export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: str
     if (req.method === "POST" && !req.headers["content-type"]?.startsWith("application/json")) throw httpError(415, "JSON content type required");
   });
   app.setErrorHandler<FastifyError>((error, _req, reply) => {
+    if (error instanceof CopilotError) return reply.code(503).send({ error: error.message, code: error.code });
     if (error instanceof z.ZodError) return reply.code(400).send({ error: "Invalid NEAR request or chain data" });
     const status = error.statusCode ?? 503;
     // Never reflect raw SDK, credential-file, Prisma or RPC errors.
