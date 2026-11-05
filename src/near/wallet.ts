@@ -25,13 +25,15 @@ export async function login(): Promise<string> {
 async function verify(c: Challenge, result: { accountId: string; publicKey: string; signature: string; state?: string }) {
   if (result.accountId !== c.accountId || (result.state && result.state !== c.state)) throw Error("Callback khác tài khoản hoặc state.");
   const session = await api<{ token: string; accountId: string }>("/near/auth/verify", { challengeId: c.challengeId, state: c.state, accountId: result.accountId, publicKey: result.publicKey, signature: result.signature });
-  setToken(session.token); sessionStorage.removeItem("near-challenge"); return session.accountId;
+  if (session.accountId !== c.accountId || typeof session.token !== "string" || !/^[A-Za-z0-9_-]{43}$/.test(session.token)) throw Error("Phản hồi phiên đăng nhập không khớp tài khoản ký.");
+  setToken(session.token); sessionStorage.removeItem("near-challenge");
+  if (location.pathname === "/near/auth/callback") history.replaceState(null, "", "/near");
+  return session.accountId;
 }
 export async function finishCallback(): Promise<string | undefined> {
   if (location.pathname !== "/near/auth/callback") return;
   const q = new URLSearchParams(location.hash.slice(1));
   const saved = sessionStorage.getItem("near-challenge");
-  history.replaceState(null, "", "/near");
   if (!saved || !q.get("signature") || !q.get("state")) throw Error("Thiếu challenge hoặc chữ ký callback.");
   const c = JSON.parse(saved) as Challenge;
   if (q.get("state") !== c.state) throw Error("Callback state không khớp.");

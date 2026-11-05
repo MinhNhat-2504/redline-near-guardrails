@@ -2,7 +2,7 @@
 
 Updated: 2026-11-05 (Asia/Saigon).
 
-Current checkpoint: phases0-3 PASS; Phase4/5 PARTIAL. Exact selected grant deadline now enforced; public Policy Lab remains read-only and cannot authorize financial API calls. Frontend261/backend547/Postgres26 tests and typechecks/builds PASS. Backend audit0; frontend10low remain. Read-only Policy Lab browser acceptance owner-observed; generative LLM, newcomer/hosted/browser recovery coverage incomplete. No new signatures/funding needed. UI redesign deferred; remote push auth blocked; user-modified login report excluded. Details: docs/NEAR_FUNCTIONAL_SECURITY_CHECKPOINT.md.
+Current checkpoint: phases0-3 PASS; Phase4/5 PARTIAL. Local recovery precedes API checks; corrupt records block writes, auth callback retry preserved, cancellation never unlocks ambiguous funding. Frontend277/backend547 tests and builds PASS; isolated Git-source cache installation/Prisma generation PASS, with final cancel-button guard separately verified. Actual wallet cancel/reload and independent newcomer acceptance still pending. Postgres26 prior PASS, not rerun. UI redesign deferred; no new signatures/funding. Remote push auth blocked; user login report excluded. Details: docs/NEAR_RELOAD_ACCEPTANCE.md.
 
 - Goal: migrate REDLINE's bounded agent transfers to a real NEAR Testnet vault for the AI Security & Defense track. Deployment and storage/principal funding verified; full public contract demo verified; backend migration in progress.
 - Inputs: fully read `NEAR_REDLINE_MIGRATION_PLAN_AGENT.md` and `NEAR_Hackathon_2026_REDLINE_Complete_Playbook.pdf` (19 pages). The Markdown's history-preserving import takes precedence over the PDF's selective-copy suggestion.
@@ -156,3 +156,15 @@ Phase4/5 remain PARTIAL. Policy Lab read-only browser acceptance already owner-o
 
 
 Pre-commit follow-up: staged whitespace PASS; Git reachable-history/staged-index credential-pattern scan PASS1116 blobs/0 findings (phase5-followup-secret-scan.json). Exact inherited TESTONLY fixture exception retained; no entropy/credential-validity audit implied. User-modified phase3-owner-cli-login.json excluded. No remote push attempted because the recorded authentication blocker has not changed.
+
+
+## New installation and cancel/reload checkpoint - 2026-11-05
+
+Base91b6fc1. Local pending/funding recovery now precedes API health, restores each record independently, handles blocked storage getter and selects a saved intent grant over stale navigation. Corrupt recovery blocks financial preparation/signing/submission but retains records and allows public reads when connected. Auth callback URL/challenge remain until successful verification; connection retry also retries that callback. Session identity/token shape checked. Local cancel disabled after wallet/API operation starts; no no-hash funding unlock or automatic re-sign introduced. See docs/NEAR_RELOAD_ACCEPTANCE.md.
+
+Final workspace frontend277 tests/34 files+typecheck/Vite build PASS;16 new recovery/cancel/callback tests use synthetic storage/transport (not real browser wallet E2E). Initial3 test failures from old test-session fixture shape retained, then fixed to actual43-character token without weakening validation. Source-only cache-install script excludes local env/tooling/node_modules and uses isolated Prisma generation. Archived tree8c7c2bb46c1240138429b70193d03fdbfc3fcba2 installed root/backend offline from cache; frontend277/backend547 tests, typechecks and builds all PASS. One subsequent cancel-button-only guard was verified by final workspace frontend rerun; installation/backend were not repeated for that attribute change. All raw logs and failed-attempt report retained under phase4-clean-install-* and phase4-reload-recovery-*.
+
+No owner credentials/session files read, no existing DB changed, no live API/indexer started, no public financial transaction or signature. Backend/Rust/schema/dependencies unchanged; Postgres26 and contract/sandbox evidence retained from preceding checks, not rerun here. No new npm audit (prior backend0/frontend10low). User login report excluded; remote push blocker unchanged. Phase4/5 PARTIAL: independent README-only newcomer and actual wallet popup/cancel/reload/clipboard-denied branches/hosted CI remain NOT RUN; generative LLM integration incomplete. Clean source/cache install is not a different-machine online registry or signed-demo proof.
+
+
+Pre-commit: scoped Git history/index credential-pattern scan PASS1150 blobs/0 findings, exact inherited TESTONLY exception retained (phase4-reload-recovery-secret-scan.json). Staged whitespace PASS; user-modified login report excluded. Pattern scope only, not an independent credential audit. No remote push attempted.

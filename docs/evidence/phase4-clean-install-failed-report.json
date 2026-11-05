@@ -1,0 +1,19 @@
+﻿{
+    "scope":  "Fresh Git source archive, empty node_modules, cache-only npm ci, tests/builds. Not a browser/newcomer walkthrough or live server startup.",
+    "steps":  [
+                  {
+                      "exitCode":  0,
+                      "name":  "frontend-install",
+                      "log":  "frontend-install.log"
+                  },
+                  {
+                      "exitCode":  1,
+                      "name":  "frontend-check",
+                      "log":  "frontend-check.log"
+                  }
+              ],
+    "noLocalEnvOrToolingCopied":  true,
+    "publicFinancialSubmission":  "NOT RUN",
+    "result":  "FAIL",
+    "snapshot":  "cf4eff94f1d7a2f0b5f839499b3b86886456bb23"
+}

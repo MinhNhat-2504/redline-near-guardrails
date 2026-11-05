@@ -42,7 +42,7 @@ Prerequisites: Git, supported Node (verified24.14.1; backend minimum22.22.2), np
 
 Follow [backend setup](NEAR_BACKEND_SETUP.md) for the additive Near* migration and application origin configuration. The persistent local script is for a reviewed local environment; do not point test migrations at an unrelated existing database. A fresh signed run also needs an executor whose owner has explicitly installed a FunctionCall key scoped to the vault/execute_transfer with finite gas allowance. The backend receives only that scoped credential in ignored local storage; it never receives an owner's FullAccess key. Follow the setup's review/signature boundary; no credential import is automatic.
 
-No fresh-clone/README-only newcomer run is claimed by this document. The existing installation was exercised by the owner; automated tests and independent public receipt proofs are documented separately.
+An isolated Git-source/cache-only installation now passes frontend/backend npm ci, tests, Prisma generation and builds; see [installation and reload checkpoint](NEAR_RELOAD_ACCEPTANCE.md). This is not an independent newcomer following README on another machine or completing wallet signatures. The latter acceptance remains NOT RUN.
 
 ## D. Guided signed demo in the page
 
@@ -65,3 +65,8 @@ No fresh-clone/README-only newcomer run is claimed by this document. The existin
 - Navigation: NEAR header opens the original dashboard/Policy Lab in another tab; the original dashboard has a NEAR Testnet link back. This switches project views, not a wallet network. NEAR remains Testnet-only. Legacy Policy Lab/copilot are preserved but not connected to NEAR policy signing; never treat their simulations as NEAR transactions.
 
 No new browser acceptance PASS is inferred from unit/render tests. Remaining integration and automated-wallet test gaps: [onboarding checkpoint](NEAR_ONBOARDING_CHECKPOINT.md).
+
+
+### Reload/cancel follow-up (2026-11-05)
+
+Saved public intent/funding now restores before API health, even if backend is stopped. One corrupt record does not hide the other; corrupt/unreadable recovery blocks financial writes. A saved intent selects its original grant on normal reload, so there is no need to click a disabled historical-grant selector. Read the same grant, then use read-only Policy Lab; do not clear storage to unlock it. A successful auth callback is removed from the URL only after verification; retry API connection to retry an interrupted callback. Cancel an unsigned review before opening the wallet. Once the wallet/API operation starts, the local cancel button is disabled; closing a popup does not establish financial cancellation. No-hash funding remains stopped for review. [Verified scope and safe manual steps](NEAR_RELOAD_ACCEPTANCE.md).
