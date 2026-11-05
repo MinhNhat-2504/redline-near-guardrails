@@ -59,14 +59,16 @@ export function configuredNearCopilot(env: NodeJS.ProcessEnv = process.env, fetc
   if (env.NEAR_COPILOT_ENABLED !== "true") return new NearCopilot();
   const key = env.GEMINI_API_KEY?.trim(), model = env.NEAR_COPILOT_MODEL;
   if (!key || !model || !/^[a-zA-Z0-9._-]{1,100}$/.test(model)) throw Error("NEAR copilot requires a server-side GEMINI_API_KEY and explicit NEAR_COPILOT_MODEL");
+  const timeout = env.NEAR_COPILOT_TIMEOUT_MS || "45000";
+  if (!/^[0-9]+$/.test(timeout) || !Number.isSafeInteger(Number(timeout)) || Number(timeout) < 15000 || Number(timeout) > 60000) throw Error("NEAR_COPILOT_TIMEOUT_MS must be an integer between 15000 and 60000");
   return new NearCopilot({ name: model, async generate(context) {
     if (!/^[\x21-\x7e]+$/.test(key)) throw new CopilotError("PROVIDER_CONFIG_INVALID");
-    const signal = AbortSignal.timeout(15000);
+    const signal = AbortSignal.timeout(Number(timeout));
     let response: Response;
     try { response = await fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: "POST", redirect: "error", signal, headers: { "content-type": "application/json", "x-goog-api-key": key },
       body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: "user", parts: [{ text: JSON.stringify(context) }] }],
-        generationConfig: { maxOutputTokens: 1200, candidateCount: 1, responseMimeType: "application/json", responseJsonSchema: { type: "object", additionalProperties: false,
+        generationConfig: { maxOutputTokens: 1200, ...(model === "gemini-3.8-flash" ? { thinkingConfig: { thinkingLevel: "low", includeThoughts: false } } : {}), responseMimeType: "application/json", responseJsonSchema: { type: "object", additionalProperties: false,
           properties: { summary: { type: "string" }, risks: { type: "array", items: { type: "string" } }, nextSteps: { type: "array", items: { type: "string" } } }, required: ["summary", "risks", "nextSteps"] } } }) }); }
     catch (e) { throw providerTransportError(e, signal.aborted); }
     if (!response.ok) {

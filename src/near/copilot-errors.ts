@@ -15,7 +15,7 @@ const messages: Record<string, string> = {
   PROVIDER_QUOTA: "Gemini báo hết hạn mức hoặc quá nhiều yêu cầu. Kiểm tra quota trong AI Studio; chưa bấm gọi liên tục.",
   PROVIDER_REQUEST_REJECTED: "Gemini từ chối yêu cầu (HTTP 400). Cần kiểm tra khóa/project, model và định dạng JSON; mã này chưa đủ xác định nguyên nhân cụ thể.",
   PROVIDER_UNAVAILABLE: "Chưa kết nối được Gemini hoặc dịch vụ đang lỗi. Chưa có câu trả lời AI hợp lệ.",
-  PROVIDER_TIMEOUT: "Gemini chưa trả xong trong 15 giây. Không có lượt gọi lại tự động.",
+  PROVIDER_TIMEOUT: "Hết thời gian chờ khi kết nối hoặc nhận phản hồi Gemini. Không có lượt gọi lại tự động.",
   RESPONSE_TRUNCATED: "Gemini đã trả lời nhưng chạm giới hạn token trước khi hoàn tất JSON. Chưa hiển thị câu trả lời chưa hoàn chỉnh.",
   RESPONSE_BLOCKED: "Gemini chặn phản hồi cho yêu cầu này. Chưa có câu trả lời AI hợp lệ.",
   INVALID_RESPONSE: "Phản hồi Gemini không đúng cấu trúc cần thiết hoặc quá lớn. Chưa dùng nội dung đó để kết luận.",

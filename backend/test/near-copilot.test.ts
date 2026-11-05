@@ -101,4 +101,33 @@ describe("read-only NEAR generative copilot, synthetic provider only", () => {
     const fetcher = vi.fn(); const service = configuredNearCopilot({ NEAR_COPILOT_ENABLED: "true", NEAR_COPILOT_MODEL: "test-model", GEMINI_API_KEY: "test-only-\u0100-placeholder" }, fetcher);
     await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_CONFIG_INVALID" }); expect(fetcher).not.toHaveBeenCalled();
   });
+  it.each(["0", "14999", "60001", "NaN", "1e5", " 45000", "45000.5"])("rejects invalid provider deadline %s", timeout => {
+    expect(() => configuredNearCopilot({ NEAR_COPILOT_ENABLED: "true", NEAR_COPILOT_MODEL: "test-model", GEMINI_API_KEY: "test-only-placeholder", NEAR_COPILOT_TIMEOUT_MS: timeout }, vi.fn())).toThrow("15000 and 60000");
+  });
+  it.each(["15000", "60000"])("uses bounded explicit deadline %s without token increase", async timeout => {
+    const spy = vi.spyOn(AbortSignal, "timeout").mockReturnValue(new AbortController().signal), fetcher = vi.fn(async () => response());
+    try { await configuredNearCopilot({ NEAR_COPILOT_ENABLED: "true", NEAR_COPILOT_MODEL: "test-model", GEMINI_API_KEY: "test-only-placeholder", NEAR_COPILOT_TIMEOUT_MS: timeout }, fetcher as any).explain(rpc() as any, contract, owner, input);
+      expect(spy).toHaveBeenCalledWith(Number(timeout)); expect(JSON.parse((fetcher.mock.calls[0] as any)[1].body).generationConfig.maxOutputTokens).toBe(1200);
+    } finally { spy.mockRestore(); }
+  });
+  it("uses low thinking only for the documented3.8Flash and omits candidateCount", async () => {
+    const fetcher = vi.fn(async () => response());
+    await configuredNearCopilot({ NEAR_COPILOT_ENABLED: "true", NEAR_COPILOT_MODEL: "gemini-3.8-flash", GEMINI_API_KEY: "test-only-placeholder" }, fetcher as any).explain(rpc() as any, contract, owner, input);
+    const config = JSON.parse((fetcher.mock.calls[0] as any)[1].body).generationConfig;
+    expect(config.thinkingConfig).toEqual({ thinkingLevel: "low", includeThoughts: false }); expect(config).not.toHaveProperty("candidateCount"); expect(config.maxOutputTokens).toBe(1200);
+    const other = vi.fn(async () => response()); await configured(other as any).explain(rpc() as any, contract, owner, input);
+    expect(JSON.parse((other.mock.calls[0] as any)[1].body).generationConfig).not.toHaveProperty("thinkingConfig");
+  });
+  it("can receive a slow20second response with the45second default, fake clock only", async () => {
+    vi.useFakeTimers(); const controller = new AbortController(); const spy = vi.spyOn(AbortSignal, "timeout").mockImplementation(ms => { setTimeout(() => controller.abort(), ms); return controller.signal; });
+    const fetcher = vi.fn(async (_url: unknown, options: RequestInit) => new Promise<Response>((resolve, reject) => { options.signal?.addEventListener("abort", () => reject(Object.assign(Error("timed out"), { name: "AbortError" })), { once: true }); setTimeout(() => resolve(response()), 20000); }));
+    try { const pending = configured(fetcher as any).explain(rpc() as any, contract, owner, input); await vi.advanceTimersByTimeAsync(20001); expect((await pending).advisory).toEqual(answer); expect(spy).toHaveBeenCalledWith(45000); expect(fetcher).toHaveBeenCalledOnce(); }
+    finally { spy.mockRestore(); vi.useRealTimers(); }
+  });
+  it("aborts at the45second default and never retries, fake clock only", async () => {
+    vi.useFakeTimers(); const controller = new AbortController(); const spy = vi.spyOn(AbortSignal, "timeout").mockImplementation(ms => { setTimeout(() => controller.abort(), ms); return controller.signal; });
+    const fetcher = vi.fn(async (_url: unknown, options: RequestInit) => new Promise<Response>((_resolve, reject) => { options.signal?.addEventListener("abort", () => reject(Object.assign(Error("private-message"), { name: "AbortError" })), { once: true }); }));
+    try { const pending = expect(configured(fetcher as any).explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_TIMEOUT" }); await vi.advanceTimersByTimeAsync(45001); await pending; expect(fetcher).toHaveBeenCalledOnce(); }
+    finally { spy.mockRestore(); vi.useRealTimers(); }
+  });
 });
