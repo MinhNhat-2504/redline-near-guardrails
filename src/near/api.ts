@@ -1,11 +1,11 @@
 const base = import.meta.env.VITE_NEAR_API_URL || "http://127.0.0.1:8787";
-import { copilotErrorMessage } from "./copilot-errors";
+import { copilotErrorMessage, copilotRetrySeconds } from "./copilot-errors";
 import { sessionMemory } from "./session-memory";
 // Bearer exists only in this tab's memory; never reuse CLI session files or wallet keys.
 const memory = sessionMemory(import.meta.hot?.data);
 export function setToken(value: string) { memory.token = value; memory.revision++; }
 export class NearApiError extends Error {
-  constructor(readonly status: number, readonly code?: string, readonly staleSession = false) { super(copilotErrorMessage(code) ? `${code}: ${copilotErrorMessage(code)}` : `API ${status}. ${status === 401 ? staleSession ? "Yêu cầu thuộc phiên cũ đã bị từ chối. Phiên đăng nhập mới được giữ nguyên." : "Phiên đăng nhập không còn hợp lệ. Đăng nhập ví lại, giữ nguyên request đã lưu." : "Giữ nguyên request; chưa suy luận giao dịch thành công."}`); }
+  constructor(readonly status: number, readonly code?: string, readonly staleSession = false, readonly retryAfterSeconds?: number) { super(copilotErrorMessage(code) ? `${code}: ${copilotErrorMessage(code)}` : `API ${status}. ${status === 401 ? staleSession ? "Yêu cầu thuộc phiên cũ đã bị từ chối. Phiên đăng nhập mới được giữ nguyên." : "Phiên đăng nhập không còn hợp lệ. Đăng nhập ví lại, giữ nguyên request đã lưu." : "Giữ nguyên request; chưa suy luận giao dịch thành công."}`); }
 }
 export async function api<T>(path: string, body?: unknown): Promise<T> {
   const { token, revision } = memory;
@@ -14,10 +14,11 @@ export async function api<T>(path: string, body?: unknown): Promise<T> {
     const staleSession = response.status === 401 && memory.revision !== revision;
     if (response.status === 401 && !staleSession) setToken("");
     let code: string | undefined;
+    let retryAfterSeconds: number | undefined;
     if (path === "/near/copilot/explain" && response.status === 503) {
-      try { const value = await response.json(); if (copilotErrorMessage(value?.code)) code = value.code; } catch { /* No raw provider/server error is displayed. */ }
+      try { const value = await response.json(); if (copilotErrorMessage(value?.code)) { code = value.code; retryAfterSeconds = copilotRetrySeconds(value.retryAfterSeconds); } } catch { /* No raw provider/server error is displayed. */ }
     }
-    throw new NearApiError(response.status, code, staleSession);
+    throw new NearApiError(response.status, code, staleSession, retryAfterSeconds);
   }
   return response.json() as Promise<T>;
 }

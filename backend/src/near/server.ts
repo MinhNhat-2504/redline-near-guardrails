@@ -29,7 +29,10 @@ export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: str
     if (req.method === "POST" && !req.headers["content-type"]?.startsWith("application/json")) throw httpError(415, "JSON content type required");
   });
   app.setErrorHandler<FastifyError>((error, _req, reply) => {
-    if (error instanceof CopilotError) return reply.code(503).send({ error: error.message, code: error.code });
+    if (error instanceof CopilotError) {
+      if (error.retryAfterSeconds) reply.header("Retry-After", String(error.retryAfterSeconds));
+      return reply.code(503).send({ error: error.message, code: error.code, retryAfterSeconds: error.retryAfterSeconds });
+    }
     if (error instanceof z.ZodError) return reply.code(400).send({ error: "Invalid NEAR request or chain data" });
     const status = error.statusCode ?? 503;
     // Never reflect raw SDK, credential-file, Prisma or RPC errors.

@@ -22,13 +22,15 @@ export class NearCopilot {
   private hourStarted: number;
   private used = 0;
   private inflight = false;
+  private cooldownUntil = 0;
   private owners = new Map<string, number[]>();
   constructor(private model?: CopilotModel, private now: () => number = Date.now) { this.hourStarted = now(); }
-  status() { return { enabled: !!this.model, provider: this.model ? "gemini" : null, model: this.model?.name ?? null }; }
+  status() { return { enabled: !!this.model, provider: this.model ? "gemini" : null, model: this.model?.name ?? null, cooldownSeconds: Math.max(0, Math.ceil((this.cooldownUntil - this.now()) / 1000)) }; }
   async explain(rpc: NearReadOnlyRpc, contract: string, owner: string, input: unknown) {
     const request = copilotInput.parse(input);
     if (!this.model) throw httpError(503, "Copilot LLM is disabled; rule-based analysis remains available");
     const now = this.now();
+    if (now < this.cooldownUntil) throw new CopilotError("PROVIDER_COOLDOWN", Math.ceil((this.cooldownUntil - now) / 1000));
     if (now - this.hourStarted >= 3600000) { this.hourStarted = now; this.used = 0; }
     for (const [key, times] of this.owners) { const recent = times.filter(t => now - t < 60000); if (recent.length) this.owners.set(key, recent); else this.owners.delete(key); }
     const recent = this.owners.get(owner) ?? [];
@@ -43,7 +45,14 @@ export class NearCopilot {
       let answer: CopilotAnswer;
       let generated: unknown;
       try { generated = await this.model.generate(copilotContext(report, request.topic)); }
-      catch (e) { throw e instanceof CopilotError ? e : new CopilotError("PROVIDER_UNAVAILABLE"); }
+      catch (e) {
+        const failure = e instanceof CopilotError ? e : new CopilotError("PROVIDER_UNAVAILABLE");
+        if (["PROVIDER_HTTP_500", "PROVIDER_HTTP_502", "PROVIDER_HTTP_503", "PROVIDER_HTTP_504"].includes(failure.code)) {
+          this.cooldownUntil = this.now() + 60000;
+          throw new CopilotError(failure.code, 60);
+        }
+        throw failure;
+      }
       try { answer = answerSchema.parse(generated); }
       catch { throw new CopilotError("INVALID_RESPONSE"); }
       return { source: "llm", provider: "gemini", model: this.model.name, network: report.network, contractId: contract,

@@ -3,7 +3,7 @@ import { configuredNearCopilot, copilotContext, NearCopilot } from "../src/near/
 import { analyzeNearPolicy } from "../src/near/policy-lab.js";
 import { buildNearApp } from "../src/near/server.js";
 import { httpError } from "../src/near/types.js";
-import { providerTransportError } from "../src/near/copilot-errors.js";
+import { CopilotError, providerTransportError } from "../src/near/copilot-errors.js";
 const hash = "B".repeat(44), owner = "owner.testnet", contract = "vault.testnet";
 const candidate = { grantId: "grant-private-id", amount: "1", recipient: "payee.testnet", nonce: "1", asset: "NEAR", policyHash: "a".repeat(64), intentId: "intent-private-id" };
 const input = { candidate, consent: true, topic: "explain" };
@@ -14,6 +14,13 @@ function model() { return { name: "test-model", generate: vi.fn(async () => answ
 function configured(fetcher: typeof fetch) { return configuredNearCopilot({ NEAR_COPILOT_ENABLED: "true", NEAR_COPILOT_MODEL: "test-model", GEMINI_API_KEY: "test-only-placeholder" }, fetcher); }
 function response(value: unknown = answer, finishReason = "STOP") { return new Response(JSON.stringify({ candidates: [{ finishReason, content: { parts: [{ text: JSON.stringify(value) }] } }] })); }
 describe("read-only NEAR generative copilot, synthetic provider only", () => {
+  it.each(["explain", "risks", "next_steps"] as const)("sends topic %s through the same validated read-only adapter", async topic => {
+    const fetcher = vi.fn(async () => response()), service = configured(fetcher as any);
+    const result = await service.explain(rpc() as any, contract, owner, { ...input, topic });
+    expect(result.topic).toBe(topic); expect(result.predicted).toBe("REVOKED");
+    const body = JSON.parse((fetcher.mock.calls[0] as any)[1].body);
+    expect(JSON.parse(body.contents[0].parts[0].text).topic).toBe(topic); expect(body).not.toHaveProperty("tools"); expect(fetcher).toHaveBeenCalledOnce();
+  });
   it("disabled by default even with legacy key; never starts inference", async () => { const fetcher = vi.fn(); const service = configuredNearCopilot({ GEMINI_API_KEY: "test-only-placeholder" }, fetcher); expect(service.status().enabled).toBe(false); await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toThrow("disabled"); expect(fetcher).not.toHaveBeenCalled(); });
   it.each([{ NEAR_COPILOT_ENABLED: "true" }, { NEAR_COPILOT_ENABLED: "true", GEMINI_API_KEY: "test", NEAR_COPILOT_MODEL: "https://evil.test" }])("requires explicit server-side model configuration %#", env => expect(() => configuredNearCopilot(env, vi.fn())).toThrow("requires"));
   it("redacts all identity and request identifiers before provider", async () => {
@@ -69,7 +76,7 @@ describe("read-only NEAR generative copilot, synthetic provider only", () => {
     const source = rpc(), m = model(), app = await buildNearApp({ config: { contractId: contract }, rpc: source } as any, { requireSession: async () => { throw httpError(401, "Login required"); } } as any, "http://localhost:5173", false, new NearCopilot(m));
     try { expect((await app.inject({ method: "POST", url: "/near/copilot/explain", payload: input })).statusCode).toBe(401); expect(source.finalBlock).not.toHaveBeenCalled(); expect(m.generate).not.toHaveBeenCalled();
       expect((await app.inject({ method: "POST", url: "/near/copilot/explain", headers: { origin: "https://evil.test" }, payload: input })).statusCode).toBe(403);
-      expect((await app.inject({ url: "/near/copilot/status" })).json()).toEqual({ enabled: true, provider: "gemini", model: "test-model" });
+      expect((await app.inject({ url: "/near/copilot/status" })).json()).toEqual({ enabled: true, provider: "gemini", model: "test-model", cooldownSeconds: 0 });
     } finally { await app.close(); }
   });
   it("authenticated model errors are sanitized through the HTTP route", async () => {
@@ -129,5 +136,30 @@ describe("read-only NEAR generative copilot, synthetic provider only", () => {
     const fetcher = vi.fn(async (_url: unknown, options: RequestInit) => new Promise<Response>((_resolve, reject) => { options.signal?.addEventListener("abort", () => reject(Object.assign(Error("private-message"), { name: "AbortError" })), { once: true }); }));
     try { const pending = expect(configured(fetcher as any).explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_TIMEOUT" }); await vi.advanceTimersByTimeAsync(45001); await pending; expect(fetcher).toHaveBeenCalledOnce(); }
     finally { spy.mockRestore(); vi.useRealTimers(); }
+  });
+  it("opens a60second circuit on503 before further snapshot/provider calls, then permits only an explicit request", async () => {
+    let time = 0; const source = rpc(), m = { name: "test-model", generate: vi.fn().mockRejectedValueOnce(new CopilotError("PROVIDER_HTTP_503")).mockResolvedValue(answer) }, service = new NearCopilot(m, () => time);
+    await expect(service.explain(source as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_HTTP_503", retryAfterSeconds: 60 });
+    expect(service.status().cooldownSeconds).toBe(60);
+    await expect(service.explain(source as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_COOLDOWN", retryAfterSeconds: 60 });
+    await expect(service.explain(source as any, contract, "another.testnet", input)).rejects.toMatchObject({ code: "PROVIDER_COOLDOWN" });
+    expect(source.finalBlock).toHaveBeenCalledOnce(); expect(m.generate).toHaveBeenCalledOnce();
+    time = 59999; expect(service.status().cooldownSeconds).toBe(1);
+    time = 60000; expect(service.status().cooldownSeconds).toBe(0); expect(m.generate).toHaveBeenCalledOnce();
+    expect((await service.explain(source as any, contract, owner, input)).advisory).toEqual(answer); expect(m.generate).toHaveBeenCalledTimes(2);
+  });
+  it.each(["PROVIDER_HTTP_500", "PROVIDER_HTTP_502", "PROVIDER_HTTP_504"] as const)("also protects provider service error %s", async code => {
+    const m = { name: "test-model", generate: vi.fn(async () => { throw new CopilotError(code); }) }, service = new NearCopilot(m, () => 0);
+    await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code, retryAfterSeconds: 60 });
+    await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_COOLDOWN" }); expect(m.generate).toHaveBeenCalledOnce();
+  });
+  it("returns a fixed retry hint and never calls provider through a protected circuit", async () => {
+    const m = { name: "test-model", generate: vi.fn(async () => { throw new CopilotError("PROVIDER_HTTP_503"); }) }, service = new NearCopilot(m, () => 0);
+    const app = await buildNearApp({ config: { contractId: contract }, rpc: rpc() } as any, { requireSession: async () => ({ accountId: owner }) } as any, "http://localhost:5173", false, service);
+    try {
+      const first = await app.inject({ method: "POST", url: "/near/copilot/explain", payload: input }); expect(first.json()).toMatchObject({ code: "PROVIDER_HTTP_503", retryAfterSeconds: 60 }); expect(first.headers["retry-after"]).toBe("60");
+      const second = await app.inject({ method: "POST", url: "/near/copilot/explain", payload: input }); expect(second.json()).toMatchObject({ code: "PROVIDER_COOLDOWN", retryAfterSeconds: 60 }); expect(m.generate).toHaveBeenCalledOnce();
+      expect((await app.inject({ url: "/near/copilot/status" })).json().cooldownSeconds).toBe(60);
+    } finally { await app.close(); }
   });
 });

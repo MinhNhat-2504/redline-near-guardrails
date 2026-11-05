@@ -28,6 +28,14 @@ describe("onboarding session expiry and RPC uncertainty", () => {
     await expect(api("/near/copilot/explain", {})).rejects.toMatchObject({ status: 503, code: "PROVIDER_QUOTA", message: expect.stringContaining("hạn mức") });
     await api("/health"); expect(fetcher.mock.calls[1][1].headers.authorization).toBe("Bearer ephemeral-test-session");
   });
+  it("retains a bounded retry hint without leaking the provider body", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ code: "PROVIDER_HTTP_503", retryAfterSeconds: 60, error: "private-provider-error" }, { status: 503 })));
+    await expect(api("/near/copilot/explain", {})).rejects.toMatchObject({ code: "PROVIDER_HTTP_503", retryAfterSeconds: 60, message: expect.not.stringContaining("private-provider-error") });
+  });
+  it.each([-1, 0, 301, 1.5, "60"])("ignores untrusted retry duration %#", async retryAfterSeconds => {
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ code: "PROVIDER_COOLDOWN", retryAfterSeconds }, { status: 503 })));
+    await expect(api("/near/copilot/explain", {})).rejects.toMatchObject({ code: "PROVIDER_COOLDOWN", retryAfterSeconds: undefined });
+  });
   it.each(["untrusted-provider-secret", "constructor", "__proto__"])("never reflects unknown diagnostic %s", async code => {
     vi.stubGlobal("fetch", vi.fn(async () => Response.json({ code, error: "secret-provider-message" }, { status: 503 })));
     await expect(api("/near/copilot/explain", {})).rejects.toMatchObject({ code: undefined, message: expect.not.stringContaining("secret") });

@@ -1,4 +1,5 @@
 const messages: Record<string, string> = {
+  PROVIDER_COOLDOWN: "Copilot đang tạm nghỉ sau lỗi dịch vụ Gemini. Phân tích bằng quy tắc vẫn dùng được; không tự gọi lại AI.",
   PROVIDER_CONFIG_INVALID: "Khóa cấu hình có ký tự không hợp lệ để gửi trong HTTP header. Kiểm tra lại dòng GEMINI_API_KEY tại máy; không gửi khóa vào chat.",
   PROVIDER_NETWORK_ERROR: "Node không hoàn tất được kết nối tới Gemini. Chưa nhận được HTTP response; cần kiểm tra đường mạng của backend.",
   PROVIDER_DNS_ERROR: "Backend không phân giải được tên miền Gemini (DNS). Chưa có phản hồi AI.",
@@ -21,3 +22,5 @@ const messages: Record<string, string> = {
   INVALID_RESPONSE: "Phản hồi Gemini không đúng cấu trúc cần thiết hoặc quá lớn. Chưa dùng nội dung đó để kết luận.",
 };
 export function copilotErrorMessage(code: unknown): string | undefined { return typeof code === "string" && Object.hasOwn(messages, code) ? messages[code] : undefined; }
+export function copilotRetrySeconds(value: unknown): number | undefined { return typeof value === "number" && Number.isSafeInteger(value) && value >= 1 && value <= 300 ? value : undefined; }
+export function remainingCopilotCooldown(until: number, now = Date.now()): number { return Number.isFinite(until) ? Math.max(0, Math.min(300, Math.ceil((until - now) / 1000))) : 0; }

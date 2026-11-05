@@ -22,6 +22,14 @@ Next owner screenshot showed PROVIDER_TIMEOUT with the old15-second message. Tha
 
 ## Luồng đã triển khai
 
+Current outage handling (2026-11-05): after the owner-controlled switch, status screenshot showed gemini-3.5-flash-lite, and the next risks-topic screenshot again showed PROVIDER_HTTP_503. Stop further model switching/repeated paid attempts in this walkthrough. Exact provider cause remains unknown; no global outage or successful3.5 inference is inferred. Owner observation record: phase5-copilot-owner-flash-lite-http503.json.
+
+The implementation now opens a60-second in-process circuit after HTTP500/502/503/504. During that interval explain requests are rejected before snapshot/provider calls; status exposes only cooldownSeconds, and error uses a fixed code plus bounded retryAfterSeconds/Retry-After. UI counts down; expiry re-enables a manual button only and never sends an automatic call. Process restart clears this non-durable guard, so do not restart repeatedly to bypass it. Multi-replica deployments need a shared guard; no persistent or global billing quota is claimed.
+
+A failed new question no longer discards a successful reply held in this panel's memory. Old topic/model/block provenance is shown, clearly labelled not the result of the new question. Account/grant/candidate changes or full reload still clear component memory; replies already lost by prior code cannot be recovered by this change. Error UI links the user to the already-loaded deterministic snapshot/gates and historical receipts, explicitly marked not fresh data and not an AI answer. It does not fabricate a risks response or silently fall back to another model/provider. Separate model-free reasoning remains available while Gemini is unavailable.
+
+Checks PASS399 frontend/632 backend tests, typechecks/builds,26 actual disposable Postgres tests; phase5-copilot-outage-* logs. Provider/clock tests are synthetic; no fresh authenticated provider call or owner credentials read by agent. Protective runtime changes load on the next backend restart; no further real-model trial requested in this checkpoint. Phase4/5 remain PARTIAL.
+
 Trong **Policy Lab**, phân tích bằng quy tắc trước. Phần **Hỏi copilot về đề xuất này** cho chọn giải thích kết quả, rủi ro hoặc bước kiểm tra tiếp theo. Chủ grant đăng nhập, đồng ý gửi dữ liệu và chủ động bấm **Hỏi AI · không ký giao dịch**.
 
 Backend đọc lại grant/ledger/intent tại cùng một block FINAL trước mỗi lời gọi. Model chỉ nhận network, block height, số tiền, nonce, cap, cooldown, các số liệu kế toán cần thiết và gate. Không gửi địa chỉ ví, người nhận, contract, grant ID, intent ID, policy hash, chữ ký, session hoặc khóa. Snapshot mới có thể khác snapshot trước đó; UI ghi riêng provenance và kết luận quy tắc của lần đọc mới.

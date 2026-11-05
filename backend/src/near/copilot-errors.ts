@@ -1,7 +1,7 @@
-export type CopilotCode = "SNAPSHOT_UNAVAILABLE" | "PROVIDER_KEY_REJECTED" | "PROVIDER_ACCESS_DENIED" | "PROVIDER_MODEL_UNAVAILABLE" | "PROVIDER_QUOTA" | "PROVIDER_REQUEST_REJECTED" | "PROVIDER_UNAVAILABLE" | "PROVIDER_TIMEOUT" | "RESPONSE_TRUNCATED" | "RESPONSE_BLOCKED" | "INVALID_RESPONSE" | "PROVIDER_CONFIG_INVALID" | "PROVIDER_NETWORK_ERROR" | "PROVIDER_DNS_ERROR" | "PROVIDER_TLS_ERROR" | "PROVIDER_CONNECTION_RESET" | "PROVIDER_HTTP_500" | "PROVIDER_HTTP_502" | "PROVIDER_HTTP_503" | "PROVIDER_HTTP_504";
+export type CopilotCode = "SNAPSHOT_UNAVAILABLE" | "PROVIDER_KEY_REJECTED" | "PROVIDER_ACCESS_DENIED" | "PROVIDER_MODEL_UNAVAILABLE" | "PROVIDER_QUOTA" | "PROVIDER_REQUEST_REJECTED" | "PROVIDER_UNAVAILABLE" | "PROVIDER_TIMEOUT" | "RESPONSE_TRUNCATED" | "RESPONSE_BLOCKED" | "INVALID_RESPONSE" | "PROVIDER_CONFIG_INVALID" | "PROVIDER_NETWORK_ERROR" | "PROVIDER_DNS_ERROR" | "PROVIDER_TLS_ERROR" | "PROVIDER_CONNECTION_RESET" | "PROVIDER_HTTP_500" | "PROVIDER_HTTP_502" | "PROVIDER_HTTP_503" | "PROVIDER_HTTP_504" | "PROVIDER_COOLDOWN";
 export class CopilotError extends Error {
   readonly statusCode = 503;
-  constructor(readonly code: CopilotCode) { super("Copilot response unavailable or invalid; no authorization or settlement inferred"); }
+  constructor(readonly code: CopilotCode, readonly retryAfterSeconds?: number) { super("Copilot response unavailable or invalid; no authorization or settlement inferred"); }
 }
 /** Classify known platform codes only; never copy messages, URLs, headers or causes into a response. */
 export function providerTransportError(error: unknown, aborted = false): CopilotError {
