@@ -1,0 +1,110 @@
+{
+  "capturedAt": "2026-11-04T07:54:27.086Z",
+  "scope": "PUBLIC_READ_ONLY_PREDICTION_NOT_RECEIPT",
+  "report": {
+    "network": "testnet",
+    "contractId": "nhat-redline-vault.testnet",
+    "grantId": "grant-1b031438090c4fa1902eb9ddcbd1f47c",
+    "owner": "nhat-redline-web.testnet",
+    "blockHeight": 276166710,
+    "blockHash": "FTCMrfaDXzyGuVEnchcuM2eSH3GgLKMMXyJHDpKgMyzH",
+    "timestampNs": "1793778862645282384",
+    "candidate": {
+      "grantId": "grant-1b031438090c4fa1902eb9ddcbd1f47c",
+      "amount": "10000000000000000000000",
+      "recipient": "nhat-redline-payee.testnet",
+      "nonce": "1",
+      "asset": "NEAR",
+      "policyHash": "c5c43d877e95ae9be3cd79824d899259dc9019279fa7614dfb88859dc7e884aa"
+    },
+    "grant": {
+      "owner": "nhat-redline-web.testnet",
+      "policy": {
+        "executor": "nhat-redline-agent.testnet",
+        "policy_hash": "c5c43d877e95ae9be3cd79824d899259dc9019279fa7614dfb88859dc7e884aa",
+        "spend_cap": "50000000000000000000000",
+        "max_transactions": 3,
+        "recipients": [
+          "nhat-redline-payee.testnet"
+        ],
+        "expires_at_ns": "1793753346122000000",
+        "cooldown_ns": "0"
+      },
+      "active": false,
+      "finalized_spent": "10000000000000000000000",
+      "pending_reserved": "0",
+      "finalized_transactions": 1,
+      "pending_transactions": 0,
+      "next_nonce": "1",
+      "has_reserved": true,
+      "last_reserved_ns": "1793724765298149153"
+    },
+    "ledger": {
+      "credited": "100000000000000000000000",
+      "finalized_spent": "10000000000000000000000",
+      "pending_reserved": "0",
+      "completed_withdrawals": "0",
+      "pending_withdrawals": "0",
+      "storage_available": "44980000000000000000000"
+    },
+    "predicted": "REVOKED",
+    "gates": [
+      {
+        "reason": "REVOKED",
+        "status": "BLOCK",
+        "explanation": "Grant phải còn hoạt động."
+      },
+      {
+        "reason": "EXPIRED",
+        "status": "NOT_EVALUATED",
+        "explanation": "Thời gian block phải trước hạn grant."
+      },
+      {
+        "reason": "NONCE_REPLAY",
+        "status": "NOT_EVALUATED",
+        "explanation": "Nonce phải khớp và intent ID chưa tồn tại."
+      },
+      {
+        "reason": "ASSET_NOT_ALLOWED",
+        "status": "NOT_EVALUATED",
+        "explanation": "Vault chỉ chuyển native NEAR."
+      },
+      {
+        "reason": "DESTINATION_NOT_ALLOWED",
+        "status": "NOT_EVALUATED",
+        "explanation": "Người nhận phải có trong policy."
+      },
+      {
+        "reason": "TX_CAP_EXCEEDED",
+        "status": "NOT_EVALUATED",
+        "explanation": "Số lượt tính cả lượt đang chờ callback."
+      },
+      {
+        "reason": "SPEND_CAP_EXCEEDED",
+        "status": "NOT_EVALUATED",
+        "explanation": "Cap tính cả tiền đang giữ chỗ."
+      },
+      {
+        "reason": "COOLDOWN_ACTIVE",
+        "status": "NOT_EVALUATED",
+        "explanation": "Cooldown tính từ lần giữ chỗ gần nhất."
+      },
+      {
+        "reason": "POLICY_HASH_MISMATCH",
+        "status": "NOT_EVALUATED",
+        "explanation": "Đề xuất phải dùng đúng hash policy."
+      },
+      {
+        "reason": "INVALID_AMOUNT",
+        "status": "NOT_EVALUATED",
+        "explanation": "Số tiền phải lớn hơn 0."
+      },
+      {
+        "reason": "INSUFFICIENT_BALANCE",
+        "status": "NOT_EVALUATED",
+        "explanation": "Principal trừ tiền đã chi, giữ chỗ và rút; storage tính riêng."
+      }
+    ],
+    "notice": "Dự đoán tại snapshot FINAL, không phải receipt hay cam kết chuyển tiền. State có thể đổi trước khi thực thi. Chưa kiểm tra gas, storage executor, quyền khóa hoặc khả năng callback. Copilot dùng quy tắc, chưa gọi LLM."
+  }
+}

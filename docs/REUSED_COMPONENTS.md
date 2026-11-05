@@ -14,3 +14,5 @@ Inherited in full from MinhNhat-2504/REDLINE commit `aa0b0b044d9b6e01b71a14791ec
 | `docs/{BASELINE,PROGRESS,NEAR_DECISIONS,NEAR_MIGRATION_PLAN,REUSED_COMPONENTS}.md`, `scripts/scan-secrets.py` | New migration evidence and tooling |
 
 No tracked LICENSE file was found. Confirm redistribution rights with the project owner before public submission. Original CSaCLAB credits remain intact in README.
+
+2026-11-04 update: the table above records initial migration provenance. NEAR-native auth/indexer/adapter/vault and browser funding/receipt flows have since been implemented (see PROGRESS). New `src/near/PolicyLab.tsx` and `backend/src/near/policy-lab.ts` provide NEAR snapshot analysis and deterministic copilot explanations; original Solana PolicyLab/LLM routes remain preserved. No Solana USDC simulation is used to authorize NEAR transfers. Details: NEAR_POLICY_LAB.md.

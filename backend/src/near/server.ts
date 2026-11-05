@@ -9,6 +9,7 @@ import { prepareOwnerAction } from "./owner-actions.js";
 import { fundingStatus, reconcileFunding } from "./funding.js";
 import type { NearChain } from "../chain/near.js";
 import { accountSnapshot } from "./account.js";
+import { analyzeNearPolicy } from "./policy-lab.js";
 
 export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: string, logging = true) {
   const app = Fastify({ bodyLimit: 32_768, logger: logging ? { redact: ["req.headers.authorization", "req.headers.cookie"] } : false });
@@ -32,6 +33,7 @@ export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: str
   });
   const session = (req: FastifyRequest) => auth.requireSession(req.headers.authorization);
   app.get("/health", async () => ({ ok: true, chain: "near", network: "testnet", contractId: chain.config.contractId, executorId: chain.config.executorId, identityEnforced: true, signingEnabled: chain.signingEnabled }));
+  app.post("/near/policy-lab/analyze", async req => analyzeNearPolicy(chain.rpc, chain.config.contractId, req.body));
   app.post("/near/auth/challenge", async req => {
     const body = z.object({ accountId, clientType: z.enum(["wallet", "cli"]).optional() }).strict().parse(req.body);
     return auth.challenge(body.accountId, body.clientType);

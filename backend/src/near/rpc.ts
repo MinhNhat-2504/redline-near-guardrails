@@ -72,10 +72,10 @@ export class NearReadOnlyRpc {
     return this.request("chunk", { chunk_id: hash });
   }
 
-  async view(contract: string, method: string, args: Record<string, unknown>): Promise<unknown> {
+  async view(contract: string, method: string, args: Record<string, unknown>, blockHash?: string): Promise<unknown> {
     this.requireConnected();
     const raw = await this.request("query", {
-      request_type: "call_function", finality: "final", account_id: contract, method_name: method,
+      request_type: "call_function", ...(blockHash ? { block_id: blockHash } : { finality: "final" }), account_id: contract, method_name: method,
       args_base64: Buffer.from(JSON.stringify(args)).toString("base64"),
     });
     const failed = z.object({ error: z.string(), logs: z.array(z.string()), block_height: z.number().int().nonnegative().safe(), block_hash: z.string() }).safeParse(raw);
@@ -86,6 +86,7 @@ export class NearReadOnlyRpc {
       throw new NearViewError(method, failed.data.block_height, failed.data.block_hash, registration ? "STORAGE_REGISTRATION_REQUIRED" : "CONTRACT_VIEW_FAILED");
     }
     const result = z.object({ result: z.array(z.number().int().min(0).max(255)), block_height: z.number().int().nonnegative().safe(), block_hash: z.string() }).parse(raw);
+    if (blockHash && result.block_hash !== blockHash) throw new NearRpcError("VIEW_BLOCK_MISMATCH");
     return { value: decodeBase64Json(Buffer.from(result.result).toString("base64")), blockHeight: result.block_height, blockHash: result.block_hash };
   }
 
