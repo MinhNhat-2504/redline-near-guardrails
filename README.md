@@ -16,6 +16,8 @@ See [verified progress](docs/PROGRESS.md), [test evidence](docs/TEST_RESULTS.md)
 
 <div align="center">
 
+NEAR copilot: optional read-only Gemini explanations now have a dedicated adapter and consent UI, disabled by default. Deterministic verdicts and wallet signatures remain separate. Live model acceptance is NOT RUN; [configuration and evidence](docs/NEAR_COPILOT_LLM.md).
+
 # 🛡️ REDLINE
 
 ### ⚡ Autonomous finance. Hard limits.

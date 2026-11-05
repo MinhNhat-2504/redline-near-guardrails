@@ -11,8 +11,9 @@ import type { NearChain } from "../chain/near.js";
 import { accountSnapshot } from "./account.js";
 import { analyzeNearPolicy } from "./policy-lab.js";
 import { reconcileWithdrawal } from "./withdrawal.js";
+import { configuredNearCopilot, type NearCopilot } from "./copilot.js";
 
-export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: string, logging = true) {
+export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: string, logging = true, copilot: NearCopilot = configuredNearCopilot()) {
   const app = Fastify({ bodyLimit: 32_768, logger: logging ? { redact: ["req.headers.authorization", "req.headers.cookie"] } : false });
   await app.register(cors, { origin, methods: ["GET", "POST"], allowedHeaders: ["content-type", "authorization"] });
   await app.register(rateLimit, { max: 90, timeWindow: "1 minute" });
@@ -35,6 +36,8 @@ export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: str
   const session = (req: FastifyRequest) => auth.requireSession(req.headers.authorization);
   app.get("/health", async () => ({ ok: true, chain: "near", network: "testnet", contractId: chain.config.contractId, executorId: chain.config.executorId, identityEnforced: true, signingEnabled: chain.signingEnabled }));
   app.post("/near/policy-lab/analyze", async req => analyzeNearPolicy(chain.rpc, chain.config.contractId, req.body));
+  app.get("/near/copilot/status", async () => copilot.status());
+  app.post("/near/copilot/explain", async req => copilot.explain(chain.rpc, chain.config.contractId, (await session(req)).accountId, req.body));
   app.post("/near/auth/challenge", async req => {
     const body = z.object({ accountId, clientType: z.enum(["wallet", "cli"]).optional() }).strict().parse(req.body);
     return auth.challenge(body.accountId, body.clientType);
