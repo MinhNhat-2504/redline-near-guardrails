@@ -19,4 +19,11 @@ describe("NEAR lab browser safety boundaries", () => {
     const html = renderToStaticMarkup(<NearPolicyLab grantId="g" owner="" nonce="1" policyHash={report.candidate.policyHash} disabled={false} onReview={() => { throw Error("must not run"); }} />);
     expect(html).toContain("Không phải phản hồi từ LLM"); expect(html).toContain("Phân tích · chỉ đọc"); expect(html).not.toContain("Mở ví ký");
   });
+  it("keeps read-only analysis enabled while a saved request blocks new intent review", () => {
+    const html = renderToStaticMarkup(<NearPolicyLab grantId="g" owner="alice.testnet" nonce="1" policyHash={report.candidate.policyHash} disabled={false} reviewBlocked onReview={() => { throw Error("must not run"); }} />);
+    expect(html).not.toContain('<fieldset disabled');
+    expect(html).toContain("Bạn vẫn phân tích chỉ đọc được");
+    expect(html).toContain("chưa tạo intent mới");
+    expect(html).toContain("Phân tích · chỉ đọc");
+  });
 });

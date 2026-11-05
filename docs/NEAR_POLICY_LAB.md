@@ -40,3 +40,6 @@ Browser click acceptance of these new controls is NOT RUN. Tests cover rendering
 
 
 2026-11-05 finalization: reviewed retained November4 checks and public read evidence without rerunning unchanged source. Credential-pattern scan of Git history/staged index PASS:1091 blobs/0 findings, exact inherited TESTONLY fixture exception retained (docs/evidence/phase4-policy-lab-secret-scan.json). This is a pattern scan, not an independent credential audit. Staged whitespace PASS; user-modified phase3-owner-cli-login.json excluded. No remote push or public transaction performed. Next: manual read-only Policy Lab browser acceptance; Phase4/5 remain PARTIAL.
+
+
+2026-11-05 read-only lock fix (base d56118c): owner screenshot exposed saved intent disabling Policy Lab analysis. Split the read-only availability guard from reviewBlocked (pending request/funding/proposal). Existing durable records, grant selection lock and new-intent/signing blockers remain intact; no deletion or resubmission. Added visible explanation and SSR regression for enabled analysis with a saved request. Frontend250 tests/32 files, typecheck and Vite build PASS (docs/evidence/phase4-policy-lab-readonly-unlock.log). Backend/DB/contract unchanged and not rerun; no public RPC or financial transaction for this fix. Manual browser confirmation pending. Phase4/5 remain PARTIAL.
