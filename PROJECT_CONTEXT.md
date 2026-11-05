@@ -2,7 +2,7 @@
 
 Updated: 2026-11-05 (Asia/Saigon).
 
-Current checkpoint: phases0–3 PASS; Phase4/5 PARTIAL. NEAR read-only Policy Lab/rule-based copilot implemented; frontend249/backend543/Postgres26 tests and typechecks/builds PASS. Single-block FINAL public snapshot verified; browser lab acceptance and generative LLM migration pending. No new wallet signature/funding needed. UI/UX redesign deferred; remote push auth blocked; user-modified phase3-owner-cli-login.json excluded. Latest details: docs/NEAR_POLICY_LAB.md.
+Current checkpoint: phases0-3 PASS; Phase4/5 PARTIAL. Exact selected grant deadline now enforced; public Policy Lab remains read-only and cannot authorize financial API calls. Frontend261/backend547/Postgres26 tests and typechecks/builds PASS. Backend audit0; frontend10low remain. Read-only Policy Lab browser acceptance owner-observed; generative LLM, newcomer/hosted/browser recovery coverage incomplete. No new signatures/funding needed. UI redesign deferred; remote push auth blocked; user-modified login report excluded. Details: docs/NEAR_FUNCTIONAL_SECURITY_CHECKPOINT.md.
 
 - Goal: migrate REDLINE's bounded agent transfers to a real NEAR Testnet vault for the AI Security & Defense track. Deployment and storage/principal funding verified; full public contract demo verified; backend migration in progress.
 - Inputs: fully read `NEAR_REDLINE_MIGRATION_PLAN_AGENT.md` and `NEAR_Hackathon_2026_REDLINE_Complete_Playbook.pdf` (19 pages). The Markdown's history-preserving import takes precedence over the PDF's selective-copy suggestion.
@@ -144,3 +144,15 @@ Phase4/5 PARTIAL: manual new-lab browser acceptance, generative LLM migration, f
 
 
 2026-11-05 owner-observed Policy Lab acceptance: supplied browser screenshot shows analysis succeeded despite a retained request/proposal. FINAL block276329582 displayed; candidate0.01 native NEAR, pending reservation0. Prediction REVOKED with BLOCK at the first gate and all subsequent gates NOT_EVALUATED; review/new-intent button remains disabled. This verifies the read-only browser path and the visible revoked-grant result after d33639c. No transaction/signature/funding occurred in this interaction. Screenshot observation only: no new independently archived RPC capture or automated browser E2E is claimed. Source unchanged; prior frontend250/backend543/Postgres26 checks retained, not rerun for this docs-only update. Phase4/5 remain PARTIAL; generative LLM, fresh-clone acceptance and remaining recovery/security checks are still outstanding.
+
+
+## Functional/security follow-up - 2026-11-05
+
+Base da74fa0. Exact requested grant deadline now bound before proposal display and again before wallet opening; canonical u64 and boolean unsigned checks added. Hours selector locked during proposal review. No observed unauthorized transfer; this closes proposal-substitution ambiguity without changing owner signing or executor scope. Added offline/injected tests for ALLOW not authorizing transfers, no session leakage, origin/body/content-type/override boundaries, local rate limit and duplicate intent. Details and acceptance matrix: docs/NEAR_FUNCTIONAL_SECURITY_CHECKPOINT.md.
+
+Actual results: frontend261 tests/32 files+typecheck/Vite build PASS; backend547 tests/39 files+typecheck/direct build PASS;26 REAL isolated Postgres tests PASS. npm audit backend0/exit0; frontend10low/exit1, zero moderate/high/critical. No package upgrades; no contract/schema changes or new Rust/sandbox run. Logs/reports phase5-followup-*. Existing user DB/login report preserved; no wallet signatures, secrets/session reads or public financial submissions.
+
+Phase4/5 remain PARTIAL. Policy Lab read-only browser acceptance already owner-observed; generative LLM migration, independent newcomer/fresh-clone acceptance, clipboard-denied/cancel/reload browser coverage and hosted CI remain incomplete. Browser withdrawal UI is not implemented (contract/backend/CLI proof exist). No ambiguous funding unlock or cross-tab atomicity is claimed. Remote push auth and license/public-submission owner work remain unresolved. Next safe work is read-only recovery/clipboard/newcomer verification before UI redesign.
+
+
+Pre-commit follow-up: staged whitespace PASS; Git reachable-history/staged-index credential-pattern scan PASS1116 blobs/0 findings (phase5-followup-secret-scan.json). Exact inherited TESTONLY fixture exception retained; no entropy/credential-validity audit implied. User-modified phase3-owner-cli-login.json excluded. No remote push attempted because the recorded authentication blocker has not changed.

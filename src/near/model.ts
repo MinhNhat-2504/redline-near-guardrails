@@ -21,8 +21,8 @@ export function assertIdentity(h: { chain: string; network: string; contractId: 
 }
 export type Proposal = { network: string; signerId: string; unsigned: boolean; canonicalPolicy?: string; transaction: { receiverId: string; actions: { type: "FunctionCall"; params: { methodName: string; args: Record<string, unknown>; gas: string; deposit: string } }[] } };
 /** Treat the server's unsigned proposal as untrusted until every authority field matches. */
-export async function validateProposal(p: Proposal, owner: string, method: OwnerMethod, grantId?: string, now = Date.now()) {
-  if (!p.unsigned || p.network !== "testnet" || p.signerId !== owner || p.transaction.receiverId !== CONTRACT || p.transaction.actions.length !== 1) throw Error("Đề xuất ký không hợp lệ.");
+export async function validateProposal(p: Proposal, owner: string, method: OwnerMethod, grantId?: string, now = Date.now(), expectedExpiryNs?: string) {
+  if (p.unsigned !== true || p.network !== "testnet" || p.signerId !== owner || p.transaction.receiverId !== CONTRACT || p.transaction.actions.length !== 1) throw Error("Đề xuất ký không hợp lệ.");
   const a = p.transaction.actions[0];
   if (a.type !== "FunctionCall" || a.params.methodName !== method || a.params.gas !== "100000000000000") throw Error("Quyền hoặc gas bị thay đổi.");
   if (method === "storage_deposit" || method === "deposit") {
@@ -36,6 +36,8 @@ export async function validateProposal(p: Proposal, owner: string, method: Owner
   }
   const args = a.params.args as { grant_id: string; policy: Grant["policy"] }, policy = args.policy;
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(args.grant_id) || !policy || policy.executor !== EXECUTOR || policy.spend_cap !== CAP || policy.max_transactions !== 3 || policy.cooldown_ns !== "0" || policy.recipients.length !== 1 || policy.recipients[0] !== PAYEE) throw Error("Policy khác cấu hình demo đã duyệt.");
+  if (typeof policy.expires_at_ns !== "string" || !/^(0|[1-9][0-9]*)$/.test(policy.expires_at_ns) || policy.expires_at_ns.length > 20 || BigInt(policy.expires_at_ns) >= (1n << 64n)) throw Error("Hạn grant phải là chuỗi nanosecond u64 hợp lệ.");
+  if (expectedExpiryNs !== undefined && policy.expires_at_ns !== expectedExpiryNs) throw Error("Hạn grant khác lựa chọn đã chuẩn bị. Chưa mở ví ký.");
   const seconds = remainingSeconds({ policy } as Grant, now);
   if (seconds < 30 || seconds > 8 * 3600) throw Error("Hạn grant phải còn từ 30 giây đến 8 giờ.");
   const c = JSON.parse(p.canonicalPolicy ?? "{}");

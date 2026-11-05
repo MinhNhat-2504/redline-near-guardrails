@@ -66,3 +66,12 @@ Owner approved and implementation completed; Zod4.6.7 migration PASS.57 captured
 ## Onboarding follow-up — 2026-11-04
 
 Native account balance, next-step/restart guidance, proof-only path, owner funding journal and copy hash/link controls are now implemented with frontend228/backend517/Postgres26 passing tests. NEAR/legacy navigation is explicit; Mainnet remains unsupported. Earlier gaps for those functions are superseded; full live/newcomer/clipboard acceptance is still pending, and legacy PolicyLab/copilot are not connected to NEAR signing. See NEAR_ONBOARDING_CHECKPOINT.md for evidence and remaining scope. No new owner signature or funding was used.
+
+
+## Functional/security follow-up - 2026-11-05
+
+Base da74fa0. Exact requested grant deadline now bound before proposal display and again before wallet opening; canonical u64 and boolean unsigned checks added. Hours selector locked during proposal review. No observed unauthorized transfer; this closes proposal-substitution ambiguity without changing owner signing or executor scope. Added offline/injected tests for ALLOW not authorizing transfers, no session leakage, origin/body/content-type/override boundaries, local rate limit and duplicate intent. Details and acceptance matrix: docs/NEAR_FUNCTIONAL_SECURITY_CHECKPOINT.md.
+
+Actual results: frontend261 tests/32 files+typecheck/Vite build PASS; backend547 tests/39 files+typecheck/direct build PASS;26 REAL isolated Postgres tests PASS. npm audit backend0/exit0; frontend10low/exit1, zero moderate/high/critical. No package upgrades; no contract/schema changes or new Rust/sandbox run. Logs/reports phase5-followup-*. Existing user DB/login report preserved; no wallet signatures, secrets/session reads or public financial submissions.
+
+Phase4/5 remain PARTIAL. Policy Lab read-only browser acceptance already owner-observed; generative LLM migration, independent newcomer/fresh-clone acceptance, clipboard-denied/cancel/reload browser coverage and hosted CI remain incomplete. Browser withdrawal UI is not implemented (contract/backend/CLI proof exist). No ambiguous funding unlock or cross-tab atomicity is claimed. Remote push auth and license/public-submission owner work remain unresolved. Next safe work is read-only recovery/clipboard/newcomer verification before UI redesign.

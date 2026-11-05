@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { analyzeNearPolicy, evaluateNearPolicy, labInput } from "../src/near/policy-lab.js";
 import { buildNearApp } from "../src/near/server.js";
 import { NearReadOnlyRpc } from "../src/near/rpc.js";
+import { httpError } from "../src/near/types.js";
 const hash = "B".repeat(44), policyHash = "a".repeat(64);
 const g = { owner: "alice.testnet", active: true, next_nonce: "1", finalized_spent: "10", pending_reserved: "20", finalized_transactions: 1, pending_transactions: 1, has_reserved: true, last_reserved_ns: "90",
   policy: { executor: "agent.testnet", policy_hash: policyHash, spend_cap: "100", max_transactions: 3, recipients: ["payee.testnet"], expires_at_ns: "200", cooldown_ns: "10" } };
@@ -69,5 +70,39 @@ describe("NEAR Policy Lab prediction, not transaction proof", () => {
     await rpc.connect(); await expect(rpc.view("vault.testnet", "get_grant", {}, hash)).rejects.toThrow("VIEW_BLOCK_MISMATCH");
     const params = JSON.parse(fetcher.mock.calls[1][1].body).params;
     expect(params.block_id).toBe(hash); expect(params.finality).toBeUndefined();
+  });
+  it("an ALLOW prediction never supplies authentication or authorizes a transfer", async () => {
+    const rpc = rpcStub(), executeTransfer = vi.fn(), requireSession = vi.fn(async () => { throw httpError(401, "Wallet session required"); });
+    const app = await buildNearApp({ config: { contractId: "vault.testnet" }, rpc, executeTransfer } as any, { requireSession } as any, "http://localhost:5173", false);
+    try {
+      const prediction = await app.inject({ method: "POST", url: "/near/policy-lab/analyze", payload: r });
+      expect(prediction.json().predicted).toBe("ALLOW"); expect(prediction.json().token).toBeUndefined(); expect(requireSession).not.toHaveBeenCalled();
+      const forged = await app.inject({ method: "POST", url: `/near/grants/${r.grantId}/intents`, payload: prediction.json() });
+      expect(forged.statusCode).toBe(401); expect(executeTransfer).not.toHaveBeenCalled();
+    } finally { await app.close(); }
+  });
+  it("blocks foreign-origin, oversized, invalid and non-JSON analysis before RPC reads", async () => {
+    const rpc = rpcStub(), app = await buildNearApp({ config: { contractId: "vault.testnet" }, rpc } as any, {} as any, "http://localhost:5173", false);
+    try {
+      expect((await app.inject({ method: "POST", url: "/near/policy-lab/analyze", headers: { origin: "https://evil.test" }, payload: r })).statusCode).toBe(403);
+      expect((await app.inject({ method: "POST", url: "/near/policy-lab/analyze", payload: { ...r, padding: "x".repeat(32768) } })).statusCode).toBe(413);
+      expect((await app.inject({ method: "POST", url: "/near/policy-lab/analyze", headers: { "content-type": "text/plain" }, payload: JSON.stringify(r) })).statusCode).toBe(415);
+      expect((await app.inject({ method: "POST", url: "/near/policy-lab/analyze", payload: { ...r, owner: "foreign.testnet" } })).statusCode).toBe(400);
+      expect(rpc.finalBlock).not.toHaveBeenCalled(); expect(rpc.view).not.toHaveBeenCalled();
+    } finally { await app.close(); }
+  });
+  it("local HTTP rate limit rejects analysis before any RPC request (no public load test)", async () => {
+    const rpc = rpcStub(), app = await buildNearApp({ config: { contractId: "vault.testnet" }, rpc } as any, {} as any, "http://localhost:5173", false);
+    try {
+      for (let i = 0; i < 90; i++) expect((await app.inject({ method: "GET", url: "/health" })).statusCode).toBe(200);
+      expect((await app.inject({ method: "POST", url: "/near/policy-lab/analyze", payload: r })).statusCode).toBe(429);
+      expect(rpc.finalBlock).not.toHaveBeenCalled();
+    } finally { await app.close(); }
+  });
+  it("an existing intent at the pinned block predicts replay without replacing it", async () => {
+    const rpc = rpcStub(), original = rpc.view.getMockImplementation()!;
+    rpc.view.mockImplementation(async (...args) => args[1] === "get_intent" ? { value: { status: "PENDING" }, blockHeight: 42, blockHash: hash } as any : original(...args));
+    const result = await analyzeNearPolicy(rpc as any, "vault.testnet", { ...r, intentId: "existing" });
+    expect(result.predicted).toBe("NONCE_REPLAY"); expect(result.grant).toEqual(g); expect(result.ledger).toEqual(b);
   });
 });
