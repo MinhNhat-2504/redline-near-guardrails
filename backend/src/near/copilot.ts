@@ -2,7 +2,7 @@ import { z } from "zod";
 import { analyzeNearPolicy, labInput } from "./policy-lab.js";
 import { httpError } from "./types.js";
 import type { NearReadOnlyRpc } from "./rpc.js";
-import { CopilotError } from "./copilot-errors.js";
+import { CopilotError, providerTransportError } from "./copilot-errors.js";
 
 export const copilotInput = z.object({ candidate: labInput, topic: z.enum(["explain", "risks", "next_steps"]), consent: z.literal(true) }).strict();
 const answerSchema = z.object({ summary: z.string().min(1).max(2000), risks: z.array(z.string().min(1).max(500)).max(5), nextSteps: z.array(z.string().min(1).max(500)).max(5) }).strict();
@@ -60,6 +60,7 @@ export function configuredNearCopilot(env: NodeJS.ProcessEnv = process.env, fetc
   const key = env.GEMINI_API_KEY?.trim(), model = env.NEAR_COPILOT_MODEL;
   if (!key || !model || !/^[a-zA-Z0-9._-]{1,100}$/.test(model)) throw Error("NEAR copilot requires a server-side GEMINI_API_KEY and explicit NEAR_COPILOT_MODEL");
   return new NearCopilot({ name: model, async generate(context) {
+    if (!/^[\x21-\x7e]+$/.test(key)) throw new CopilotError("PROVIDER_CONFIG_INVALID");
     const signal = AbortSignal.timeout(15000);
     let response: Response;
     try { response = await fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
@@ -67,16 +68,17 @@ export function configuredNearCopilot(env: NodeJS.ProcessEnv = process.env, fetc
       body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: "user", parts: [{ text: JSON.stringify(context) }] }],
         generationConfig: { maxOutputTokens: 1200, candidateCount: 1, responseMimeType: "application/json", responseJsonSchema: { type: "object", additionalProperties: false,
           properties: { summary: { type: "string" }, risks: { type: "array", items: { type: "string" } }, nextSteps: { type: "array", items: { type: "string" } } }, required: ["summary", "risks", "nextSteps"] } } }) }); }
-    catch (e) { throw new CopilotError(signal.aborted || (e instanceof Error && ["AbortError", "TimeoutError"].includes(e.name)) ? "PROVIDER_TIMEOUT" : "PROVIDER_UNAVAILABLE"); }
+    catch (e) { throw providerTransportError(e, signal.aborted); }
     if (!response.ok) {
       await response.body?.cancel().catch(() => {});
+      if ([500, 502, 503, 504].includes(response.status)) throw new CopilotError(`PROVIDER_HTTP_${response.status}` as "PROVIDER_HTTP_500" | "PROVIDER_HTTP_502" | "PROVIDER_HTTP_503" | "PROVIDER_HTTP_504");
       throw new CopilotError(response.status === 401 ? "PROVIDER_KEY_REJECTED" : response.status === 403 ? "PROVIDER_ACCESS_DENIED" : response.status === 404 ? "PROVIDER_MODEL_UNAVAILABLE" : response.status === 429 ? "PROVIDER_QUOTA" : response.status === 400 ? "PROVIDER_REQUEST_REJECTED" : "PROVIDER_UNAVAILABLE");
     }
     // Stream-bound the response instead of buffering an unbounded provider error/output.
     const reader = response.body?.getReader(); if (!reader) throw new CopilotError("INVALID_RESPONSE");
     let total = 0; const chunks: Uint8Array[] = [];
     try { while (true) { const part = await reader.read(); if (part.done) break; total += part.value.length; if (total > 32768) throw new CopilotError("INVALID_RESPONSE"); chunks.push(part.value); } }
-    catch (e) { throw signal.aborted ? new CopilotError("PROVIDER_TIMEOUT") : e; }
+    catch (e) { throw e instanceof CopilotError ? e : providerTransportError(e, signal.aborted); }
     finally { await reader.cancel().catch(() => {}); }
     try {
     const raw = JSON.parse(Buffer.concat(chunks).toString("utf8"));

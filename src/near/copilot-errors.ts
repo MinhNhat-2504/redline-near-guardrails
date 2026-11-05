@@ -1,4 +1,13 @@
 const messages: Record<string, string> = {
+  PROVIDER_CONFIG_INVALID: "Khóa cấu hình có ký tự không hợp lệ để gửi trong HTTP header. Kiểm tra lại dòng GEMINI_API_KEY tại máy; không gửi khóa vào chat.",
+  PROVIDER_NETWORK_ERROR: "Node không hoàn tất được kết nối tới Gemini. Chưa nhận được HTTP response; cần kiểm tra đường mạng của backend.",
+  PROVIDER_DNS_ERROR: "Backend không phân giải được tên miền Gemini (DNS). Chưa có phản hồi AI.",
+  PROVIDER_TLS_ERROR: "Node không xác minh được chứng chỉ HTTPS của Gemini. Cần kiểm tra chứng chỉ/proxy; không tắt xác minh TLS.",
+  PROVIDER_CONNECTION_RESET: "Kết nối backend tới Gemini bị ngắt hoặc bị từ chối. Kiểm tra mạng/proxy/firewall của máy.",
+  PROVIDER_HTTP_500: "Gemini trả HTTP 500: lỗi xử lý phía dịch vụ. Chưa có câu trả lời AI hợp lệ; không tự gọi lại.",
+  PROVIDER_HTTP_502: "Gemini hoặc gateway trả HTTP 502. Chưa có câu trả lời AI hợp lệ; không tự gọi lại.",
+  PROVIDER_HTTP_503: "Gemini trả HTTP 503: dịch vụ hiện không sẵn sàng. Giữ nguyên cấu hình; không bấm gọi liên tục.",
+  PROVIDER_HTTP_504: "Gemini hoặc gateway trả HTTP 504: hết thời gian chờ phía dịch vụ. Chưa có câu trả lời AI hợp lệ.",
   SNAPSHOT_UNAVAILABLE: "Chưa đọc được snapshot FINAL từ NEAR RPC. Chưa có phản hồi AI; thử đọc snapshot trước.",
   PROVIDER_KEY_REJECTED: "Gemini từ chối khóa API. Kiểm tra khóa tại backend; không gửi khóa vào chat.",
   PROVIDER_ACCESS_DENIED: "Gemini từ chối quyền truy cập. Kiểm tra project, giới hạn khóa và quyền dùng model trong AI Studio.",

@@ -3,6 +3,7 @@ import { configuredNearCopilot, copilotContext, NearCopilot } from "../src/near/
 import { analyzeNearPolicy } from "../src/near/policy-lab.js";
 import { buildNearApp } from "../src/near/server.js";
 import { httpError } from "../src/near/types.js";
+import { providerTransportError } from "../src/near/copilot-errors.js";
 const hash = "B".repeat(44), owner = "owner.testnet", contract = "vault.testnet";
 const candidate = { grantId: "grant-private-id", amount: "1", recipient: "payee.testnet", nonce: "1", asset: "NEAR", policyHash: "a".repeat(64), intentId: "intent-private-id" };
 const input = { candidate, consent: true, topic: "explain" };
@@ -76,7 +77,7 @@ describe("read-only NEAR generative copilot, synthetic provider only", () => {
     const app = await buildNearApp({ config: { contractId: contract }, rpc: rpc() } as any, { requireSession: async () => ({ accountId: owner }) } as any, "http://localhost:5173", false, new NearCopilot(m));
     try { const r = await app.inject({ method: "POST", url: "/near/copilot/explain", payload: input }); expect(r.statusCode).toBe(503); expect(r.json().code).toBe("PROVIDER_UNAVAILABLE"); expect(r.body).not.toContain("secret-provider-error"); expect(r.headers["cache-control"]).toBe("no-store"); } finally { await app.close(); }
   });
-  it.each([[400, "PROVIDER_REQUEST_REJECTED"], [401, "PROVIDER_KEY_REJECTED"], [403, "PROVIDER_ACCESS_DENIED"], [404, "PROVIDER_MODEL_UNAVAILABLE"], [429, "PROVIDER_QUOTA"], [500, "PROVIDER_UNAVAILABLE"]])("classifies HTTP %s without exposing provider response", async (status, code) => {
+  it.each([[400, "PROVIDER_REQUEST_REJECTED"], [401, "PROVIDER_KEY_REJECTED"], [403, "PROVIDER_ACCESS_DENIED"], [404, "PROVIDER_MODEL_UNAVAILABLE"], [429, "PROVIDER_QUOTA"], [500, "PROVIDER_HTTP_500"], [502, "PROVIDER_HTTP_502"], [503, "PROVIDER_HTTP_503"], [504, "PROVIDER_HTTP_504"]])("classifies HTTP %s without exposing provider response", async (status, code) => {
     const fetcher = vi.fn(async () => new Response("secret-provider-error and private key", { status: status as number }));
     await expect(configured(fetcher as any).explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ statusCode: 503, code }); expect(fetcher).toHaveBeenCalledOnce();
   });
@@ -87,5 +88,17 @@ describe("read-only NEAR generative copilot, synthetic provider only", () => {
   it("classifies timeouts without leaking transport details", async () => {
     const fetcher = vi.fn(async () => { const e = new Error("secret-provider-error"); e.name = "TimeoutError"; throw e; });
     await expect(configured(fetcher as any).explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_TIMEOUT" }); expect(fetcher).toHaveBeenCalledOnce();
+  });
+  it.each([["ENOTFOUND", "PROVIDER_DNS_ERROR"], ["EAI_AGAIN", "PROVIDER_DNS_ERROR"], ["UNABLE_TO_VERIFY_LEAF_SIGNATURE", "PROVIDER_TLS_ERROR"], ["SELF_SIGNED_CERT_IN_CHAIN", "PROVIDER_TLS_ERROR"], ["ECONNRESET", "PROVIDER_CONNECTION_RESET"], ["UND_ERR_SOCKET", "PROVIDER_CONNECTION_RESET"], ["UND_ERR_CONNECT_TIMEOUT", "PROVIDER_TIMEOUT"], ["private-arbitrary-value", "PROVIDER_NETWORK_ERROR"]])("classifies known Node code %s without reflection", async (transportCode, code) => {
+    const fetcher = vi.fn(async () => { throw Object.assign(Error("private-error-key-url"), { cause: { code: transportCode } }); });
+    await expect(configured(fetcher as any).explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code }); expect(fetcher).toHaveBeenCalledOnce();
+    expect(JSON.stringify(providerTransportError({ cause: { code: transportCode }, message: "private-error-key-url" }))).not.toContain("private-error-key-url");
+  });
+  it("classifies aggregate connect failures using safe codes only", () => {
+    expect(providerTransportError({ cause: { errors: [{ code: "ECONNREFUSED" }, { code: "ECONNRESET" }] } }).code).toBe("PROVIDER_CONNECTION_RESET");
+  });
+  it("rejects invalid HTTP header characters without sending a key or invoking provider", async () => {
+    const fetcher = vi.fn(); const service = configuredNearCopilot({ NEAR_COPILOT_ENABLED: "true", NEAR_COPILOT_MODEL: "test-model", GEMINI_API_KEY: "test-only-\u0100-placeholder" }, fetcher);
+    await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_CONFIG_INVALID" }); expect(fetcher).not.toHaveBeenCalled();
   });
 });

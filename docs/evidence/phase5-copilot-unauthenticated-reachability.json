@@ -1,0 +1,20 @@
+{
+  "scope": "unauthenticated Node fetch reachability only; no API keys, sessions or model inference",
+  "probes": [
+    {
+      "method": "GET",
+      "url": "https://generativelanguage.googleapis.com/",
+      "httpStatus": 404,
+      "elapsedMs": 161
+    },
+    {
+      "method": "POST",
+      "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+      "body": "{}",
+      "apiKeySent": false,
+      "httpStatus": 403,
+      "elapsedMs": 151
+    }
+  ],
+  "limitation": "Does not establish authenticated model availability or explain the owner failed request."
+}
