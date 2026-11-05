@@ -14,7 +14,7 @@ describe("offline startup and reload recovery (no browser or wallet transport)",
     expect(startupGrant(null, { grantId: "old" })).toBe("old"); expect(startupGrant(null, {})).toBe("");
   });
   it("fresh visitor starts empty without reading network or changing storage", () => {
-    const s = storage(); expect(recoverLocalState(s)).toEqual({ funding: undefined, request: undefined, errors: [] }); expect(s.data.size).toBe(0);
+    const s = storage(); expect(recoverLocalState(s)).toEqual({ funding: undefined, request: undefined, withdrawal: undefined, errors: [] }); expect(s.data.size).toBe(0);
   });
   it("a new page restores exact request and no-hash funding even when API is not running", () => {
     const s = storage(); persistPending(s, request); const a = funding(s), before = JSON.stringify([...s.data]);
@@ -49,7 +49,7 @@ describe("offline startup and reload recovery (no browser or wallet transport)",
   });
   it("blocked storage produces explicit recovery errors rather than claiming empty state", () => {
     const s = { ...storage(), getItem: () => { throw Error("SecurityError"); } };
-    expect(recoverLocalState(s).errors).toHaveLength(2); expect(() => assertLocalRecovery(s)).toThrow();
+    expect(recoverLocalState(s).errors).toHaveLength(3); expect(() => assertLocalRecovery(s)).toThrow();
   });
   it("handles a blocked browser localStorage getter before rendering recovery controls", () => {
     const saved = recoverStartup(() => { throw Error("SecurityError"); });

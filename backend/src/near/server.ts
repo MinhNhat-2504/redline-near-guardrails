@@ -10,6 +10,7 @@ import { fundingStatus, reconcileFunding } from "./funding.js";
 import type { NearChain } from "../chain/near.js";
 import { accountSnapshot } from "./account.js";
 import { analyzeNearPolicy } from "./policy-lab.js";
+import { reconcileWithdrawal } from "./withdrawal.js";
 
 export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: string, logging = true) {
   const app = Fastify({ bodyLimit: 32_768, logger: logging ? { redact: ["req.headers.authorization", "req.headers.cookie"] } : false });
@@ -57,6 +58,7 @@ export async function buildNearApp(chain: NearChain, auth: NearAuth, origin: str
   });
   app.post("/near/owner-actions", async req => prepareOwnerAction(chain, (await session(req)).accountId, req.body));
   app.post("/near/owner-actions/reconcile", async req => reconcileFunding(chain, (await session(req)).accountId, req.body));
+  app.post("/near/withdrawals/reconcile", async req => reconcileWithdrawal(chain, (await session(req)).accountId, req.body));
   app.post("/near/grants/:id/intents", async req => {
     const owner = (await session(req)).accountId;
     const { id } = z.object({ id: recordId }).parse(req.params);

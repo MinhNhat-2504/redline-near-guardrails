@@ -3,7 +3,7 @@ export const EXECUTOR = "nhat-redline-agent.testnet";
 export const PAYEE = "nhat-redline-payee.testnet";
 export const CAP = "50000000000000000000000";
 export const STORAGE_FUNDING = "50000000000000000000000", PRINCIPAL_FUNDING = "100000000000000000000000", MIN_OWNER_STORAGE = "10000000000000000000000";
-export type OwnerMethod = "create_grant" | "revoke_grant" | "storage_deposit" | "deposit";
+export type OwnerMethod = "create_grant" | "revoke_grant" | "storage_deposit" | "deposit" | "withdraw";
 export type Grant = { owner: string; active: boolean; next_nonce: string; finalized_spent: string; pending_reserved: string; finalized_transactions: number; pending_transactions: number; policy: { executor: string; policy_hash: string; spend_cap: string; max_transactions: number; recipients: string[]; expires_at_ns: string; cooldown_ns: string } };
 export type Ledger = { credited: string; finalized_spent: string; pending_reserved: string; completed_withdrawals: string; pending_withdrawals: string; storage_available: string };
 export function near(value: string): string {
@@ -22,6 +22,7 @@ export function assertIdentity(h: { chain: string; network: string; contractId: 
 export type Proposal = { network: string; signerId: string; unsigned: boolean; canonicalPolicy?: string; transaction: { receiverId: string; actions: { type: "FunctionCall"; params: { methodName: string; args: Record<string, unknown>; gas: string; deposit: string } }[] } };
 /** Treat the server's unsigned proposal as untrusted until every authority field matches. */
 export async function validateProposal(p: Proposal, owner: string, method: OwnerMethod, grantId?: string, now = Date.now(), expectedExpiryNs?: string) {
+  if (method === "withdraw") throw Error("Rút tiền cần kiểm tra số tiền và mã rút riêng trước khi ký.");
   if (p.unsigned !== true || p.network !== "testnet" || p.signerId !== owner || p.transaction.receiverId !== CONTRACT || p.transaction.actions.length !== 1) throw Error("Đề xuất ký không hợp lệ.");
   const a = p.transaction.actions[0];
   if (a.type !== "FunctionCall" || a.params.methodName !== method || a.params.gas !== "100000000000000") throw Error("Quyền hoặc gas bị thay đổi.");

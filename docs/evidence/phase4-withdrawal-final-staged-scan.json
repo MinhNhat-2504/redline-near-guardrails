@@ -1,0 +1,6 @@
+{
+  "scope": "final staged changes including UTF-8 logs and README acceptance waiver",
+  "files_scanned": 23,
+  "findings": [],
+  "limitation": "Pattern check only; no credential validity or entropy audit."
+}

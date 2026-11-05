@@ -116,6 +116,7 @@ function observeOwnerAction(tx: z.infer<typeof response>, value: unknown, base: 
   if (action.method_name === "withdraw") {
     const withdrawal = z.object({ amount: z.string(), status: z.enum(["SETTLED", "FAILED"]) }).strict().safeParse(value);
     if (!withdrawal.success || action.deposit !== "0" || withdrawal.data.amount !== args.amount) return base;
+    if (withdrawal.data.status === "SETTLED" && tx.receipts_outcome?.some(r => typeof r.outcome.status !== "object" || "Failure" in r.outcome.status)) return base;
     const match = matches("withdrawal_completed", row => row.owner === tx.transaction.signer_id && row.withdrawal_id === args.withdrawal_id &&
       isDeepStrictEqual(row.withdrawal, withdrawal.data));
     return match ? { ...base, state: withdrawal.data.status } : base;

@@ -435,3 +435,14 @@ Final refinement: a saved intent grant now takes precedence over a conflicting g
 
 
 Pre-commit: staged whitespace PASS; reachable Git history/staged-index credential-pattern scan PASS1201 blobs/0 findings, inherited exact TESTONLY exception retained (phase4-workspace-secret-scan.json). Scan preceded the final mobile-only CSS refinement; no credential-bearing logic was added by that refinement. Final responsive CSS typecheck/Vite build PASS (phase4-workspace-build-final.log); logic tests were not repeated for the CSS-only change. User-modified phase3-owner-cli-login.json excluded. No remote push/deployment attempted.
+
+
+## 2026-11-05 — Browser withdrawal implementation and acceptance scope
+
+Owner removed independent newcomer testing from required acceptance and will assess usability personally. Recorded as WAIVED, not PASS; original reproduction evidence retained.
+
+Implemented principal-only withdrawal in Ví & quỹ, separate human review and owner wallet signature, exact amount/ID/owner validation, fresh available balance before signing, durable public attempt before wallet opens, independent reload restoration, no replacement after timeout/cancellation, authenticated exact FINAL callback/receipt/stored-view reconciliation. A failed receipt cannot establish SETTLED. Same saved withdrawal/hash retained until verified terminal callback; no timeout unlock or automatic resend. Current-owner balance refreshes after confirmed outcome; unrelated historical intent rows retained.
+
+Verified frontend342 tests/36 files + typecheck/Vite build PASS; backend561 tests/40 files + typecheck/direct tsc build PASS;26 actual isolated Postgres tests PASS. Evidence: phase4-withdrawal-frontend.log, phase4-withdrawal-frontend-final.log, phase4-withdrawal-backend.log, phase4-withdrawal-postgres.log. Backend typecheck/direct build also executed successfully via tool transcript.37 frontend and14 backend new cases are local/synthetic, with regression against archived Phase2 CLI receipt, not a new browser proof. No new Rust/schema/dependency changes, keys/session reads, wallet signatures, financial submissions or deposits. Existing wallet chunk warning remains. Guide: docs/NEAR_BROWSER_WITHDRAWAL.md.
+
+Phase4/5 remain PARTIAL. Actual redesigned browser/mobile/withdrawal acceptance, generative NEAR copilot and configured provider/real response, hosted GitHub CI/auth remain open. No browser automation tool available; no provider/paid model call made. Independent newcomer is no longer a required gate. Remote push blocker unchanged; user-modified login evidence excluded from staging.

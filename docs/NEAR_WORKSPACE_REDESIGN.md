@@ -45,15 +45,17 @@ The original hero image was visually inspected as a local asset. No controllable
 | Product UI and navigation | New workspace implemented and local suites pass | Owner visual acceptance and actual responsive/browser interaction checks |
 | Reload/offline/sign-in cancellation/copy-link | Prior owner-operated manual cases recorded; state/authority preserved in code | Repeat acceptance on redesigned layout; real denied-clipboard and auth redirect/outage branches |
 | Full browser financial cancellation | Local ambiguity guards/tests exist | Deliberately interrupting a payment can create uncertain state; requires a reviewed owner-operated scenario, not automatic signing |
-| Newcomer | Isolated source/cache installation and README paths exist | Independent person following README through fresh online installation and signed demo |
+| Newcomer | Owner waived independent newcomer acceptance on 2026-11-05; owner will assess usability | Removed from required acceptance; not a test PASS. Existing install evidence retained |
 | Browser automation | Unit/SSR/security suites run locally | Browser automation/preview tooling is unavailable in this session; no invented E2E proof |
 | Hosted CI | Dedicated NEAR workflows preserved, matching local tests pass | Remote push authentication remains blocked; no hosted run can be claimed |
 | Generative copilot | NEAR rule-based explanations use real snapshots; original LLM code preserved | Provider configuration, read-only NEAR model integration and a real model response still required; no provider key read or paid inference made |
-| Browser withdrawal | Contract/backend/CLI proof exist | Reviewed browser withdrawal and ambiguous-result recovery not implemented in this UI change |
+| Browser withdrawal | UI review, durable reload recovery and exact FINAL reconciliation implemented after redesign; local tests pass | Actual owner-operated browser withdrawal remains NOT RUN; see NEAR_BROWSER_WITHDRAWAL.md |
 | Security/dependencies | Prior backend audit0/frontend10low, no dependency change | Low wallet SDK advisories, full professional audit, multi-tab atomicity and callback-liveness limitations remain |
 | Publication/submission | History, credits and raw proof docs remain | License/ownership confirmation, restored GitHub auth, public access/video/X/submission are owner/external actions |
 
 Phase4/5 remain PARTIAL. A visual redesign is not proof all remaining financial/E2E/security requirements have passed. No promise of a hackathon prize or mainnet safety is made.
+
+2026-11-05 scope update: owner explicitly removed independent newcomer testing from required acceptance and will assess usability personally. This is a scope waiver, not passing test evidence. Browser withdrawal implementation and local safety verification are now documented in NEAR_BROWSER_WITHDRAWAL.md; an actual browser signature/withdrawal is still pending. Remaining external gates are visual/browser acceptance, provider configuration and real LLM response, GitHub authentication/hosted CI and owner publication/licensing actions.
 
 
 Final refinement: a saved intent grant now takes precedence over a conflicting grant URL, avoiding a recovery dead end behind the locked Grant ID input (one new regression test). Preparation-disabled hints include saved intent/proposal blockers. Final workspace frontend305 tests/35 files+typecheck/build PASS; isolated-install report retains its actual304-test snapshot from before this refinement. No dependency/backend/contract changes.

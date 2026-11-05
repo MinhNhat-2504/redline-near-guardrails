@@ -1,5 +1,6 @@
 import { restoreFunding } from "./funding";
 import { restorePending } from "./pending";
+import { restoreWithdrawal } from "./withdrawal";
 import type { IntentRequest } from "./pending";
 
 type StoragePort = Pick<Storage, "getItem" | "setItem" | "removeItem">;
@@ -9,11 +10,12 @@ export function startupGrant(explicit: string | null, saved: { request?: IntentR
 }
 /** Independent local reads only. An unavailable API must not hide an outstanding wallet operation. */
 export function recoverLocalState(storage: StoragePort) {
-  let funding: ReturnType<typeof restoreFunding>, request: ReturnType<typeof restorePending>;
+  let funding: ReturnType<typeof restoreFunding>, request: ReturnType<typeof restorePending>, withdrawal: ReturnType<typeof restoreWithdrawal>;
   const errors: string[] = [];
   try { funding = restoreFunding(storage); } catch { errors.push("Chưa đọc được funding đã lưu. Giữ nguyên dữ liệu, chưa ký lại."); }
   try { request = restorePending(storage); } catch { errors.push("Chưa đọc được intent đã lưu. Giữ nguyên dữ liệu, chưa tạo intent khác."); }
-  return { funding, request, errors };
+  try { withdrawal = restoreWithdrawal(storage); } catch { errors.push("Chưa đọc được lần rút đã lưu. Giữ nguyên dữ liệu, chưa ký lại."); }
+  return { funding, request, withdrawal, errors };
 }
 export function assertLocalRecovery(storage: StoragePort) {
   const saved = recoverLocalState(storage);
@@ -29,6 +31,6 @@ export function recoverStartup(getStorage: () => StoragePort) {
     }
     return { ...saved, grantId };
   } catch {
-    return { funding: undefined, request: undefined, grantId: undefined, errors: ["Trình duyệt không cho đọc dữ liệu khôi phục. Chưa ký hoặc gửi giao dịch; không coi là trạng thái trống."] };
+    return { funding: undefined, request: undefined, withdrawal: undefined, grantId: undefined, errors: ["Trình duyệt không cho đọc dữ liệu khôi phục. Chưa ký hoặc gửi giao dịch; không coi là trạng thái trống."] };
   }
 }
