@@ -44,3 +44,6 @@ An independent person following README through the entire signed demo, hosted CI
 
 
 Pre-commit: scoped Git history/index credential-pattern scan PASS1150 blobs/0 findings, exact inherited TESTONLY exception retained (phase4-reload-recovery-secret-scan.json). Staged whitespace PASS; user-modified login report excluded. Pattern scope only, not an independent credential audit. No remote push attempted.
+
+
+2026-11-05 owner-observed reload acceptance: after F5, owner supplied browser screenshots showing the memory-only session signed out, the previous grant ID retained, and section3 automatically displaying the prior saved intent (nonce1/native NEAR/payee) without pressing the restore button. This confirms browser restoration/display for that saved record. The screenshots alone do not independently prove absence of a new chain transaction. Owner was instructed not to press submit/reconcile. Backend-unavailable reload and actual wallet cancellation remain unverified. Source unchanged; no tests/build rerun for this evidence-only note, no signature/funding/public RPC used.
