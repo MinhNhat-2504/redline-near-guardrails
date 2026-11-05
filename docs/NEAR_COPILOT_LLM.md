@@ -1,6 +1,12 @@
 # Copilot LLM cho NEAR
 
-Ngày 2026-11-05. Tích hợp chỉ đọc; mặc định tắt. Chưa có bằng chứng phản hồi model thật.
+Ngày 2026-11-05. Tích hợp chỉ đọc; mặc định tắt. Chủ máy đã bật cấu hình và cung cấp ảnh kiểm thử thành công với model thật cho luồng giải thích REVOKED. Đây là bằng chứng thao tác do chủ máy quan sát, chưa phải bản ghi API/provider độc lập.
+
+## Kết quả kiểm thử thực tế mới nhất
+
+Owner screenshot after the bounded-deadline/low-thinking change shows `LLM: gemini-3.8-flash`, FINAL block276365696, deterministic verdict REVOKED, amount0.01NEAR, a generated explanation, risks and suggested checks. Consent is visibly checked; the reply states other gates are NOT_EVALUATED and snapshot is not a payment receipt. Mark this specific owner-operated real-model explanation/render happy path PASS. Earlier failed attempts below remain historical observations.
+
+No raw response body, provider request ID, elapsed time, token usage, billing record or screenshot file was independently captured. Agent did not read owner .env/API key/session or make an authenticated model call. Screenshot is not proof of all explanation correctness, egress behavior, reliability, mobile acceptance or completion of Phase4/5. In particular AI's suggestion to obtain a new grant is advisory text, not a required step or owner authorization: no new grant, deposit or financial signature is needed to continue inspecting this historical demo. Public-field observation record: docs/evidence/phase5-copilot-owner-success.json.
 
 Owner walkthrough update: owner supplied screenshots showing enabled=true/Gemini/gemini-3.8-flash, authenticated web owner, historical revoked grant and deterministic REVOKED, then clicked the consented AI control and received generic API503. Configuration/render/click failure are owner-observed; no successful provider response or root cause independently captured. Do not treat that failed attempt as LLM acceptance PASS.
 

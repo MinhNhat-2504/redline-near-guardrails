@@ -32,7 +32,7 @@ The audit capture shell exits0 to retain the JSON report even when npm audit exi
 | Requirement | Verified scope | Remaining work |
 |---|---|---|
 | Wallet sign-in and owner funding/grant/revoke | Owner-operated real browser flow; nine independently verified public financial transactions | Automated browser wallet E2E and explicit cancel/reload branches remain NOT RUN |
-| Policy Lab and copilot | Same-block FINAL prediction; owner-observed REVOKED; opt-in read-only Gemini UI/adapter and local security tests now implemented | Owner provider/key/model configuration and real model response still NOT RUN; see NEAR_COPILOT_LLM.md |
+| Policy Lab and copilot | Same-block FINAL prediction; owner-configured Gemini and owner-observed real-model explanation/render REVOKED at block276365696 PASS; local security tests | Raw provider transcript/latency/usage and broader real-model/mobile evaluation not independently captured; see NEAR_COPILOT_LLM.md |
 | Native balance, own vault, history and receipts | Actual public account read, owner-observed balance/history/copy-hash | Copy-link/clipboard-denied browser acceptance and full history indexing not established |
 | Pending/reload safety | Durable exact request restoration and matching FINAL completion tests; user screenshot confirmed pending request coexists with read-only analysis | Ambiguous no-hash funding must remain stopped for investigation; no automatic cancellation/reset/unlock. Multi-tab storage is not an atomic lock |
 | Async financial safety | Prior21 SDK tests and53 real local sandbox transactions/136 receipts; real Testnet ALLOW/rejections/withdrawal | Callback-liveness and immutable-record growth remain documented operational limitations |
@@ -132,3 +132,12 @@ Owner showed PROVIDER_TIMEOUT with the prior15-second message after model reques
 PASS frontend382 tests/38files + typecheck/Vite build; backend624 tests/41files + typecheck/direct build.12 additional backend cases cover deadline bounds, model-specific thinking, no candidateCount, a20s synthetic success and45s abort using a fake clock, one provider call. Evidence phase5-copilot-deadline-frontend.log and phase5-copilot-deadline-backend.log. Existing chunk warning retained. No provider key/.env/session read or actual model call by agent. DB/Rust/audit not rerun because source/schema/dependencies unchanged there; prior26 Postgres evidence retained.
 
 Rebuilt code needs owner backend restart; no .env edit needed for default45s. This is a tested configuration improvement, not actual LLM acceptance: real response remains unverified and Phase4/5 PARTIAL. Owner may then perform one consented model check; no wallet financial signature, funding or key reset needed. GitHub auth/user login report untouched.
+
+
+## 2026-11-05 — Real-model explanation/render happy path, owner-observed PASS
+
+Owner supplied screenshot after restarting with795192a showing LLM gemini-3.8-flash, snapshot FINAL block276365696 and deterministic REVOKED. Consent checked,0.01NEAR candidate, generated summary, risks and nextSteps visibly rendered. Explanation acknowledges other gates NOT_EVALUATED and snapshot not a payment receipt. Mark this specific owner-operated real-model explain/render happy path PASS. Prior generic/unavailable/timeout observations remain historical; a single success does not prove the exact earlier failure cause or future reliability.
+
+Public-field observation record phase5-copilot-owner-success.json explicitly identifies screenshot source. No independent raw provider/API transcript, request ID, screenshot file, token usage, latency or billing captured. Agent did not read .env/API key/session or call authenticated model, sign wallets, fund or submit transactions. AI advice to obtain a new grant is not authorization and need not be followed for historical read-only testing.
+
+Docs/evidence-only update; source unchanged and no tests/build rerun. Latest actual code verification remains frontend382/backend624/typechecks/builds PASS; prior26 Postgres retained. Phase4/5 PARTIAL: actual browser withdrawal, broader real-model/mobile/reliability acceptance and GitHub CI/auth still incomplete. Independent newcomer acceptance stays waived. User-modified login report excluded; no push attempted.

@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-05",
+  "source": "owner-provided conversation screenshot; not independently captured provider or API transcript",
+  "case": "consented real-model explain topic for historical revoked web-owner grant",
+  "result": "PASS_OWNER_OBSERVED",
+  "visible": {
+    "model": "gemini-3.8-flash",
+    "snapshotFinalBlock": 276365696,
+    "deterministicVerdict": "REVOKED",
+    "amountNear": "0.01",
+    "consentChecked": true,
+    "summaryDisplayed": true,
+    "risksDisplayed": true,
+    "nextStepsDisplayed": true,
+    "notEvaluatedGatesAcknowledged": true,
+    "snapshotNotPaymentReceiptAcknowledged": true
+  },
+  "notCaptured": [
+    "raw provider response",
+    "provider request ID",
+    "latency",
+    "token usage",
+    "billing",
+    "local screenshot file",
+    "independent verification of all generated statements"
+  ],
+  "agentActions": {
+    "authenticatedModelCall": false,
+    "readApiKeyOrEnv": false,
+    "walletSignatureOrFinancialSubmission": false
+  },
+  "limits": "One owner-operated explanation/render happy path only; no Phase4/5 full PASS, mobile/reliability/egress or professional safety audit implied."
+}
