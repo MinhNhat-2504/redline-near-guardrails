@@ -21,7 +21,7 @@ export function NearCopilotPanel({ candidate, ownerMatches, disabled, onSessionE
       const status = await api<{ enabled: boolean }>("/near/copilot/status");
       if (status.enabled !== true) throw Error("Copilot LLM chưa được bật trên backend. Bạn vẫn dùng được phần phân tích bằng quy tắc ở trên.");
       setAnswer(parseCopilotAnswer(await api("/near/copilot/explain", { candidate, topic, consent: true }), candidate.grantId, topic));
-    } catch (e) { if (e instanceof NearApiError && e.status === 401) onSessionExpired?.(); setError(e instanceof Error ? e.message : "Chưa nhận được phản hồi LLM."); } finally { setLoading(false); }
+    } catch (e) { if (e instanceof NearApiError && e.status === 401 && !e.staleSession) onSessionExpired?.(); setError(e instanceof Error ? e.message : "Chưa nhận được phản hồi LLM."); } finally { setLoading(false); }
   }
   return <section className="nw-copilot-panel" aria-labelledby="near-llm-title"><span className="nw-eyebrow">AI EXPLANATION · CHỈ ĐỌC</span><h3 id="near-llm-title">Hỏi copilot về đề xuất này</h3>
     <p>AI giải thích dữ liệu ở snapshot FINAL mới được backend đọc lại. Kết quả có thể khác snapshot phía trên nếu chain đã thay đổi. AI không thay kết luận quy tắc, không tạo quyền và không gửi tiền.</p>

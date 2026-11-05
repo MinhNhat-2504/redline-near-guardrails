@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { api, setToken, NearApiError } from "./api";
+import { api, setToken, NearApiError, confirmSession } from "./api";
 // Public proof review must not download or initialize the wallet SDK.
-const login = async () => (await import("./wallet")).login();
+const login = async () => { const account = await (await import("./wallet")).login(); await confirmSession(account); return account; };
 const wallet = async () => (await import("./wallet")).wallet();
 const finishCallback = async () => location.pathname === "/near/auth/callback" ? (await import("./wallet")).finishCallback() : undefined;
 import { available, CAP, CONTRACT, PAYEE, MIN_OWNER_STORAGE, assertIdentity, near, remainingSeconds, transfer, validateProposal, type OwnerMethod, type Grant, type Ledger, type Proposal } from "./model";
@@ -34,12 +34,12 @@ export default function NearApp() {
   const [withdrawalAttempt, setWithdrawalAttempt] = useState<WithdrawalAttempt>(), [withdrawalInput, setWithdrawalInput] = useState("0.01"), [withdrawalHash, setWithdrawalHash] = useState("");
   const [expectedWithdrawal, setExpectedWithdrawal] = useState<{ withdrawalId: string; amount: string }>();
   function expireSession() { setOwner(""); setRows([]); setOwnerFunding(undefined); setNativeAccount(undefined); setProposal(undefined); setError("Phiên đăng nhập hết hạn. Đăng nhập lại; các thao tác đã lưu vẫn được giữ nguyên."); }
-  async function run(fn: () => Promise<void>) { if (busy) return; setBusy(true); setError(""); try { await fn(); } catch (e) { if (e instanceof NearApiError && e.status === 401) expireSession(); setError(e instanceof Error ? e.message : "Thao tác chưa hoàn tất."); } finally { setBusy(false); } }
+  async function run(fn: () => Promise<void>) { if (busy) return; setBusy(true); setError(""); try { await fn(); } catch (e) { if (e instanceof NearApiError && e.status === 401 && !e.staleSession) expireSession(); setError(e instanceof Error ? e.message : "Thao tác chưa hoàn tất."); } finally { setBusy(false); } }
   async function connect() {
     setReady(false); setSigningEnabled(false);
     const health = await api<{ chain: string; network: string; contractId: string; executorId: string; identityEnforced: boolean; signingEnabled: boolean }>("/health");
     assertIdentity(health); setSigningEnabled(health.signingEnabled); setReady(true);
-    const account = await finishCallback(); if (account) setOwner(account);
+    const account = await finishCallback(); if (account) { await confirmSession(account); setOwner(account); }
     setMessage(`Đã kiểm tra kết nối API Testnet lúc ${new Date().toLocaleTimeString("vi-VN")}.`);
   }
   useEffect(() => { const saved = recoverStartup(() => localStorage); setId(startupGrant(new URLSearchParams(location.search).get("grant"), saved)); setRecoveryErrors(saved.errors); if (saved.funding) { setFundingAttempt(saved.funding); setFundingHash(saved.funding.hash ?? ""); } if (saved.withdrawal) { setWithdrawalAttempt(saved.withdrawal); setWithdrawalHash(saved.withdrawal.hash ?? ""); } if (saved.request) setRequest(saved.request); void run(connect); const timer = setInterval(() => setTick(Date.now()), 1000); return () => clearInterval(timer); }, []);

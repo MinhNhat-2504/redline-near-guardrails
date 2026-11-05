@@ -1,0 +1,8 @@
+> redline@0.0.1 check
+> npm run typecheck && npm run test && npm run build
+
+
+> redline@0.0.1 typecheck
+> tsc --noEmit
+
+src/near/api.test.ts(37,34): error TS2493: Tuple type '[]' of length '0' has no element at index '0'.
