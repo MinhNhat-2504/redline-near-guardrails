@@ -10,9 +10,9 @@ After installing frontend dependencies (`npm ci`), start the frontend from the p
 npm.cmd run dev -- --host localhost --port 5173 --strictPort
 ```
 
-Open `http://localhost:5173/near`. The “Bằng chứng Testnet đã đối chiếu” section links all nine verified browser financial transactions. It is available even if the local backend is unavailable. Explorer may open a selector: choose a Testnet explorer such as Nearblocks. Historical evidence is not the status of a new request.
+Open `http://localhost:5173/near`. In the new sidebar choose **Bằng chứng** (`#/proofs`): nine historical browser receipts can be filtered by completed payment, rejection and owner action. Links are available even if the local backend is unavailable. Explorer may open a selector: choose a Testnet explorer such as Nearblocks. Historical evidence is not the status of a new request.
 
-With the backend already configured/running, “Chọn grant demo đã thu hồi” selects the recorded web grant. Press “Đọc snapshot FINAL” to read current chain state. The recorded grant is revoked; no extra funding or signature is necessary to inspect it. This read-only route is the recommended first step for reviewers.
+With the backend already configured/running, the Overview action **Khám phá demo đã xác minh** explicitly reads the recorded revoked grant and opens **Hạn mức & quyền**. This is a public read, not a signature. The Proofs page also has **Mở snapshot demo đã thu hồi**. If a saved request/funding/proposal exists, changing grants is blocked until reconciliation; the external receipt cards remain available. No extra funding or signature is needed to inspect historical evidence.
 
 ## B. Resume the already-configured local installation
 
@@ -32,7 +32,7 @@ Set-Location 'D:\Project\AI Engineer\redline-near-guardrails'
 npm.cmd run dev -- --host localhost --port 5173 --strictPort
 ```
 
-Open `http://localhost:5173/near`, not the backend root. `http://127.0.0.1:8787/health` is API health; its root `/` returning404 is normal. API must report near/testnet/identityEnforced:true. `signingEnabled:false` allows public reads but the executor is unavailable for a new transfer. “Kiểm tra kết nối API” retries this check without reloading or signing.
+Open `http://localhost:5173/near`, not the backend root. `http://127.0.0.1:8787/health` is API health; its root `/` returning404 is normal. API must report near/testnet/identityEnforced:true. `signingEnabled:false` allows public reads but the executor is unavailable for a new transfer. **Hướng dẫn → Kiểm tra kết nối API** retries this check without reloading/signing and reports the successful check time.
 
 New account/history routes require restarting the backend after pulling this change. Vite updates source automatically; restarting it is appropriate after dependency updates. Existing local database and credential files stay in place. Never repeat a key reset or funding merely because the backend was closed.
 
@@ -44,17 +44,19 @@ Follow [backend setup](NEAR_BACKEND_SETUP.md) for the additive Near* migration a
 
 An isolated Git-source/cache-only installation now passes frontend/backend npm ci, tests, Prisma generation and builds; see [installation and reload checkpoint](NEAR_RELOAD_ACCEPTANCE.md). This is not an independent newcomer following README on another machine or completing wallet signatures. The latter acceptance remains NOT RUN.
 
-## D. Guided signed demo in the page
+## D. Guided signed demo in the workspace
 
-1. Allow localhost popups. Open [Intear](https://wallet.intear.tech/) and choose an existing `.testnet` account. `.near` is Mainnet and cannot connect to this app. Creating/importing a wallet is an owner action; never paste a recovery phrase, executor file or private key into REDLINE/chat.
-2. Press “Đăng nhập ví Testnet · NEP-413” and approve only the sign-in message. Sign-in does not authorize a transfer. If the session expires, login controls reappear; saved financial requests remain. Full reload also requires sign-in again.
-3. “Đọc số dư tài khoản ví” reads native `view_account` at FINAL. It is distinct from principal/storage in the vault; raw account amount is not a guarantee of spendable gas after account storage requirements. Each successful read shows its block. RPC failure never becomes a zero balance.
-4. “Đọc vault của ví đăng nhập” determines registration and balances. For a new empty owner, prepare/review/sign storage0.05NEAR Testnet, then separately principal0.1NEAR Testnet. Each requires a wallet signature. A sufficient/existing balance disables repeat initial funding; no automatic replenishment exists.
-5. Choose1–8h and prepare a grant only if a new demo is needed. Review cap0.05NEAR/max3/only approved payee/zero attached deposit, sign `create_grant`, then read FINAL. Expiry begins at proposal preparation; logging in does not extend it. Another owner's grant is read-only.
-6. Prepare ALLOW0.01NEAR, review JSON, then explicitly “Gửi / đối soát cùng intent”. This backend executor call is a real Testnet transaction. Wait for FINAL SETTLED/OK. UNKNOWN/PENDING means keep the same request; the page restores public saved requests on startup but never submits them automatically.
-7. After terminal FINAL, explicitly complete the old case. Prepare/send over-cap, wrong recipient and consumed nonce0 separately. Policy rejections still cost executor gas/storage. Inspect the actual reason/receipt, not an expected label.
-8. Review/sign revocation, read FINAL active:false, then send one fresh controlled request if testing post-revoke denial. Existing demo already has REVOKED proof; no rerun is needed to view it.
-9. History now includes owner-signed funding without requiring a grant ID. “Đọc lịch sử giao dịch chủ ví” reads that authenticated local journal; grant refresh adds its executor intent rows. The history is capped at100 per query, scoped to this vault and not a full archival account history. Each receipt has “Sao chép hash”, “Sao chép link” and the selectable full hash. If Clipboard permission fails, select the displayed hash and press Ctrl+C.
+1. **V? & qu?**: allow localhost popups, choose an Intear `.testnet` account and sign the NEP413 sign-in message only. A fresh page load does not retain the bearer token. No owner FullAccess credential goes into REDLINE.
+2. **L?m m?i qu? c?a t?i** reads registration/ledger; **??c s? d? t?i kho?n v?** reads native account amount separately. No zero balance is fabricated during failure and raw account amount is not guaranteed spendable gas.
+3. Only for a new empty owner: prepare/review/sign storage0.05NEAR, then separately initial principal0.1NEAR. The global review dialog shows method/signer/receiver/attached amount and opens the wallet only after explicit approval. Existing initial principal disables repeat funding; no automatic replenishment exists.
+4. **H?n m?c & quy?n**: load an existing Grant ID, or prepare new cap0.05/max3/payee-only permission on1/2/4/8h. The selected deadline is bound and rechecked; login does not extend it. Review and separately sign create_grant, then read snapshot FINAL. Preparing new permission is blocked while another saved intent remains.
+5. **Policy Lab**: analyze a candidate against one FINAL block without signing, gas or a model call. ALLOW is a prediction, not a receipt. The explicit handoff persists a fresh request and opens **Ho?t ??ng** for review, without submitting it.
+6. **Ho?t ??ng**: open the financial security test disclosure only when deliberately testing. ALLOW0.01NEAR / cap / recipient / replay buttons prepare JSON. Review the amount/recipient first; **G?i / th? l?i c?ng intent ? Testnet** is an actual executor transaction. Gas/storage can be charged on rejection too. No automatic send or retry occurs.
+7. For an already-submitted request, read the matching history row and use **??i so?t FINAL**, or the saved request's separate **??i so?t receipt ? kh?ng g?i l?i** button. It observes the existing transaction. UNKNOWN/PENDING keeps the exact intent. Only matching terminal FINAL evidence enables local case completion; completing does not remove the journal.
+8. Revoke only through its unsigned owner review and separate wallet signature. A revoked historical demo needs no new funding/grant. New intent after revoke can be used only in a deliberate signed demo; existing REVOKED proof is sufficient for inspection.
+9. History includes owner funding as well as executor rows for the loaded owned grant, limited to100 per query. Copy hash/link are explicit. If Clipboard permission fails, the exact requested hash or URL is displayed for manual selection. It is a local/scoped journal, not a full archival account indexer.
+
+Changing workspace pages preserves loaded session/pending request in the same app. Keyboard Back/Forward and direct links are supported. JSON detail panels are collapsed by default. Mainnet, generative LLM, browser withdrawal and external publishing are not enabled by a visual redesign.
 
 ## E. Recovery and navigation
 

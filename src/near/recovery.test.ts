@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { assertLocalRecovery, recoverLocalState, recoverStartup } from "./recovery";
+import { assertLocalRecovery, recoverLocalState, recoverStartup, startupGrant } from "./recovery";
 import { beginFunding, completeFunding, recordFundingHash } from "./funding";
 import { completePending, persistPending } from "./pending";
 
@@ -8,6 +8,11 @@ const hash = "B".repeat(44);
 function storage(data = new Map<string, string>()) { return { data, getItem: (k: string) => data.get(k) ?? null, setItem: (k: string, v: string) => { data.set(k, v); }, removeItem: (k: string) => { data.delete(k); } }; }
 function funding(s: ReturnType<typeof storage>) { return beginFunding(s, "owner.testnet", "storage_deposit", { registered: false, blockHeight: 42, blockHash: hash }); }
 describe("offline startup and reload recovery (no browser or wallet transport)", () => {
+  it("a foreign URL cannot strand a saved intent on another grant, while fresh links still work", () => {
+    expect(startupGrant("foreign-grant", { request: request as any, grantId: "old" })).toBe(request.grant_id);
+    expect(startupGrant("chosen", { grantId: "old" })).toBe("chosen");
+    expect(startupGrant(null, { grantId: "old" })).toBe("old"); expect(startupGrant(null, {})).toBe("");
+  });
   it("fresh visitor starts empty without reading network or changing storage", () => {
     const s = storage(); expect(recoverLocalState(s)).toEqual({ funding: undefined, request: undefined, errors: [] }); expect(s.data.size).toBe(0);
   });

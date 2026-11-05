@@ -1,3 +1,5 @@
+[New NEAR workspace and reuse of the original REDLINE interface](docs/NEAR_WORKSPACE_REDESIGN.md)
+
 [NEAR Policy Lab: phân tích chỉ đọc và giới hạn kiểm chứng](docs/NEAR_POLICY_LAB.md)
 
 > **REDLINE for NEAR — Testnet prototype, migration in progress.** This repository preserves the original [REDLINE](https://github.com/MinhNhat-2504/REDLINE) Git history and CSaCLAB credits. The Solana documentation below is inherited. The [NEAR Safety Vault](contracts/near-safety-vault) passes21 SDK unit tests and real sandbox receipt tests ([reproduce](contracts/near-safety-vault/tests/README.md)). CLI/API proofs and the owner-operated `/near` browser financial walkthrough are verified: nine browser financial transactions cover storage/principal, grant creation,0.01NEAR ALLOW, cap/recipient/nonce rejection, revoke and post-revoke rejection. Browser operation was observed by the owner; transaction receipts were independently checked through public RPC. Automated real-wallet browser E2E and the README-only newcomer acceptance remain unverified. [Phase5 review](docs/PHASE5_SECURITY_REVIEW.md) records passing regressions and the approved Zod4 migration (backend audit0 findings; frontend10low remain); this is not an audited mainnet product. Existing Solana demo/explorer links below do not prove NEAR functionality.
@@ -10,7 +12,7 @@ Start with [NEAR first run](docs/NEAR_FIRST_RUN.md): review existing evidence wi
 - **Run local checks:** root `npm ci` then `npm run check`; backend `npm ci`, `npm run typecheck`, `npm test`, `npm run build`. Initial backend build generates Prisma; do not regenerate its Windows DLL while an existing backend process is using it. Isolated Postgres and local NEAR sandbox reproduction are in the [Phase5 review](docs/PHASE5_SECURITY_REVIEW.md).
 - **Run a fresh signed demo:** requires a Testnet wallet and a separately scoped executor credential installed by its owner, local Postgres, and explicit storage/principal/grant signatures. No owner key goes in the backend. Existing demo grants are revoked; historical proof review needs no new payment, key reset or signature. The runbook documents fixed demo amounts and durable retry behavior; no unattended one-click setup is claimed.
 
-See [verified progress](docs/PROGRESS.md), [test evidence](docs/TEST_RESULTS.md), [reuse attribution](docs/REUSED_COMPONENTS.md) and [threat model](docs/NEAR_THREAT_MODEL.md). Phase4 and Phase5 remain PARTIAL; UI/UX redesign is deferred.
+See [verified progress](docs/PROGRESS.md), [test evidence](docs/TEST_RESULTS.md), [reuse attribution](docs/REUSED_COMPONENTS.md) and [threat model](docs/NEAR_THREAT_MODEL.md). Phase4 and Phase5 remain PARTIAL. The owner-requested NEAR workspace redesign is implemented; visual/browser acceptance and remaining integration items are tracked separately.
 
 <div align="center">
 

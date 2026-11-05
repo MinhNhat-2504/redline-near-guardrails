@@ -1,7 +1,12 @@
 import { restoreFunding } from "./funding";
 import { restorePending } from "./pending";
+import type { IntentRequest } from "./pending";
 
 type StoragePort = Pick<Storage, "getItem" | "setItem" | "removeItem">;
+export function startupGrant(explicit: string | null, saved: { request?: IntentRequest; grantId?: string }): string {
+  // A shared URL must not strand a durable intent behind a now-locked grant field.
+  return saved.request?.grant_id ?? explicit ?? saved.grantId ?? "";
+}
 /** Independent local reads only. An unavailable API must not hide an outstanding wallet operation. */
 export function recoverLocalState(storage: StoragePort) {
   let funding: ReturnType<typeof restoreFunding>, request: ReturnType<typeof restorePending>;
