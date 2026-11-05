@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-05",
+  "source": "owner-provided conversation screenshot, not independently captured API/provider transcript",
+  "case": "real-model risks topic on historical revoked grant",
+  "result": "FAILED_OWNER_OBSERVED",
+  "visible": {
+    "topic": "R\u1ee7i ro c\u00f2n l\u1ea1i c\u1ea7n l\u01b0u \u00fd",
+    "consentChecked": true,
+    "errorCode": "PROVIDER_HTTP_503",
+    "modelAnswerDisplayed": false
+  },
+  "interpretation": "Configured Gemini endpoint returned HTTP503 according to application diagnostic. Does not establish a global outage or its cause. Prior successful explain topic remains separate evidence.",
+  "notCaptured": [
+    "provider raw response",
+    "provider request ID",
+    "billing or token usage",
+    "latency",
+    "new snapshot height"
+  ],
+  "agentActions": {
+    "apiKeyOrEnvRead": false,
+    "authenticatedModelCall": false,
+    "financialSubmission": false
+  },
+  "next": "Keep configuration. Pause before at most one owner-controlled retry; stop repeated paid attempts if still failing."
+}
