@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-05",
+  "source": "second owner-provided risks-topic screenshot after suggested pause; no independent provider transcript",
+  "case": "owner-controlled risks-topic retry",
+  "result": "FAILED_OWNER_OBSERVED",
+  "visible": {
+    "topic": "R\u1ee7i ro c\u00f2n l\u1ea1i c\u1ea7n l\u01b0u \u00fd",
+    "consentChecked": true,
+    "errorCode": "PROVIDER_HTTP_503",
+    "modelAnswerDisplayed": false
+  },
+  "action": "Stop repeated3.8Flash requests. Propose one owner-controlled configuration trial with Gemini3.5Flash-Lite; not an automatic fallback.",
+  "proposedModel": "gemini-3.5-flash-lite",
+  "configurationChangedByAgent": false,
+  "apiKeyOrEnvRead": false,
+  "modelCallByAgent": false,
+  "limitations": "Model access, quota, reliability and answer quality for proposed model not tested. No claim of global provider outage or resolution."
+}
