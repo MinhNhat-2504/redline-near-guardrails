@@ -217,3 +217,6 @@ Pre-commit: staged whitespace PASS; reachable Git history/staged-index credentia
 
 
 2026-11-06: Owner screenshot after a91bbdf confirms correct withdrawal0.01/recipient/ID/SETTLED plus distinct grant-create/revoke labels on desktop. PASS_OWNER_OBSERVED for those visible rows; deposit/storage/mobile not newly verified. Docs-only/no test rerun/no new financial action; Phase4/5 PARTIAL.
+
+
+2026-11-06 CSS-only brand alignment fix: replaced asymmetric internal bottom gap with balanced button padding and external margin, scoped hover/focus geometry desktop/mobile. Typecheck/build PASS; tests not rerun (prior428 retained). Owner visual recheck pending. No financial/backend/legacy changes.
