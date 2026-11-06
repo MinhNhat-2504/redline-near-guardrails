@@ -211,3 +211,6 @@ Pre-commit: staged whitespace PASS; reachable Git history/staged-index credentia
 
 
 2026-11-06 history readability: frontend-only vault-event classification replaces generic Owner action for deposit/create/revoke/withdraw and intent details; amounts/withdrawal recipient/IDs shown only from matched stored FINAL observation. Missing storage/legacy details explicitly unknown; no backfill writes or new RPC. Backend observation metadata experiment discarded to preserve immutable JSON comparison; final backend source unchanged. Final frontend418/backend632 tests+typechecks/builds PASS, logs phase4-history-*. New browser/mobile acceptance pending, Phase4/5 PARTIAL. Owner screenshot confirms existing settled withdrawal appears in history after reload; no new financial action needed.
+
+
+2026-11-06 history follow-up: owner screenshot still generic (FAILED_OWNER_OBSERVED for detail labels). Fixed overlooked Prisma API JSON-string observation format in frontend, bounded single decode and all existing hash/finality/state checks retained. Added10 API-shape/malformed regression cases; frontend428 tests/typecheck/build PASS, phase4-history-json-frontend.log. Backend/schema unchanged,632/26 historical results not rerun. No tracking/signing/new RPC needed. Actual corrected browser rendering pending; Phase4/5 PARTIAL.

@@ -7,6 +7,23 @@ const load = (name: string) => JSON.parse(readFileSync(new URL(`../../docs/evide
 const withdrawal = load("phase4-web-withdrawal-final");
 const row = (): JournalRow => ({ hash: withdrawal.hash, signerId: withdrawal.owner, state: "SETTLED", observation: structuredClone(withdrawal.observation) });
 describe("NEAR history descriptions", () => {
+  it.each([
+    { ...withdrawal, label: "Rút tiền về ví" },
+    ...load("phase4-web-owner-actions-verification").evidence.map((r: any) => ({ ...r, label: r.method === "create_grant" ? "Cấp quyền cho agent" : "Thu hồi quyền" })),
+    { ...load("phase4-web-principal-verification"), label: "Nạp tiền vào quỹ" },
+  ] as { hash: string; observation: unknown; label: string }[])("reads immutable JSON-string observation from API for $label", fixture => {
+    const wireRow: JournalRow = JSON.parse(JSON.stringify({ hash: fixture.hash, signerId: withdrawal.owner, state: (fixture.observation as any).state, observation: JSON.stringify(fixture.observation) }));
+    expect(historyDetail(wireRow)).toMatchObject({ label: fixture.label, missing: false });
+    expect(renderToStaticMarkup(<HistoryDescription row={wireRow} />)).toContain(fixture.label);
+    if (fixture.hash === withdrawal.hash) expect(historyDetail(wireRow)).toMatchObject({ amount: "0.01", recipient: withdrawal.owner, id: withdrawal.withdrawalId });
+  });
+  it.each(["{", "null", "[]", JSON.stringify(JSON.stringify(withdrawal.observation)), "x".repeat(2_000_001)])("does not classify malformed or nested serialized observations %#", serialized => {
+    expect(historyDetail({ ...row(), observation: serialized }).missing).toBe(true);
+  });
+  it("preserves hash binding after decoding a serialized observation", () => {
+    const r = row(); (r.observation as any).transactionHash = "different"; r.observation = JSON.stringify(r.observation);
+    expect(historyDetail(r).missing).toBe(true);
+  });
   it("identifies archived withdrawal callback and exact NEAR amount for old rows", () => {
     expect(historyDetail(row())).toMatchObject({ label: "Rút tiền về ví", amount: "0.01", recipient: withdrawal.owner, id: withdrawal.withdrawalId, missing: false });
   });

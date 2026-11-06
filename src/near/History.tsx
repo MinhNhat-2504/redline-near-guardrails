@@ -4,6 +4,13 @@ import type { JournalRow } from "./pending";
 const labels: Record<string, string> = { deposit: "Nạp tiền vào quỹ", storage_deposit: "Nạp phí lưu trữ", create_grant: "Cấp quyền cho agent", revoke_grant: "Thu hồi quyền", withdraw: "Rút tiền về ví" };
 const object = (v: unknown): Record<string, unknown> | undefined => v !== null && typeof v === "object" && !Array.isArray(v) ? v as Record<string, unknown> : undefined;
 const text = (v: unknown) => typeof v === "string" && v.length > 0 && v.length <= 128 ? v : undefined;
+function readObservation(value: unknown): Record<string, unknown> | undefined {
+  // Prisma history endpoints return the immutable observation JSON as a string.
+  // Keep accepting objects for in-memory responses; malformed data stays unknown.
+  if (typeof value !== "string") return object(value);
+  if (value.length > 2_000_000) return;
+  try { return object(JSON.parse(value)); } catch { return; }
+}
 function amount(v: unknown): string | undefined {
   if (typeof v !== "string" || !/^(0|[1-9][0-9]*)$/.test(v) || v.length > 39 || BigInt(v) >= (1n << 128n)) return;
   return near(v);
@@ -11,7 +18,7 @@ function amount(v: unknown): string | undefined {
 
 export function historyDetail(row: JournalRow) {
   const fallback = { label: row.intentId ? "Đề xuất chuyển tiền" : "Thao tác chủ ví", amount: undefined as string | undefined, recipient: undefined as string | undefined, id: row.intentId ?? undefined, missing: true };
-  const observation = object(row.observation);
+  const observation = readObservation(row.observation);
   if (!observation || observation.transactionHash !== row.hash || observation.finalized !== true || observation.state !== row.state) return fallback;
   // Classify only stored matched vault events; never rewrite immutable FINAL observations.
   let detail: Record<string, unknown> | undefined;
@@ -46,6 +53,6 @@ export function HistoryDescription({ row }: { row: JournalRow }) {
     {detail.amount !== undefined && <span>{detail.amount} NEAR{row.state === "REJECTED" || row.state === "FAILED" ? " · số tiền yêu cầu" : ""}</span>}
     {detail.recipient && <span>{row.state === "SETTLED" ? "Nhận tại ví" : "Ví nhận dự kiến"}: <code>{detail.recipient}</code></span>}
     {detail.id && <code>{detail.id}</code>}
-    {detail.missing && <small>Chưa có chi tiết thao tác. Đối soát FINAL để đọc lại receipt.</small>}
+    {detail.missing && <small>Bản ghi chưa đủ chi tiết thao tác; xem receipt để kiểm tra.</small>}
   </div>;
 }
