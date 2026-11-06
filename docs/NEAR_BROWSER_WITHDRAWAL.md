@@ -27,3 +27,10 @@ Không chạy giao dịch tài chính mới, không đọc khóa/session, không
 3. Chỉ khi chủ động muốn rút thật trên Testnet, kiểm tra số tiền/ví nhận rồi mở ví và tự ký. Không nạp lại, không reset khóa. Kết quả chưa rõ thì dùng đúng mã/hash để đối soát, không tạo mã khác.
 
 Thử ký bước 3 là hành động của chủ ví; chưa được thực hiện hay đánh dấu PASS trong phiên phát triển này.
+
+
+## 2026-11-06 - Owner browser withdrawal checks before wallet signing
+
+Owner supplied chat screenshots from the redesigned wallet view for nhat-redline-web.testnet. Observed: available principal 0.09 NEAR and storage 0.04498 NEAR; unsigned withdrawal review for 0.01 NEAR showed that owner as signer/recipient, nhat-redline-vault.testnet as contract, and zero attached deposit plus gas. Following the instructed Cancel step, the next screenshot shows the review closed and the same balances. Following the instructed F5-before-opening-wallet step, the next screenshot shows signed-out UI without the review. After owner re-login and balance refresh, screenshots show the same balances, normal withdrawal input/button and no pending-withdrawal panel. Following the instructed 0.10 NEAR over-balance check, the final screenshot shows the controlled available-principal error and unchanged displayed balances.
+
+These specific manual cases are PASS_OWNER_OBSERVED for visible unsigned review/cancel, reload-before-wallet and over-balance rejection. Screenshots are supplied in chat, not archived local image files. They do not independently capture all clicks, localStorage, HTTP traffic, receipt status or prove absence of chain transactions. No actual browser withdrawal, financial-wallet cancellation, after-signing reload or new FINAL withdrawal receipt is established. Phase4/5 remain PARTIAL. Agent did not read credentials/session files, call a model, request funding or submit a financial transaction. Documentation/evidence only; application source unchanged, tests/builds not rerun. Earlier automated results remain historical evidence, not new runs.

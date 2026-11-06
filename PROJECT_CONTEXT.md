@@ -199,3 +199,6 @@ Final refinement: a saved intent grant now takes precedence over a conflicting g
 
 
 Pre-commit: staged whitespace PASS; reachable Git history/staged-index credential-pattern scan PASS1201 blobs/0 findings, inherited exact TESTONLY exception retained (phase4-workspace-secret-scan.json). Scan preceded the final mobile-only CSS refinement; no credential-bearing logic was added by that refinement. Final responsive CSS typecheck/Vite build PASS (phase4-workspace-build-final.log); logic tests were not repeated for the CSS-only change. User-modified phase3-owner-cli-login.json excluded. No remote push/deployment attempted.
+
+
+2026-11-06: Owner screenshots support unsigned browser withdrawal review/cancel, F5 before wallet signing, re-login with unchanged displayed principal 0.09/storage 0.04498 NEAR, and controlled rejection of 0.10 NEAR over available principal. PASS_OWNER_OBSERVED only; no independent chain/network capture or actual browser withdrawal receipt. See docs/NEAR_BROWSER_WITHDRAWAL.md. Docs-only, no tests/build rerun or Gemini/financial calls; Phase4/5 PARTIAL. Next safe acceptance: invalid amount input; actual signed withdrawal requires separate owner review/signature.

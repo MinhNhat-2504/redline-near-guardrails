@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-06",
+  "source": "Owner screenshots supplied in conversation; image files not archived",
+  "account": "nhat-redline-web.testnet",
+  "classification": "PASS_OWNER_OBSERVED",
+  "observations": [
+    "Unsigned 0.01 NEAR withdrawal review names owner as signer and recipient, vault as contract, attached deposit zero plus gas",
+    "After instructed cancellation: review absent, displayed available principal 0.09 and storage 0.04498 NEAR",
+    "After instructed F5 before wallet opening: signed out and no review visible",
+    "After re-login and refresh: same displayed balances, normal withdrawal controls and no pending panel visible",
+    "After instructed 0.10 NEAR request: controlled available-principal error, displayed balances unchanged"
+  ],
+  "limitations": [
+    "No independent capture of intervening clicks, localStorage or HTTP traffic",
+    "Screenshots do not prove absence of chain transactions",
+    "Actual browser withdrawal and financial wallet cancellation remain unverified"
+  ],
+  "source_changed": false,
+  "tests_builds_rerun": false,
+  "phase4_phase5": "PARTIAL"
+}
