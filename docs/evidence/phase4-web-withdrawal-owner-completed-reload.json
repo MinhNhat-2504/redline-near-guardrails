@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-06",
+  "classification": "PASS_OWNER_OBSERVED",
+  "source": "Two owner screenshots supplied in chat; image files not archived",
+  "transactionHash": "AwCQh5ceQyom6WM46TkmaDdJG2AFBFQwvvcu8KrWcMHp",
+  "scenario": "Reload, re-login and refresh after previously confirmed withdrawal completion",
+  "visible": {
+    "availableNear": "0.08",
+    "storageNear": "0.04404",
+    "normalWithdrawalInput": "0.01",
+    "reviewButtonPresent": true,
+    "pendingWithdrawalPanelVisible": false
+  },
+  "limitations": [
+    "Not an independent localStorage/network trace",
+    "Not reload during submission or interrupted callback recovery",
+    "Not financial-wallet cancellation"
+  ],
+  "sourceChanged": false,
+  "testsBuildsRerun": false,
+  "phase4Phase5": "PARTIAL"
+}

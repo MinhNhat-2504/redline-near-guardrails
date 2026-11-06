@@ -205,3 +205,6 @@ Pre-commit: staged whitespace PASS; reachable Git history/staged-index credentia
 
 
 2026-11-06 browser withdrawal VERIFIED: owner hash AwCQh5ceQyom6WM46TkmaDdJG2AFBFQwvvcu8KrWcMHp, exact withdraw0.01 to owner, FINAL SETTLED callback and stored view; pinned FINAL block276474423 ledger available0.08/storage0.04404/completed withdrawals0.01/pending0. Evidence phase4-web-withdrawal-final.json and reproducible public-only verifier backend/scripts/verify-near-web-withdrawal.ts.14 withdrawal regression tests/typecheck/direct build PASS. No production app/schema/contract changes; no frontend/DB/Rust/audit reruns. Phase4/5 PARTIAL; owner financial signatures only, agent public reads only. Remaining post-signing reload/financial cancellation not inferred.
+
+
+2026-11-06: Owner post-completion F5/re-login/refresh screenshots show principal0.08/storage0.04404 and normal withdrawal controls without pending panel. PASS_OWNER_OBSERVED for reload after FINAL completion only; ambiguous in-flight reload/financial cancellation remain unverified. Docs-only, no tests/build rerun. Evidence phase4-web-withdrawal-owner-completed-reload.json. No further payment required; next safe check is withdrawal receipt history after reload.
