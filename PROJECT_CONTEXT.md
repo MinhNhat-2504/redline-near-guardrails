@@ -208,3 +208,6 @@ Pre-commit: staged whitespace PASS; reachable Git history/staged-index credentia
 
 
 2026-11-06: Owner post-completion F5/re-login/refresh screenshots show principal0.08/storage0.04404 and normal withdrawal controls without pending panel. PASS_OWNER_OBSERVED for reload after FINAL completion only; ambiguous in-flight reload/financial cancellation remain unverified. Docs-only, no tests/build rerun. Evidence phase4-web-withdrawal-owner-completed-reload.json. No further payment required; next safe check is withdrawal receipt history after reload.
+
+
+2026-11-06 history readability: frontend-only vault-event classification replaces generic Owner action for deposit/create/revoke/withdraw and intent details; amounts/withdrawal recipient/IDs shown only from matched stored FINAL observation. Missing storage/legacy details explicitly unknown; no backfill writes or new RPC. Backend observation metadata experiment discarded to preserve immutable JSON comparison; final backend source unchanged. Final frontend418/backend632 tests+typechecks/builds PASS, logs phase4-history-*. New browser/mobile acceptance pending, Phase4/5 PARTIAL. Owner screenshot confirms existing settled withdrawal appears in history after reload; no new financial action needed.

@@ -1,0 +1,25 @@
+> redline@0.0.1 test
+> vitest run
+
+
+ RUN  v4.1.12 D:/Project/AI Engineer/redline-near-guardrails
+
+
+ Test Files  39 passed (39)
+      Tests  417 passed (417)
+   Start at  17:52:20
+   Duration  3.19s (transform 7.05s, setup 0ms, import 11.52s, tests 1.05s, environment 4ms)
+
+
+> redline@0.0.1 build
+> npm run typecheck && vite build
+
+
+> redline@0.0.1 typecheck
+> tsc --noEmit
+
+src/near/History.test.tsx(13,98): error TS2345: Argument of type '(r: any) => void' is not assignable to parameter of type '(...args: any[] | [any]) => Awaitable<void>'.
+  Types of parameters 'r' and 'args' are incompatible.
+    Type 'any[] | [any]' is not assignable to type '[r: any]'.
+      Type 'any[]' is not assignable to type '[r: any]'.
+        Target requires 1 element(s) but source may have fewer.

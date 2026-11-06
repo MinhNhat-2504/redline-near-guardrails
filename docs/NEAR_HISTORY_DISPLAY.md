@@ -1,0 +1,9 @@
+# NEAR history display checkpoint - 2026-11-06
+
+History now describes principal deposits, grant creation, revocation, withdrawals and intent proposals using existing matched FINAL vault events. Amounts use exact BigInt NEAR formatting. Withdrawals show owner recipient and withdrawal ID; grant operations show grant ID. Rejected/failed amounts are requests, never labelled successful transfers. Missing or ambiguous details remain explicitly unknown; use the receipt link to inspect them. In particular, older storage registration observations without identifying events cannot be classified reliably from their CONFIRMED state alone.
+
+Production backend/parser/schema unchanged. Do not enrich persisted FINAL observations in place: store.commit compares their exact JSON and rejects conflicting finalized data. No signing, re-execution or automatic receipt RPC is introduced for display.
+
+Validation: final frontend418/backend632 tests plus typechecks/builds PASS.19 frontend regression cases cover archived real receipt fixtures, missing/optimistic/mismatched state/hash, invalid/overflow amounts, exact u128 precision, ambiguous events and escaped rendering. Automated rendering is SSR, not actual browser/mobile acceptance. Original failed typecheck and exploratory logs retained separately; final logs phase4-history-frontend.log/phase4-history-backend.log. No DB/Rust/audit rerun required for this frontend-only change; prior evidence is historical. Phase4/5 remain PARTIAL.
+
+Owner follow-up: with Vite running, refresh once, sign in if necessary, open Activity and read owner history. The already verified0.01 NEAR withdrawal should show a withdrawal label, exact amount and nhat-redline-web.testnet recipient. No new withdrawal or funding required. For older eventless storage rows, generic incomplete-detail wording is expected. No backend restart required by this final change.
