@@ -1,0 +1,11 @@
+RUN  v4.1.12 D:/Project/AI Engineer/redline-near-guardrails/backend
+
+
+ Test Files  1 passed (1)
+      Tests  14 passed (14)
+   Start at  17:20:54
+   Duration  665ms (transform 104ms, setup 0ms, import 328ms, tests 191ms, environment 0ms)
+
+
+> redline-backend@0.1.0 typecheck
+> tsc --noEmit -p tsconfig.json
