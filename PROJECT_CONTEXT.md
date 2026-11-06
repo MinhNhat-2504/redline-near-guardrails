@@ -214,3 +214,6 @@ Pre-commit: staged whitespace PASS; reachable Git history/staged-index credentia
 
 
 2026-11-06 history follow-up: owner screenshot still generic (FAILED_OWNER_OBSERVED for detail labels). Fixed overlooked Prisma API JSON-string observation format in frontend, bounded single decode and all existing hash/finality/state checks retained. Added10 API-shape/malformed regression cases; frontend428 tests/typecheck/build PASS, phase4-history-json-frontend.log. Backend/schema unchanged,632/26 historical results not rerun. No tracking/signing/new RPC needed. Actual corrected browser rendering pending; Phase4/5 PARTIAL.
+
+
+2026-11-06: Owner screenshot after a91bbdf confirms correct withdrawal0.01/recipient/ID/SETTLED plus distinct grant-create/revoke labels on desktop. PASS_OWNER_OBSERVED for those visible rows; deposit/storage/mobile not newly verified. Docs-only/no test rerun/no new financial action; Phase4/5 PARTIAL.
