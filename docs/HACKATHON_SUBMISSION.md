@@ -1,3 +1,5 @@
+> Historical Solana submission draft, preserved for source attribution only. It is NOT the new NEAR submission or its team. The NEAR project is an independent submission by Trinh Ngoc Minh Nhat. Use the root README and docs/NEAR_PUBLICATION_REVIEW.md for current scope.
+
 # Hackathon submission
 
 ## Project name

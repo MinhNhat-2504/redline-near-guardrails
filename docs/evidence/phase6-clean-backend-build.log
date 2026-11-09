@@ -1,0 +1,27 @@
+> redline-backend@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.5.0) to .\node_modules\@prisma\client in 108ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want real-time updates to your database without manual polling? Discover how with Pulse: https://pris.ly/tip-0-pulse
+
+npm.cmd : ┌─────────────────────────────────────────────────────────┐
+At D:\Project\AI Engineer\redline-near-guardrails\scripts\check-near-clean-install.ps1:21 char:9
++         & $Command @Arguments *> $log
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (┌──────────────...──────────────┐:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+│  Update available 6.5.0 -> 8.0.0-rc.33                  │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘

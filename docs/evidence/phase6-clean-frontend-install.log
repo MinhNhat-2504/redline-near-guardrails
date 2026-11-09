@@ -1,0 +1,10 @@
+npm.cmd : npm warn deprecated recharts@2.15.2: 1.x and 2.x branches are no longer active. Bump to Recharts v3 to
+receive latest features and bugfixes. See https://github.com/recharts/recharts/wiki/3.0-migration-guide
+At D:\Project\AI Engineer\redline-near-guardrails\scripts\check-near-clean-install.ps1:21 char:9
++         & $Command @Arguments *> $log
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn deprec...migration-guide:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+added 427 packages in 1m
