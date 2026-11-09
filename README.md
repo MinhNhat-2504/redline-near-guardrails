@@ -50,7 +50,7 @@ npm.cmd ci
 npm.cmd run dev -- --host localhost --port 5173 --strictPort
 ```
 
-Open **http://localhost:5173/near#/proofs**. Recorded links work without login or the API. API health errors do not invalidate historical receipts. Repo was private when checked2026-11-10; anonymous clone remains unverified until the publication review is resolved. Development branch: `feat/near-mvp`; default branch was `main` when checked.
+Open **http://localhost:5173/near#/proofs**. Recorded links work without login or the API. API health errors do not invalidate historical receipts. Public repository verified2026-11-10; anonymous main clone and README/LICENSE access PASS. Development branch: `feat/near-mvp`; public default branch: `main`.
 
 `/near` is NEAR; `/` preserves the original Solana workspace. Its hosted links/badges are not NEAR evidence.
 
@@ -128,7 +128,7 @@ npx.cmd tsc -p tsconfig.json
 - [Contract reproduction](contracts/near-safety-vault/tests/README.md):21 SDK tests and prior real sandbox53 transactions/136 receipts; local sandbox proof is distinct from public Testnet.
 - [Source/cache installation](scripts/check-near-clean-install.ps1): isolated install/tests/build without local credentials or server; not independent online newcomer acceptance.
 - python scripts/scan-secrets.py scans configured patterns in locally reachable Git history/index; no matched values printed. It does not guarantee absence of all secrets.
-- Hosted GitHub CI for final submission commit is not verified; inherited Solana badge is not NEAR CI proof.
+- Hosted NEAR CI at commit51764fd passed: [frontend](https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718065422), [backend/Postgres](https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718065531), [contract/sandbox](https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718065511). Later documentation-only commits are not claimed to have separate same-SHA runs.
 
 ## New work versus inherited work
 
@@ -156,7 +156,7 @@ git diff aa0b0b044d9b6e01b71a14791ec68b24385e098b..HEAD -- contracts/near-safety
 - localStorage is not an atomic cross-tab lock; avoid parallel funding/withdrawal tabs. Callback liveness and immutable record growth remain operational limits.
 - History is a scoped journal (up to100 rows/query), not a complete account indexer. Old storage receipts may lack identifying detail.
 - Mobile/automated real-wallet E2E and interrupted post-signing recovery remain incomplete. One Gemini response does not establish provider reliability.
-- Owner confirmed permission to publish inherited work. MIT approved for new individually owned NEAR contributions only; inherited and third-party terms remain separate. Public repo, final default-branch contents, hosted CI, X demo post and submission confirmation remain release gates.
+- Owner confirmed permission to publish inherited work. MIT approved for new individually owned NEAR contributions only; inherited and third-party terms remain separate. Public main access and NEAR CI are verified at the documented checkpoints. X demo post and submission confirmation remain outstanding.
 
 ## Credits and licensing
 

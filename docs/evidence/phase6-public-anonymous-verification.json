@@ -1,0 +1,294 @@
+{
+  "checkedAtClientDate": "2026-11-10",
+  "requestAuthentication": "None: urllib HTTPS requests contain no Authorization header or cookie",
+  "repository": {
+    "full_name": "MinhNhat-2504/redline-near-guardrails",
+    "private": false,
+    "visibility": "public",
+    "default_branch": "main",
+    "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails"
+  },
+  "workflow_runs": [
+    {
+      "id": 42718065531,
+      "name": "NEAR backend",
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718065531"
+    },
+    {
+      "id": 42718065511,
+      "name": "NEAR contract",
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718065511"
+    },
+    {
+      "id": 42718065489,
+      "name": "Backend CI",
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718065489"
+    },
+    {
+      "id": 42718065422,
+      "name": "NEAR frontend",
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718065422"
+    },
+    {
+      "id": 42718065263,
+      "name": "Frontend CI",
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718065263"
+    },
+    {
+      "id": 42718064649,
+      "name": "NEAR contract",
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718064649"
+    },
+    {
+      "id": 42718064570,
+      "name": "NEAR frontend",
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718064570"
+    },
+    {
+      "id": 42718064363,
+      "name": "NEAR backend",
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/42718064363"
+    },
+    {
+      "id": 41619721429,
+      "name": "NEAR backend",
+      "head_sha": "8822e6df1686d5467866e11def7bf1785b73143b",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/41619721429"
+    },
+    {
+      "id": 41605320279,
+      "name": "NEAR backend",
+      "head_sha": "49eb02dfde929cd8cfe7db5ad3194b1654abc99f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/MinhNhat-2504/redline-near-guardrails/actions/runs/41605320279"
+    }
+  ],
+  "anonymousClone": {
+    "exitCode": 0,
+    "directory": ".tooling\\public-clone-d5f7fe46ed714b6a87792c5baeaeba74",
+    "credentials": "global/system config and credential helpers disabled; no terminal prompts; no checkout or runtime execution",
+    "commit": "08493cc901926be09cf6197a9e7ff73427ddc042"
+  },
+  "files": {
+    "README.md": {
+      "accessible": true,
+      "bytes": 13569
+    },
+    "LICENSE": {
+      "accessible": true,
+      "bytes": 1083
+    },
+    "LICENSE_SCOPE.md": {
+      "accessible": true,
+      "bytes": 1393
+    }
+  },
+  "status": "VERIFIED_PUBLIC_ANONYMOUS_MAIN_CLONE",
+  "verifiedNearWorkflowJobs": [
+    {
+      "workflow": "NEAR backend",
+      "runId": 42718065531,
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "jobs": [
+        {
+          "name": "near-backend",
+          "status": "completed",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm ci",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npx prisma generate",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm run typecheck",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm test",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm run db:near",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm run test:near:db",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm run build",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Stop containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "workflow": "NEAR contract",
+      "runId": 42718065511,
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "jobs": [
+        {
+          "name": "local-runtime",
+          "status": "completed",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@master",
+              "conclusion": "success"
+            },
+            {
+              "name": "Formatting and unit tests (SDK VM context)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Build WASM",
+              "conclusion": "success"
+            },
+            {
+              "name": "Official sandbox binary (pinned archive checksum)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Python Ed25519 dependency",
+              "conclusion": "success"
+            },
+            {
+              "name": "Real local NEAR receipt integration tests",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "workflow": "NEAR frontend",
+      "runId": 42718065422,
+      "head_sha": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+      "jobs": [
+        {
+          "name": "near-frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm ci --no-audit --no-fund",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm run check",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

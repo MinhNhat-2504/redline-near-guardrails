@@ -1,6 +1,6 @@
 # Publication review — 2026-11-10
 
-Status: PREPARING, not yet public or submission-ready. Owner explicitly authorized public visibility and confirmed permission from the inherited project's rights holders in chat. Owner approved MIT for new NEAR contributions only, copyright Trinh Ngoc Minh Nhat. Root LICENSE and LICENSE_SCOPE.md implement that scope; inherited work is not relicensed.
+Status: PUBLIC SOURCE VERIFIED; full hackathon submission remains incomplete. Owner explicitly authorized public visibility and confirmed permission from the inherited project's rights holders in chat. Owner approved MIT for new NEAR contributions only, copyright Trinh Ngoc Minh Nhat. Root LICENSE and LICENSE_SCOPE.md implement that scope; inherited work is not relicensed.
 
 ## Scope and evidence
 
@@ -28,9 +28,9 @@ Original CSaCLAB authors remain credited in README and `README_SOLANA.md`. Exist
 | Secret pattern review | Fetched refs plus index pattern scan passed1,394 blobs before final license/evidence staging; repeat required before push. Local private runtime files not opened. |
 | Licensing | Owner permission confirmed; MIT for new personally owned NEAR work approved and installed; inherited/third-party terms preserved. |
 | Remote contents | Atomic fast-forward push succeeded; main/feat/near-mvp both51764fd, new main README verified through GitHub. |
-| Visibility/default entry | PRIVATE/main baseline at review time; not public PASS. |
-| Anonymous repo/clone | NOT RUN until visibility changed. |
-| Final hosted CI | Not established for submission commit. |
+| Visibility/default entry | PUBLIC/main NEAR README verified after owner visibility change; see final checkpoint below. |
+| Anonymous repo/clone | PASS shallow main clone with credential helpers/config disabled at08493cc. |
+| Final hosted CI | NEAR frontend/backend/Postgres/contract/sandbox success at51764fd; later docs-only commits have no same-SHA CI claim. |
 | X demo/form submission | Not authorized by this task; not done. |
 
 ## Product assessment
@@ -60,3 +60,12 @@ Local links checked for README, inherited README and publication review: zero mi
 Commit51764fd1e13ccb4663c55479b0a0addc7a69c62f pushed atomically and without force to origin feat/near-mvp and main. ls-remote independently returns this SHA for both; baseline remains an ancestor. GitHub connector confirms default branch main and retrieves the new NEAR README there. PRIVATE remains the latest verified visibility; admin confirmed but connector exposes no settings mutation and gh is unavailable. Owner was given the exact Settings/General/Danger Zone/Change repository visibility path. No extra permission is needed for the already-authorized publication, but owner must operate that missing UI capability. Anonymous access/clone not yet verified, no PUBLIC PASS.
 
 Combined status tool returned no status records; this is not hosted CI PASS or proof that no Actions runs exist. Evidence phase6-github-release-checkpoint.json. Do not retry tokens or extract Git credentials. No runtime keys/env/session read. Final current publication status supersedes the earlier pending-push entries; license already approved/installed and source checks passed. Submission still requires visibility verification, video/X and final form; no new financial action needed.
+
+
+## 2026-11-10 - Public repository and hosted NEAR CI verified
+
+Owner reported changing visibility. Authenticated connector independently returned public/default main. Anonymous urllib GitHub API (no Authorization/cookie) returned private=false. A new shallow main clone with global/system Git config, credential helper and askpass disabled completed exit0 at08493cc901926be09cf6197a9e7ff73427ddc042; README/LICENSE/LICENSE_SCOPE were readable from cloned Git objects. No checkout or runtime code executed by that clone; source/cache installation proof remains separate. Evidence phase6-public-anonymous-verification.json includes exact scope, run URLs and job/step metadata.
+
+Hosted NEAR CI at application/docs commit51764fd1e13ccb4663c55479b0a0addc7a69c62f is VERIFIED_SUCCESS: frontend run42718065422 (npm ci/check), backend42718065531 (tests/typecheck/build plus additive migration/Postgres tests), contract42718065511 (SDK tests/WASM and actual local receipt sandbox step). Job metadata/step outcomes were read, not full logs/artifact counts. Later08493cc is docs-only; no same-SHA CI claimed for it. Earlier empty combined-status response did not mean no Actions runs; public Actions API now supplies the missing evidence. No professional audit or automatic wallet/mobile acceptance inferred.
+
+Public visibility/anonymous main source access and reviewed license/credits now PASS within the specified scope; previous PRIVATE/pending-auth/hosted-CI gaps are superseded. Phase4/5 remain PARTIAL for broader browser/recovery/provider acceptance, and Phase6 still needs video/X/form submission. No new credential read, model call, financial signature, transaction or deployment. Documentation-only update: tests/build not rerun.
