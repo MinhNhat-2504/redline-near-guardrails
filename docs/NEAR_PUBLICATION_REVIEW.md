@@ -27,7 +27,7 @@ Original CSaCLAB authors remain credited in README and `README_SOLANA.md`. Exist
 | Public chain proof | Archived real ALLOW/rejections, funding/create/revoke and browser withdrawal FINAL receipts; historical snapshots not live metrics. |
 | Secret pattern review | Fetched refs plus index pattern scan passed1,394 blobs before final license/evidence staging; repeat required before push. Local private runtime files not opened. |
 | Licensing | Owner permission confirmed; MIT for new personally owned NEAR work approved and installed; inherited/third-party terms preserved. |
-| Remote contents | Fetch/read succeeded; latest local changes not yet pushed. |
+| Remote contents | Atomic fast-forward push succeeded; main/feat/near-mvp both51764fd, new main README verified through GitHub. |
 | Visibility/default entry | PRIVATE/main baseline at review time; not public PASS. |
 | Anonymous repo/clone | NOT RUN until visibility changed. |
 | Final hosted CI | Not established for submission commit. |
@@ -53,3 +53,10 @@ Local links checked for README, inherited README and publication review: zero mi
 
 
 2026-11-10 final pre-push index/history pattern scan: 1412 unique blobs,0 findings; exact inherited TESTONLY exception retained. Evidence phase6-publication-final-secret-scan.json. Ignores confirmed for local .env, backend/.env, executor credential and CLI session paths without opening them. Ready for commit/push of reviewed documents/license, not yet PUBLIC verification.
+
+
+## 2026-11-10 - Remote entry point synchronized
+
+Commit51764fd1e13ccb4663c55479b0a0addc7a69c62f pushed atomically and without force to origin feat/near-mvp and main. ls-remote independently returns this SHA for both; baseline remains an ancestor. GitHub connector confirms default branch main and retrieves the new NEAR README there. PRIVATE remains the latest verified visibility; admin confirmed but connector exposes no settings mutation and gh is unavailable. Owner was given the exact Settings/General/Danger Zone/Change repository visibility path. No extra permission is needed for the already-authorized publication, but owner must operate that missing UI capability. Anonymous access/clone not yet verified, no PUBLIC PASS.
+
+Combined status tool returned no status records; this is not hosted CI PASS or proof that no Actions runs exist. Evidence phase6-github-release-checkpoint.json. Do not retry tokens or extract Git credentials. No runtime keys/env/session read. Final current publication status supersedes the earlier pending-push entries; license already approved/installed and source checks passed. Submission still requires visibility verification, video/X and final form; no new financial action needed.

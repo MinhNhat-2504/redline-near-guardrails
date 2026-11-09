@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-10",
+  "repository": "MinhNhat-2504/redline-near-guardrails",
+  "commit": "51764fd1e13ccb4663c55479b0a0addc7a69c62f",
+  "push": "PASS atomic non-force fast-forward of feat/near-mvp and main",
+  "remote_refs_verified_equal": true,
+  "default_branch": "main",
+  "readme_remote_verified": "# REDLINE for NEAR",
+  "visibility_last_verified": "private",
+  "github_admin_permission_verified": true,
+  "visibility_mutation_tool_available": false,
+  "owner_settings_action": "Requested; awaiting completion",
+  "anonymous_clone": "NOT RUN while private",
+  "hosted_ci": "NOT VERIFIED; combined-status connector returned no status records, not a pass or proof no Actions runs exist",
+  "new_license": "MIT for individually owned new NEAR contributions only, approved by owner",
+  "original_attribution": "Retained solely as inherited source credit, not current submitting team",
+  "credential_access": "No runtime .env, private key or session contents read",
+  "user_dirty_file_excluded": "docs/evidence/phase3-owner-cli-login.json"
+}
