@@ -18,3 +18,36 @@
 .near-app .nw-copilot-panel{margin-top:28px;padding-top:24px;border-top:1px solid #30455b}.near-app .nw-copilot-consent{display:flex;align-items:flex-start;gap:12px;margin:18px 0;line-height:1.7}.near-app .nw-copilot-consent input{width:18px;min-width:18px;height:18px;min-height:18px;padding:0;margin-top:4px;accent-color:#d9bc7e}.nw-copilot-panel li{white-space:pre-wrap;overflow-wrap:anywhere}.nw-copilot-panel h4{margin-top:18px}
 
 .nw-history-description{display:flex;flex-direction:column;gap:6px;min-width:160px}.nw-history-description strong{font:600 12px/1.5 var(--sans,sans-serif);color:#e4edf7}.nw-history-description span{font:11px/1.6 var(--sans,sans-serif)}.nw-history-description code{overflow-wrap:anywhere;word-break:break-word}.nw-history-description small{font:10px/1.6 var(--sans,sans-serif);color:#96abc4}
+
+/* Compact navigation and receipt cards keep the financial controls usable at narrow widths. */
+.nw-sidebar-heading{display:flex;align-items:center;gap:8px;margin-bottom:12px;min-width:0}
+.near-app .nw-sidebar-heading .nw-brand{margin:0;min-width:0;flex:1}
+.near-app .nw-mobile-nav-toggle{display:none}
+.nw-copilot-status{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:14px 0}
+.nw-copilot-status p{flex-basis:100%;margin:0;font-size:12px;color:var(--nw-muted)}
+.near-app .nw-copilot-panel{min-width:0;overflow-wrap:anywhere}
+@media(max-width:760px){
+  .nw-sidebar-heading{margin-bottom:8px}
+  .near-app .nw-mobile-nav-toggle{display:inline-flex;min-height:44px;flex-shrink:0}
+  .nw-mobile-nav-toggle[aria-expanded=true]>svg{transform:rotate(90deg)}
+  .nw-sidebar nav:not(.is-open){display:none}
+  .nw-sidebar nav.is-open{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:min(45dvh,320px);overflow:auto;padding-bottom:10px}
+  .near-app .nw-sidebar nav button{min-height:44px;white-space:normal;text-align:left}
+  .near-app input,.near-app select{font-size:16px;max-width:100%}
+  .near-app label>select{display:block;margin:8px 0 0;width:100%}
+  .near-app button{min-height:44px}
+  .near-app .nw-history-table{overflow:visible}
+  .near-app .nw-history-table table{min-width:0;display:block}
+  .nw-history-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .nw-history-table tbody{display:grid;gap:14px}
+  .near-app .nw-history-table tr{display:grid;grid-template-columns:minmax(0,1fr);padding:14px;border:1px solid #30455b;border-radius:10px;background:#0c1827}
+  .near-app .nw-history-table td{display:block;max-width:none;padding:9px 0;border:0;min-width:0}
+  .nw-history-table td::before{content:attr(data-label);display:block;color:#8ca2be;font-size:10px;margin-bottom:7px}
+  .near-app .nw-history-table td button{min-height:44px;padding:9px 11px;font-size:12px}
+  .near-app .nw-history-table td a{display:inline-flex;align-items:center;min-height:44px;font-size:12px}
+  .near-app .nw-history-table .near-hash{max-width:100%;font-size:11px!important}
+  .nw-history-description strong{font-size:14px}.nw-history-description span{font-size:13px}
+  .near-app .nw-global-review:has(>.near-review){padding:12px;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+  .near-app .nw-global-review>.near-review{padding:20px;max-height:calc(100dvh - 24px)}
+}
+@media(prefers-reduced-motion:reduce){.near-app *{scroll-behavior:auto!important;transition:none!important}}

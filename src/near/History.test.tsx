@@ -1,12 +1,19 @@
 import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { HistoryDescription, historyDetail } from "./History";
+import { HistoryDescription, HistoryTable, historyDetail } from "./History";
 import type { JournalRow } from "./pending";
 const load = (name: string) => JSON.parse(readFileSync(new URL(`../../docs/evidence/${name}.json`, import.meta.url), "utf8"));
 const withdrawal = load("phase4-web-withdrawal-final");
 const row = (): JournalRow => ({ hash: withdrawal.hash, signerId: withdrawal.owner, state: "SETTLED", observation: structuredClone(withdrawal.observation) });
 describe("NEAR history descriptions", () => {
+  it("keeps accessible table roles and labelled card fields for mobile history", () => {
+    const onReconcile = () => { throw Error("Must not reconcile while rendering"); };
+    const html = renderToStaticMarkup(<HistoryTable rows={[row()]} busy onReconcile={onReconcile} />);
+    expect(html).toContain('role="table"'); expect(html).toContain('scope="col"'); expect(html).toContain('role="cell"');
+    expect(html).toContain('data-label="Receipt"'); expect(html).toContain('data-label="Trạng thái"');
+    expect(html).toContain(withdrawal.owner); expect(html).toContain(withdrawal.hash); expect(html).toContain('disabled=""');
+  });
   it.each([
     { ...withdrawal, label: "Rút tiền về ví" },
     ...load("phase4-web-owner-actions-verification").evidence.map((r: any) => ({ ...r, label: r.method === "create_grant" ? "Cấp quyền cho agent" : "Thu hồi quyền" })),

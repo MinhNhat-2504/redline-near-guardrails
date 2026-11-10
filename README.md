@@ -17,7 +17,7 @@ NEAR Hackathon 2026 | **Track 06: AI Security & Defense**. Testnet prototype, no
 | Wallet sign-in | Intear Testnet NEP-413, signature and FINAL FullAccess-key ownership verification. Login is not a transfer approval. Browser bearer stays in tab memory; F5 requires re-login. |
 | Workspace and receipts | Wallet/funds, permissions, Policy Lab, activity, evidence and recovery. Owner operation labels use stored FINAL events; missing details remain unknown. |
 | Deterministic Policy Lab | Candidate, grant, ledger and time at one FINAL block. Prediction only; contract execution and receipt determine actual outcome. |
-| Optional Gemini copilot | Disabled by default, consented explanations only. One real explanation owner-observed; later risks calls returned HTTP503. No automatic retry/fallback. NEAR enforcement does not depend on Gemini. |
+| Optional Gemini copilot | Disabled by default, consented explanations only. One real explanation owner-observed; later risks calls returned HTTP503. Adaptive cooldown handles quota/network/timeout/service failures; explicit configuration check makes no model call. No automatic retry/fallback. NEAR enforcement does not depend on Gemini. |
 
 The payment demo submits **controlled JSON**, not an autonomous LLM payment agent. The NEAR version does not implement the inherited Solana marketplace, USDC, swaps, cross-chain settlement or Mainnet.
 
@@ -163,3 +163,6 @@ git diff aa0b0b044d9b6e01b71a14791ec68b24385e098b..HEAD -- contracts/near-safety
 **Independent NEAR project: Trịnh Ngọc Minh Nhật.** The new project is not submitted as a CSaCLAB team entry. Original REDLINE author credits are retained solely as source attribution in [ATTRIBUTIONS.md](ATTRIBUTIONS.md) and [README_SOLANA.md](README_SOLANA.md); they do not imply participation in the new NEAR project. Sources: [preserved REDLINE import](https://github.com/MinhNhat-2504/REDLINE) and [original credited repository](https://github.com/NguyenPhong2912/REDLINE).
 
 NEAR migration maintained in MinhNhat-2504/redline-near-guardrails. Inherited work is not claimed as new hackathon work. [Third-party notices](ATTRIBUTIONS.md) remain. New individually owned NEAR contributions use [MIT](LICENSE), subject to [license scope](LICENSE_SCOPE.md). Inherited REDLINE and third-party work are not relicensed. [Publication review](docs/NEAR_PUBLICATION_REVIEW.md).
+
+
+2026-11-10 usability/resilience update: narrow-screen Menu, history cards, touch-size controls and AI configuration-only check implemented; adaptive provider cooldown, no automatic model retries. Latest local433 frontend/649 backend tests/typechecks/builds PASS. Actual device/live-provider acceptance still pending; [scope and safe owner checks](docs/NEAR_MOBILE_COPILOT_RESILIENCE.md).

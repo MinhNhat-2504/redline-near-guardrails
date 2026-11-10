@@ -1,0 +1,16 @@
+{
+  "source": "Actual tool transcript, not reconstructed raw log",
+  "initialBackendResult": {
+    "passed": 648,
+    "failed": 1,
+    "case": "caps process attempts at20/hour, including failed providers; no implicit retry",
+    "reason": "Generic transient provider error is now intercepted by adaptive cooldown before the process quota fixture reaches20 actual attempts"
+  },
+  "correction": "Use non-transient key rejection to exercise attempt budget independently; separately test transient circuit",
+  "rawInitialLog": "Overwritten after backup Copy-Item failed due wrong relative path; not retained",
+  "finalBackendResult": {
+    "passed": 649,
+    "failed": 0
+  },
+  "liveProviderCalls": 0
+}

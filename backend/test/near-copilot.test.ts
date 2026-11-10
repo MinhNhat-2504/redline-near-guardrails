@@ -3,7 +3,7 @@ import { configuredNearCopilot, copilotContext, NearCopilot } from "../src/near/
 import { analyzeNearPolicy } from "../src/near/policy-lab.js";
 import { buildNearApp } from "../src/near/server.js";
 import { httpError } from "../src/near/types.js";
-import { CopilotError, providerTransportError } from "../src/near/copilot-errors.js";
+import { CopilotError, providerRetryAfter, providerTransportError } from "../src/near/copilot-errors.js";
 const hash = "B".repeat(44), owner = "owner.testnet", contract = "vault.testnet";
 const candidate = { grantId: "grant-private-id", amount: "1", recipient: "payee.testnet", nonce: "1", asset: "NEAR", policyHash: "a".repeat(64), intentId: "intent-private-id" };
 const input = { candidate, consent: true, topic: "explain" };
@@ -14,6 +14,39 @@ function model() { return { name: "test-model", generate: vi.fn(async () => answ
 function configured(fetcher: typeof fetch) { return configuredNearCopilot({ NEAR_COPILOT_ENABLED: "true", NEAR_COPILOT_MODEL: "test-model", GEMINI_API_KEY: "test-only-placeholder" }, fetcher); }
 function response(value: unknown = answer, finishReason = "STOP") { return new Response(JSON.stringify({ candidates: [{ finishReason, content: { parts: [{ text: JSON.stringify(value) }] } }] })); }
 describe("read-only NEAR generative copilot, synthetic provider only", () => {
+  it.each(["PROVIDER_QUOTA", "PROVIDER_TIMEOUT", "PROVIDER_NETWORK_ERROR", "PROVIDER_DNS_ERROR", "PROVIDER_CONNECTION_RESET", "PROVIDER_UNAVAILABLE"] as const)("blocks further snapshot/model calls after %s", async code => {
+    const source = rpc(), model = { name: "test-model", generate: vi.fn().mockRejectedValue(new CopilotError(code)) };
+    const service = new NearCopilot(model, () => 0);
+    await expect(service.explain(source as any, contract, owner, input)).rejects.toMatchObject({ code, retryAfterSeconds: 60 });
+    await expect(service.explain(source as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_COOLDOWN" });
+    expect(source.finalBlock).toHaveBeenCalledOnce(); expect(model.generate).toHaveBeenCalledOnce();
+  });
+  it("increases pause on repeated failures, caps it and resets only after a valid answer", async () => {
+    let now = 0;
+    const model = { name: "test-model", generate: vi.fn().mockRejectedValue(new CopilotError("PROVIDER_HTTP_503")) }, service = new NearCopilot(model, () => now);
+    for (const wait of [60, 120, 240, 300, 300]) {
+      await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_HTTP_503", retryAfterSeconds: wait });
+      now += wait * 1000;
+    }
+    expect(model.generate).toHaveBeenCalledTimes(5); // Advancing time never invokes a model.
+    model.generate.mockResolvedValueOnce(answer);
+    await service.explain(rpc() as any, contract, owner, input);
+    await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ retryAfterSeconds: 60 });
+  });
+  it("uses bounded provider Retry-After for quota without reading its error body", async () => {
+    const fetcher = vi.fn(async () => new Response("private-provider-error", { status: 429, headers: { "Retry-After": "180" } })), service = configured(fetcher as any);
+    await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_QUOTA", retryAfterSeconds: 180 });
+    await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toMatchObject({ code: "PROVIDER_COOLDOWN" });
+    expect(fetcher).toHaveBeenCalledOnce();
+  });
+  it.each([["0", 1], ["180", 180], ["999999999", 300], ["-1", undefined], ["1.5", undefined], ["secret-provider-error", undefined], ["x".repeat(101), undefined], [null, undefined]] as const)("bounds Retry-After value %#", (value, expected) => {
+    expect(providerRetryAfter(value, 0)).toBe(expected);
+  });
+  it("handles HTTP-date Retry-After without accepting arbitrary date text", () => {
+    const now = Date.UTC(2026, 10, 10, 0, 0, 0);
+    expect(providerRetryAfter("Tue, 10 Nov 2026 00:02:00 GMT", now)).toBe(120);
+    expect(providerRetryAfter("November 10, 2026", now)).toBeUndefined();
+  });
   it.each(["explain", "risks", "next_steps"] as const)("sends topic %s through the same validated read-only adapter", async topic => {
     const fetcher = vi.fn(async () => response()), service = configured(fetcher as any);
     const result = await service.explain(rpc() as any, contract, owner, { ...input, topic });
@@ -46,7 +79,9 @@ describe("read-only NEAR generative copilot, synthetic provider only", () => {
     await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toThrow("limit"); now += 60001; await service.explain(rpc() as any, contract, owner, input); expect(m.generate).toHaveBeenCalledTimes(4);
   });
   it("caps process attempts at20/hour, including failed providers; no implicit retry", async () => {
-    let now = 1000; const m = { name: "test-model", generate: vi.fn(async () => { throw Error("provider-secret-error"); }) }, service = new NearCopilot(m, () => now);
+    // Non-transient configuration rejection exercises the attempt cap independently
+    // of the separately tested transient-failure circuit.
+    let now = 1000; const m = { name: "test-model", generate: vi.fn(async () => { throw new CopilotError("PROVIDER_KEY_REJECTED"); }) }, service = new NearCopilot(m, () => now);
     for (let i = 0; i < 20; i++) { now += 61000; await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toThrow("unavailable or invalid"); }
     await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toThrow("limit"); expect(m.generate).toHaveBeenCalledTimes(20);
     now += 3600000; await expect(service.explain(rpc() as any, contract, owner, input)).rejects.toThrow("unavailable or invalid"); expect(m.generate).toHaveBeenCalledTimes(21);

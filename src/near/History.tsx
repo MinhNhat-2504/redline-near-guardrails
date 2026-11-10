@@ -1,5 +1,7 @@
 import { near } from "./model";
 import type { JournalRow } from "./pending";
+import { ReceiptLink } from "./ReceiptLink";
+import { StatusBadge } from "./Workspace";
 
 const labels: Record<string, string> = { deposit: "Nạp tiền vào quỹ", storage_deposit: "Nạp phí lưu trữ", create_grant: "Cấp quyền cho agent", revoke_grant: "Thu hồi quyền", withdraw: "Rút tiền về ví" };
 const object = (v: unknown): Record<string, unknown> | undefined => v !== null && typeof v === "object" && !Array.isArray(v) ? v as Record<string, unknown> : undefined;
@@ -55,4 +57,16 @@ export function HistoryDescription({ row }: { row: JournalRow }) {
     {detail.id && <code>{detail.id}</code>}
     {detail.missing && <small>Bản ghi chưa đủ chi tiết thao tác; xem receipt để kiểm tra.</small>}
   </div>;
+}
+
+export function HistoryTable({ rows, busy, onReconcile }: { rows: JournalRow[]; busy: boolean; onReconcile: (row: JournalRow) => void }) {
+  return <div className="near-table nw-history-table"><table role="table" aria-label="Lịch sử NEAR đã tải">
+    <thead role="rowgroup"><tr role="row"><th scope="col">Thao tác / số tiền</th><th scope="col">Trạng thái</th><th scope="col">Lý do</th><th scope="col">Receipt</th></tr></thead>
+    <tbody role="rowgroup">{rows.map(row => <tr key={row.hash} role="row">
+      <td role="cell" data-label="Thao tác"><HistoryDescription row={row} /></td>
+      <td role="cell" data-label="Trạng thái"><StatusBadge state={row.state} /></td>
+      <td role="cell" data-label="Lý do">{row.reason ?? "—"}</td>
+      <td role="cell" data-label="Receipt"><ReceiptLink hash={row.hash} /><button disabled={busy} aria-label={`Đối soát FINAL giao dịch ${row.hash}`} onClick={() => onReconcile(row)}>Đối soát FINAL</button></td>
+    </tr>)}</tbody>
+  </table></div>;
 }

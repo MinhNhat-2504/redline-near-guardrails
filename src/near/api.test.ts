@@ -2,6 +2,12 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { api, confirmSession, NearApiError, setToken } from "./api";
 afterEach(() => { setToken(""); vi.unstubAllGlobals(); });
 describe("onboarding session expiry and RPC uncertainty", () => {
+  it("explains local copilot rate limit without suggesting another login or leaking body", async () => {
+    const fetcher = vi.fn().mockResolvedValueOnce(Response.json({ error: "private-error" }, { status: 429 })).mockResolvedValueOnce(Response.json({ ok: true }));
+    vi.stubGlobal("fetch", fetcher); setToken("ephemeral-test-session");
+    await expect(api("/near/copilot/explain", {})).rejects.toMatchObject({ code: "COPILOT_REQUEST_LIMIT", retryAfterSeconds: 60, message: expect.not.stringContaining("private-error") });
+    await api("/health"); expect(fetcher.mock.calls[1][1].headers.authorization).toBe("Bearer ephemeral-test-session");
+  });
   it.each(["PROVIDER_CONFIG_INVALID", "PROVIDER_NETWORK_ERROR", "PROVIDER_DNS_ERROR", "PROVIDER_TLS_ERROR", "PROVIDER_CONNECTION_RESET", "PROVIDER_HTTP_500", "PROVIDER_HTTP_502", "PROVIDER_HTTP_503", "PROVIDER_HTTP_504"])("displays safe connection diagnostic %s", async code => {
     vi.stubGlobal("fetch", vi.fn(async () => Response.json({ code, error: "private-provider-error" }, { status: 503 })));
     await expect(api("/near/copilot/explain", {})).rejects.toMatchObject({ code, message: expect.stringContaining(code) });

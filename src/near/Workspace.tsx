@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Activity, ArrowRight, ArrowUpRight, BookOpen, CheckCheck, ChevronRight, CircleHelp, ExternalLink, FlaskConical, LayoutDashboard, LockKeyhole, ShieldCheck, Sparkles, Wallet } from "lucide-react";
 import heroArt from "../assets/redline-celestial-vault-hero.webp";
 import vaultArt from "../assets/redline-treasury-core.webp";
@@ -29,12 +29,15 @@ export function StatusBadge({ state }: { state: string }) {
 }
 export function Workspace({ page, navigate, owner, ready, busy, onWallet, children }: { page: WorkspacePage; navigate: (page: WorkspacePage) => void; owner: string; ready: boolean; busy: boolean; onWallet: () => void; children: ReactNode }) {
   const current = workspacePages.find(p => p.id === page)!;
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  function selectPage(next: WorkspacePage) { setMenuOpen(false); if (menuOpen && next === page) menuButton.current?.focus(); navigate(next); }
   return <div className="near-app nw-shell">
     <a className="nw-skip" href="#near-workspace-content" onClick={event => { event.preventDefault(); document.getElementById("near-workspace-content")?.focus(); }}>Đến nội dung chính</a>
-    <aside className="nw-sidebar" aria-label="Điều hướng NEAR">
-      <button className="nw-brand" onClick={() => navigate("overview")} aria-label="REDLINE · Tổng quan"><span className="emblem"><ShieldCheck size={20} /></span><span>REDLINE<small>AGENT SECURITY</small></span></button>
+    <aside className="nw-sidebar" aria-label="Điều hướng NEAR" onKeyDown={event => { if (event.key === "Escape" && menuOpen) { event.preventDefault(); setMenuOpen(false); menuButton.current?.focus(); } }}>
+      <div className="nw-sidebar-heading"><button className="nw-brand" onClick={() => selectPage("overview")} aria-label="REDLINE · Tổng quan"><span className="emblem"><ShieldCheck size={20} /></span><span>REDLINE<small>AGENT SECURITY</small></span></button><button ref={menuButton} className="nw-mobile-nav-toggle" aria-expanded={menuOpen} aria-controls="near-primary-navigation" onClick={() => setMenuOpen(open => !open)}>{menuOpen ? "Đóng menu" : "Menu"}<ChevronRight size={16} aria-hidden="true" /></button></div>
       <div className="nw-workspace-label"><span className="nw-network-dot" />NEAR WORKSPACE<span>01</span></div>
-      <nav>{workspacePages.map(p => <button key={p.id} aria-current={page === p.id ? "page" : undefined} onClick={() => navigate(p.id)}><p.icon size={18} /><span>{p.label}</span>{page === p.id && <ChevronRight size={14} />}</button>)}</nav>
+      <nav id="near-primary-navigation" className={menuOpen ? "is-open" : undefined} aria-label="Các trang NEAR">{workspacePages.map(p => <button key={p.id} aria-current={page === p.id ? "page" : undefined} onClick={() => selectPage(p.id)}><p.icon size={18} /><span>{p.label}</span>{page === p.id && <ChevronRight size={14} />}</button>)}</nav>
       <div className="nw-sidebar-bottom"><div className="nw-safety-note"><LockKeyhole size={18} /><strong>Bạn giữ quyền ký.</strong><p>Agent đề xuất. Quyền do bạn duyệt. Tiền do contract kiểm soát.</p></div><a href="/" target="_blank" rel="noreferrer">Dashboard Solana gốc <ExternalLink size={14} /></a><small>REDLINE for NEAR · Testnet</small></div>
     </aside>
     <div className="nw-stage"><header className="nw-topbar"><div className="nw-breadcrumb">Workspace <ChevronRight size={14} /><strong>{current.label}</strong></div><div className="nw-topbar-tools"><span className={`nw-network ${ready ? "is-ready" : ""}`}><i />NEAR Testnet</span><button className={owner ? "nw-wallet-connected" : "nw-primary"} disabled={busy || (!owner && !ready)} onClick={onWallet}><Wallet size={16} /><span>{owner || "Kết nối ví"}</span>{owner && <i className="nw-network-dot" />}</button></div></header>

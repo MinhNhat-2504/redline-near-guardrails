@@ -15,6 +15,7 @@ export async function api<T>(path: string, body?: unknown): Promise<T> {
     if (response.status === 401 && !staleSession) setToken("");
     let code: string | undefined;
     let retryAfterSeconds: number | undefined;
+    if (path === "/near/copilot/explain" && response.status === 429) { code = "COPILOT_REQUEST_LIMIT"; retryAfterSeconds = 60; }
     if (path === "/near/copilot/explain" && response.status === 503) {
       try { const value = await response.json(); if (copilotErrorMessage(value?.code)) { code = value.code; retryAfterSeconds = copilotRetrySeconds(value.retryAfterSeconds); } } catch { /* No raw provider/server error is displayed. */ }
     }

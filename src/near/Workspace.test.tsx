@@ -11,6 +11,13 @@ const grant: Grant = { owner: "owner.testnet", active: false, next_nonce: "1", f
 const balance: Ledger = { credited: "100000000000000000000000", finalized_spent: "10000000000000000000000", pending_reserved: "0", pending_withdrawals: "0", completed_withdrawals: "0", storage_available: "44980000000000000000000" };
 afterEach(() => vi.unstubAllGlobals());
 describe("NEAR workspace navigation and display safety (render tests, not browser E2E)", () => {
+  it("exposes a labelled collapsed mobile menu control without signing on render", () => {
+    const navigate = vi.fn(), onWallet = vi.fn();
+    const html = renderToStaticMarkup(<Workspace page="activity" owner="" ready busy={false} navigate={navigate} onWallet={onWallet}>History</Workspace>);
+    expect(html).toContain('aria-expanded="false"'); expect(html).toContain('aria-controls="near-primary-navigation"');
+    expect(html).toContain('id="near-primary-navigation"'); expect(html).toContain('aria-label="Các trang NEAR"');
+    expect(navigate).not.toHaveBeenCalled(); expect(onWallet).not.toHaveBeenCalled();
+  });
   it.each(workspacePages)("recognizes direct link to $id without wallet actions", p => { expect(pageFromHash(`#/${p.id}`)).toBe(p.id); });
   it("does not interpret NEP413 signature fragments as application routes", () => {
     expect(pageFromHash("#accountId=owner.testnet&signature=private&state=state")).toBe("overview");

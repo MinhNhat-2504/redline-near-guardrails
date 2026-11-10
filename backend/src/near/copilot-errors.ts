@@ -3,6 +3,15 @@ export class CopilotError extends Error {
   readonly statusCode = 503;
   constructor(readonly code: CopilotCode, readonly retryAfterSeconds?: number) { super("Copilot response unavailable or invalid; no authorization or settlement inferred"); }
 }
+/** RFC9110 Retry-After, bounded to the application's maximum five-minute pause. */
+export function providerRetryAfter(value: string | null, now = Date.now()): number | undefined {
+  if (!value || value.length > 100) return;
+  const raw = value.trim();
+  if (/^[0-9]{1,9}$/.test(raw)) return Math.max(1, Math.min(300, Number(raw)));
+  if (!/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} [A-Z][a-z]{2} \d{4} \d{2}:\d{2}:\d{2} GMT$/.test(raw)) return;
+  const target = Date.parse(raw);
+  if (Number.isFinite(target)) return Math.max(1, Math.min(300, Math.ceil((target - now) / 1000)));
+}
 /** Classify known platform codes only; never copy messages, URLs, headers or causes into a response. */
 export function providerTransportError(error: unknown, aborted = false): CopilotError {
   const e = error as { name?: string; code?: string; cause?: { code?: string; errors?: { code?: string }[] } } | undefined;

@@ -1,4 +1,5 @@
 const messages: Record<string, string> = {
+  COPILOT_REQUEST_LIMIT: "Đã đạt giới hạn hỏi AI của ứng dụng hoặc có lượt hỏi đang xử lý. Chờ rồi chủ động thử lại; không cần đăng nhập hay tạo giao dịch mới.",
   PROVIDER_COOLDOWN: "Copilot đang tạm nghỉ sau lỗi dịch vụ Gemini. Phân tích bằng quy tắc vẫn dùng được; không tự gọi lại AI.",
   PROVIDER_CONFIG_INVALID: "Khóa cấu hình có ký tự không hợp lệ để gửi trong HTTP header. Kiểm tra lại dòng GEMINI_API_KEY tại máy; không gửi khóa vào chat.",
   PROVIDER_NETWORK_ERROR: "Node không hoàn tất được kết nối tới Gemini. Chưa nhận được HTTP response; cần kiểm tra đường mạng của backend.",

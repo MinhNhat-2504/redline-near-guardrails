@@ -2,7 +2,7 @@ import { z } from "zod";
 import { analyzeNearPolicy, labInput } from "./policy-lab.js";
 import { httpError } from "./types.js";
 import type { NearReadOnlyRpc } from "./rpc.js";
-import { CopilotError, providerTransportError } from "./copilot-errors.js";
+import { CopilotError, providerRetryAfter, providerTransportError } from "./copilot-errors.js";
 
 export const copilotInput = z.object({ candidate: labInput, topic: z.enum(["explain", "risks", "next_steps"]), consent: z.literal(true) }).strict();
 const answerSchema = z.object({ summary: z.string().min(1).max(2000), risks: z.array(z.string().min(1).max(500)).max(5), nextSteps: z.array(z.string().min(1).max(500)).max(5) }).strict();
@@ -23,6 +23,7 @@ export class NearCopilot {
   private used = 0;
   private inflight = false;
   private cooldownUntil = 0;
+  private consecutiveFailures = 0;
   private owners = new Map<string, number[]>();
   constructor(private model?: CopilotModel, private now: () => number = Date.now) { this.hourStarted = now(); }
   status() { return { enabled: !!this.model, provider: this.model ? "gemini" : null, model: this.model?.name ?? null, cooldownSeconds: Math.max(0, Math.ceil((this.cooldownUntil - this.now()) / 1000)) }; }
@@ -47,14 +48,18 @@ export class NearCopilot {
       try { generated = await this.model.generate(copilotContext(report, request.topic)); }
       catch (e) {
         const failure = e instanceof CopilotError ? e : new CopilotError("PROVIDER_UNAVAILABLE");
-        if (["PROVIDER_HTTP_500", "PROVIDER_HTTP_502", "PROVIDER_HTTP_503", "PROVIDER_HTTP_504"].includes(failure.code)) {
-          this.cooldownUntil = this.now() + 60000;
-          throw new CopilotError(failure.code, 60);
+        if (["PROVIDER_HTTP_500", "PROVIDER_HTTP_502", "PROVIDER_HTTP_503", "PROVIDER_HTTP_504", "PROVIDER_QUOTA", "PROVIDER_TIMEOUT", "PROVIDER_NETWORK_ERROR", "PROVIDER_DNS_ERROR", "PROVIDER_CONNECTION_RESET", "PROVIDER_UNAVAILABLE"].includes(failure.code)) {
+          this.consecutiveFailures = Math.min(4, this.consecutiveFailures + 1);
+          const hinted = failure.retryAfterSeconds;
+          const wait = Math.min(300, Math.max(60 * 2 ** (this.consecutiveFailures - 1), typeof hinted === "number" && Number.isSafeInteger(hinted) && hinted > 0 ? hinted : 0));
+          this.cooldownUntil = this.now() + wait * 1000;
+          throw new CopilotError(failure.code, wait);
         }
         throw failure;
       }
       try { answer = answerSchema.parse(generated); }
       catch { throw new CopilotError("INVALID_RESPONSE"); }
+      this.consecutiveFailures = 0;
       return { source: "llm", provider: "gemini", model: this.model.name, network: report.network, contractId: contract,
         grantId: report.grantId, blockHeight: report.blockHeight, blockHash: report.blockHash, predicted: report.predicted, topic: request.topic,
         advisory: answer, notice: "Lời giải thích do LLM tạo, có thể sai. Kết luận quy tắc và receipt FINAL được kiểm tra riêng; AI không ký hoặc gửi giao dịch." };
@@ -81,9 +86,10 @@ export function configuredNearCopilot(env: NodeJS.ProcessEnv = process.env, fetc
           properties: { summary: { type: "string" }, risks: { type: "array", items: { type: "string" } }, nextSteps: { type: "array", items: { type: "string" } } }, required: ["summary", "risks", "nextSteps"] } } }) }); }
     catch (e) { throw providerTransportError(e, signal.aborted); }
     if (!response.ok) {
+      const retry = providerRetryAfter(response.headers.get("retry-after"));
       await response.body?.cancel().catch(() => {});
-      if ([500, 502, 503, 504].includes(response.status)) throw new CopilotError(`PROVIDER_HTTP_${response.status}` as "PROVIDER_HTTP_500" | "PROVIDER_HTTP_502" | "PROVIDER_HTTP_503" | "PROVIDER_HTTP_504");
-      throw new CopilotError(response.status === 401 ? "PROVIDER_KEY_REJECTED" : response.status === 403 ? "PROVIDER_ACCESS_DENIED" : response.status === 404 ? "PROVIDER_MODEL_UNAVAILABLE" : response.status === 429 ? "PROVIDER_QUOTA" : response.status === 400 ? "PROVIDER_REQUEST_REJECTED" : "PROVIDER_UNAVAILABLE");
+      if ([500, 502, 503, 504].includes(response.status)) throw new CopilotError(`PROVIDER_HTTP_${response.status}` as "PROVIDER_HTTP_500" | "PROVIDER_HTTP_502" | "PROVIDER_HTTP_503" | "PROVIDER_HTTP_504", retry);
+      throw new CopilotError(response.status === 401 ? "PROVIDER_KEY_REJECTED" : response.status === 403 ? "PROVIDER_ACCESS_DENIED" : response.status === 404 ? "PROVIDER_MODEL_UNAVAILABLE" : response.status === 429 ? "PROVIDER_QUOTA" : response.status === 400 ? "PROVIDER_REQUEST_REJECTED" : "PROVIDER_UNAVAILABLE", retry);
     }
     // Stream-bound the response instead of buffering an unbounded provider error/output.
     const reader = response.body?.getReader(); if (!reader) throw new CopilotError("INVALID_RESPONSE");
