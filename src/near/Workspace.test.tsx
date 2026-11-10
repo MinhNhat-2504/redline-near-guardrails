@@ -2,11 +2,12 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Overview, pageForTarget, pageFromHash, StatusBadge, Workspace, workspacePages } from "./Workspace";
 import { ProposalReview } from "./Review";
-import { ProofGallery, browserProofs } from "./ProofGallery";
+import { ProofGallery, browserProofs, demoCases, DemoWalkthrough } from "./ProofGallery";
 import { copyReceiptText } from "./clipboard";
 import { CONTRACT, PAYEE, type Grant, type Ledger, type Proposal } from "./model";
 import { explorerUrl } from "./onboarding";
 import NearApp from "./NearApp";
+import { QuickGuide } from "./QuickGuide";
 const grant: Grant = { owner: "owner.testnet", active: false, next_nonce: "1", finalized_spent: "10000000000000000000000", pending_reserved: "0", finalized_transactions: 1, pending_transactions: 0, policy: { executor: "executor.testnet", policy_hash: "a".repeat(64), spend_cap: "50000000000000000000000", max_transactions: 3, recipients: [PAYEE], expires_at_ns: "1793778862645000000", cooldown_ns: "0" } };
 const balance: Ledger = { credited: "100000000000000000000000", finalized_spent: "10000000000000000000000", pending_reserved: "0", pending_withdrawals: "0", completed_withdrawals: "0", storage_available: "44980000000000000000000" };
 afterEach(() => vi.unstubAllGlobals());
@@ -33,9 +34,33 @@ describe("NEAR workspace navigation and display safety (render tests, not browse
   });
   it("unloaded balances remain unknown, not fake zero or fabricated chart values", () => {
     const html = renderToStaticMarkup(<Overview owner="" ready={false} hasPending={false} nextText="Connect" nextTarget="near-setup" navigate={vi.fn()} onDemo={vi.fn()} demoBlocked={false} />);
-    expect(html).toContain("—"); expect(html).toContain("Chưa tải"); expect(html).not.toContain("0 NEAR"); expect(html).toContain("disabled");
+    expect(html).toContain("—"); expect(html).toContain("Chưa tải"); expect(html).not.toContain("0 NEAR");
     expect(html).toContain("redline-celestial-vault-hero.webp"); expect(html).toContain("redline-treasury-core.webp");
     expect(html).toContain("không ký hoặc chuyển tiền");
+  });
+  it("keeps the product explanation and evidence entry usable without API or a wallet", () => {
+    const navigate = vi.fn(), onDemo = vi.fn();
+    const html = renderToStaticMarkup(<Overview owner="" ready={false} hasPending={false} nextText="Connect" nextTarget="near-setup" navigate={navigate} onDemo={onDemo} demoBlocked />);
+    expect(html).toContain("Cho AI ngân sách."); expect(html).toContain("DÙNG KHI NÀO?");
+    expect(html).toContain("chưa có trợ lý tự mua dịch vụ"); expect(html).toContain("Không cần đăng nhập hoặc kết nối API");
+    expect(html).toMatch(/<button class="nw-primary">Xem demo: được phép hay bị chặn/);
+    expect(onDemo).not.toHaveBeenCalled(); expect(navigate).not.toHaveBeenCalled();
+  });
+  it("binds the guided examples to the exact existing financial evidence, with no new execution", () => {
+    expect(demoCases.map(c => browserProofs[c.proofIndex].state)).toEqual(["SETTLED", "REJECTED", "REJECTED", "REJECTED"]);
+    expect(demoCases.map(c => browserProofs[c.proofIndex].hash)).toEqual([browserProofs[3].hash, browserProofs[4].hash, browserProofs[5].hash, browserProofs[8].hash]);
+    const fetcher = vi.fn(); vi.stubGlobal("fetch", fetcher);
+    const html = renderToStaticMarkup(<DemoWalkthrough />);
+    expect(html).toContain(explorerUrl(browserProofs[3].hash)); expect(html).toContain("Đã chuyển 0,01 NEAR");
+    expect(html).toContain('aria-pressed="true"'); expect(html).toContain('aria-live="polite"');
+    expect(html).toContain("giao dịch Testnet lịch sử"); expect(fetcher).not.toHaveBeenCalled();
+  });
+  it("explains newcomer and uncertain-result paths without inviting another payment", () => {
+    const navigate = vi.fn(); const html = renderToStaticMarkup(<QuickGuide navigate={navigate} />);
+    expect(html).toContain("Chưa ký lại, nạp lại hoặc tạo yêu cầu thay thế");
+    expect(html).toContain("PENDING hoặc UNKNOWN chưa xác nhận thành công");
+    expect(html).toContain("AI giải thích không tự ký hay chuyển tiền");
+    expect(html).not.toContain('<details open'); expect(navigate).not.toHaveBeenCalled();
   });
   it("shows exact snapshot principal excluding storage and labels revoked grant", () => {
     const html = renderToStaticMarkup(<Overview owner={grant.owner} grant={grant} balance={balance} ready hasPending nextText="Keep same intent" nextTarget="near-intents" navigate={vi.fn()} onDemo={vi.fn()} demoBlocked />);

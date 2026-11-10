@@ -61,7 +61,7 @@ export function HistoryDescription({ row }: { row: JournalRow }) {
 
 export function HistoryTable({ rows, busy, onReconcile }: { rows: JournalRow[]; busy: boolean; onReconcile: (row: JournalRow) => void }) {
   return <div className="near-table nw-history-table"><table role="table" aria-label="Lịch sử NEAR đã tải">
-    <thead role="rowgroup"><tr role="row"><th scope="col">Thao tác / số tiền</th><th scope="col">Trạng thái</th><th scope="col">Lý do</th><th scope="col">Receipt</th></tr></thead>
+    <thead role="rowgroup"><tr role="row"><th scope="col">Thao tác / số tiền</th><th scope="col">Trạng thái</th><th scope="col">Lý do</th><th scope="col">Bằng chứng giao dịch</th></tr></thead>
     <tbody role="rowgroup">{rows.map(row => <tr key={row.hash} role="row">
       <td role="cell" data-label="Thao tác"><HistoryDescription row={row} /></td>
       <td role="cell" data-label="Trạng thái"><StatusBadge state={row.state} /></td>

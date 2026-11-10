@@ -1,0 +1,46 @@
+
+> redline@0.0.1 test
+> vitest run --reporter=dot
+
+
+ RUN  v4.1.12 D:/Project/AI Engineer/redline-near-guardrails
+
+·································································································································x·················································································································································································································································································································
+npm.cmd :
+At line:2 char:1
++ npm.cmd run test -- --reporter=dot *> docs/evidence/phase5-product-cl ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/near/PolicyLab.test.tsx > NEAR lab browser safety boundaries > labels deterministic read-only analysis and
+never renders a wallet signing control
+AssertionError: expected '<section id="near-policy-lab"><h2>Yêu…' to contain 'Không phải phản hồi từ LLM'
+
+Expected: "Không phải phản hồi từ LLM"
+Received: "<section id="near-policy-lab"><h2>Yêu cầu này có nằm trong quyền đã cấp?</h2><p>Nhập số tiền và người nhận
+để kiểm tra trước khi gửi. Kết quả dựa trên dữ liệu NEAR đã xác nhận; không cần đăng nhập, không ký và không chuyển
+tiền. Phần giải thích AI là lựa chọn riêng bên dưới.</p><p>Grant: <code>g</code></p><fieldset><label>Số NEAR cần mô
+phỏng<input inputMode="decimal" maxLength="65" value="0.01"/></label><label>Người nhận<input maxLength="64"
+value="nhat-redline-payee.testnet"/></label><label>Số thứ tự yêu cầu (nonce)<input maxLength="20" value="1"/><small
+class="near-muted">Đã điền theo quyền đang xem. Số cũ đã dùng sẽ bị chặn.</small></label><label>Mã yêu cầu cũ (tùy
+chọn)<input maxLength="64" placeholder="Để trống khi kiểm tra yêu cầu mới" value=""/></label><button>Phân tích · chỉ
+đọc</button></fieldset></section>"
+
+ ❯ src/near/PolicyLab.test.tsx:20:18
+     18|   it("labels deterministic read-only analysis and never renders a wall…
+     19|     const html = renderToStaticMarkup(<NearPolicyLab grantId="g" owner…
+     20|     expect(html).toContain("Không phải phản hồi từ LLM"); expect(html)…
+       |                  ^
+     21|   });
+     22|   it("keeps read-only analysis enabled while a saved request blocks ne…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 38 passed (39)
+      Tests  1 failed | 434 passed (435)
+   Start at  07:26:09
+   Duration  1.98s (transform 4.78s, setup 0ms, import 9.47s, tests 1.49s, environment 7ms)

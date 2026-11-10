@@ -6,6 +6,8 @@ NEAR Hackathon 2026 | **Track 06: AI Security & Defense**. Testnet prototype, no
 
 [Run locally](#run-locally) | [Transaction evidence](#verified-testnet-transactions) | [Threat model](docs/NEAR_THREAT_MODEL.md) | [Progress](docs/PROGRESS.md) | [Original Solana README](README_SOLANA.md)
 
+**New to the product?** REDLINE is for someone who wants software to spend on their behalf within a signed budget, recipient list and time limit. Open `/near#/overview`, then choose the evidence demo: compare an actual valid payment with blocked requests, without connecting a wallet. Live Testnet setup is a separate path. The current payment requests are controlled test cases; Gemini explains results and does not autonomously purchase services. [UX scope and checks](docs/NEAR_PRODUCT_CLARITY.md).
+
 ## What works
 
 | Feature | Implementation and verified scope |

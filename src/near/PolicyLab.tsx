@@ -3,6 +3,7 @@ import { api } from "./api";
 import { CAP, CONTRACT, PAYEE, near } from "./model";
 import { parsePending, type IntentRequest } from "./pending";
 import { NearCopilotPanel } from "./Copilot";
+import { reasonLabels } from "./product-copy";
 
 export function parseLabAmount(value: string): string {
   if (value.length > 65 || !/^(0|[1-9][0-9]*)(\.[0-9]{1,24})?$/.test(value)) throw Error("Nhập NEAR dạng thập phân, tối đa 24 chữ số sau dấu chấm.");
@@ -34,18 +35,18 @@ export function NearPolicyLab({ grantId, owner, nonce, policyHash, disabled, rev
       setReport(result);
     } catch (e) { setError(e instanceof Error ? e.message : "Chưa phân tích được."); } finally { setLoading(false); }
   }
-  return <section id="near-policy-lab"><h2>Policy Lab / Copilot NEAR</h2><p>Phân tích bằng quy tắc từ dữ liệu chain ở cùng một block FINAL. Không cần đăng nhập để mô phỏng; không ký, không tốn gas. Không phải phản hồi từ LLM.</p>
+  return <section id="near-policy-lab"><h2>Yêu cầu này có nằm trong quyền đã cấp?</h2><p>Nhập số tiền và người nhận để kiểm tra trước khi gửi. Kết quả dựa trên dữ liệu NEAR đã xác nhận; không cần đăng nhập, không ký và không chuyển tiền. Phần giải thích AI là lựa chọn riêng bên dưới.</p>
     <p>Grant: <code>{grantId}</code></p>
     {reviewBlocked && <p>Có request hoặc đề xuất đang giữ. Bạn vẫn phân tích chỉ đọc được; chưa tạo intent mới cho đến khi đối soát hoặc hoàn tất thao tác hiện tại.</p>}
     <fieldset disabled={disabled || loading}><label>Số NEAR cần mô phỏng<input inputMode="decimal" maxLength={65} value={amount} onChange={e => change(() => setAmount(e.target.value))} /></label>
     <label>Người nhận<input maxLength={64} value={recipient} onChange={e => change(() => setRecipient(e.target.value))} /></label>
-    <label>Nonce<input maxLength={20} value={candidateNonce} onChange={e => change(() => setNonce(e.target.value))} /></label>
-    <label>Intent ID cũ (tùy chọn, kiểm tra trùng)<input maxLength={64} value={intentId} onChange={e => change(() => setIntentId(e.target.value))} /></label>
+    <label>Số thứ tự yêu cầu (nonce)<input maxLength={20} value={candidateNonce} onChange={e => change(() => setNonce(e.target.value))} /><small className="near-muted">Đã điền theo quyền đang xem. Số cũ đã dùng sẽ bị chặn.</small></label>
+    <label>Mã yêu cầu cũ (tùy chọn)<input maxLength={64} placeholder="Để trống khi kiểm tra yêu cầu mới" value={intentId} onChange={e => change(() => setIntentId(e.target.value))} /></label>
     <button onClick={() => void analyze()}>{loading ? "Đang đọc snapshot…" : "Phân tích · chỉ đọc"}</button></fieldset>
     {error && <p role="alert" className="near-error">{error}</p>}
-    {report && <div className="near-review"><h3>Dự đoán: {report.predicted}</h3><p>FINAL block {report.blockHeight} · <code>{report.blockHash}</code></p>
+    {report && <div className="near-review"><h3>Dự đoán: {reasonLabels[report.predicted] ?? report.predicted}</h3><p><code>{report.predicted}</code> · FINAL block {report.blockHeight} · <code>{report.blockHash}</code></p>
       <p>Đề xuất {near(report.candidate.amount)} NEAR. Tiền đang giữ chỗ: {near(report.ledger.pending_reserved)} NEAR.</p>
-      <table><thead><tr><th>Kiểm tra</th><th>Kết quả mô phỏng</th><th>Copilot giải thích</th></tr></thead><tbody>{report.gates.map(g => <tr key={g.reason}><td>{g.reason}</td><td>{g.status}</td><td>{g.explanation}</td></tr>)}</tbody></table>
+      <details className="nw-gate-details"><summary>Xem các điều kiện và mã kiểm tra</summary><div className="nw-gate-scroll"><table><thead><tr><th>Kiểm tra</th><th>Kết quả mô phỏng</th><th>Giải thích theo quy tắc</th></tr></thead><tbody>{report.gates.map(g => <tr key={g.reason}><td>{reasonLabels[g.reason] ?? g.reason}<code className="nw-code-secondary">{g.reason}</code></td><td>{g.status === "BLOCK" ? "Bị chặn" : g.status === "PASS" ? "Đạt" : g.status === "NOT_EVALUATED" ? "Chưa kiểm tra" : g.status}<code className="nw-code-secondary">{g.status}</code></td><td>{g.explanation}</td></tr>)}</tbody></table></div></details>
       <p>{report.notice}</p><p>{report.predicted === "REVOKED" ? "Grant đã thu hồi. Có thể tiếp tục xem bằng chứng; quyền mới phải do chủ ví duyệt và ký riêng." : report.predicted === "EXPIRED" ? "Grant đã hết hạn. Đăng nhập lại không gia hạn quyền; tạo quyền mới cần chữ ký riêng." : report.predicted === "ALLOW" ? "Các điều kiện mô phỏng đều qua. Chuyển sang xem lại nếu muốn gửi thật; callback mới quyết định SETTLED." : "Đề xuất sẽ bị chặn theo snapshot. Kiểm tra gate BLOCK, không tự mở rộng cap hoặc đổi quyền."}</p>
       <button disabled={disabled || reviewBlocked || loading || !owner || report.owner !== owner || report.predicted !== "ALLOW" || !!intentId} onClick={() => { try { if (reviewBlocked) throw Error("Hoàn tất thao tác hiện tại trước khi tạo intent mới."); onReview(labHandoff(report, owner, grantId)); setReport(undefined); } catch (e) { setError((e as Error).message); } }}>Chuyển sang xem lại intent · chưa gửi</button>
       <NearCopilotPanel key={`${report.blockHash}:${JSON.stringify(report.candidate)}`} candidate={report.candidate} ownerMatches={!!owner && report.owner === owner} disabled={disabled || loading} onSessionExpired={onSessionExpired} ruleSnapshot={{ predicted: report.predicted, blockHeight: report.blockHeight, blockHash: report.blockHash }} />
