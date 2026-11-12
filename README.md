@@ -8,6 +8,8 @@ NEAR Hackathon 2026 | **Track 06: AI Security & Defense**. Testnet prototype, no
 
 **New to the product?** REDLINE is for someone who wants software to spend on their behalf within a signed budget, recipient list and time limit. Open `/near#/overview`, then choose the evidence demo: compare an actual valid payment with blocked requests, without connecting a wallet. Live Testnet setup is a separate path. The current payment requests are controlled test cases; Gemini explains results and does not autonomously purchase services. [UX scope and checks](docs/NEAR_PRODUCT_CLARITY.md).
 
+**Reviewer quick path:** run only the frontend using option A below, open `/near#/proofs`, select **English**, then compare the four historical outcomes and open their exact Explorer links. No backend, wallet or model key is needed for this path. English currently covers the guided evidence tour; the operational workspace is Vietnamese. [Release checklist](docs/NEAR_SUBMISSION_READY.md) · [Two-minute recording script](docs/NEAR_DEMO_RECORDING.md).
+
 ## What works
 
 | Feature | Implementation and verified scope |
@@ -53,6 +55,8 @@ npm.cmd run dev -- --host localhost --port 5173 --strictPort
 ```
 
 Open **http://localhost:5173/near#/proofs**. Recorded links work without login or the API. API health errors do not invalidate historical receipts. Public repository verified2026-11-10; anonymous main clone and README/LICENSE access PASS. Development branch: `feat/near-mvp`; public default branch: `main`.
+
+Do X → see Y: choose **English**, click **Within permission** → see the archived settled0.01 NEAR receipt; click **Over budget**, **Wrong recipient**, **Permission revoked** → see each archived rejection and its exact Explorer link. Selecting cases does not send requests or call a model. A muted API-unavailable status only limits live operations; the evidence remains available.
 
 `/near` is NEAR; `/` preserves the original Solana workspace. Its hosted links/badges are not NEAR evidence.
 
@@ -126,6 +130,8 @@ npx.cmd tsc -p tsconfig.json
 ```
 
 2026-11-10 isolated Git-source/cache installation:428 frontend/632 backend tests plus typechecks/builds PASS ([report](docs/evidence/phase6-clean-report.json)).26 isolated Postgres integration tests passed at an earlier checkpoint; newest logo CSS change passed frontend typecheck/build. Counts and dates are evidence checkpoints, not promises of today's clean install. [Actual test scope/logs](docs/NEAR_FUNCTIONAL_SECURITY_CHECKPOINT.md).
+
+2026-11-12 release-local regression: **443 frontend tests /39files,649 backend tests /41files, both typechecks and production TypeScript/Vite builds PASS** ([frontend log](docs/evidence/phase6-release-frontend.log), [backend log](docs/evidence/phase6-release-backend.log)). Fresh audit: frontend10low/0moderate/0high/0critical; backend0. No dependencies changed; the inherited deferred-wallet529kB warning remains. No live Gemini, owner signature, DB integration or contract/sandbox run was newly performed for this frontend release. Real-browser/mobile acceptance remains pending.
 
 - [Contract reproduction](contracts/near-safety-vault/tests/README.md):21 SDK tests and prior real sandbox53 transactions/136 receipts; local sandbox proof is distinct from public Testnet.
 - [Source/cache installation](scripts/check-near-clean-install.ps1): isolated install/tests/build without local credentials or server; not independent online newcomer acceptance.

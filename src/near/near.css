@@ -97,6 +97,16 @@
 .nw-glossary{display:grid;grid-template-columns:minmax(120px,1fr) 3fr;gap:15px 24px;margin-top:18px}
 .nw-glossary dt{font-weight:600;color:#e8d3ab}.nw-glossary dd{margin:0;color:#b8c9df;line-height:1.8}
 @media(max-width:900px){.nw-guide-paths{grid-template-columns:1fr}.nw-glossary{grid-template-columns:1fr;gap:8px}.nw-glossary dd{margin-bottom:14px}}
+.nw-language-choice{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.nw-language-choice>span{font-size:12px;color:var(--nw-muted);margin-right:6px}
+.near-app .nw-language-choice button[aria-pressed=true]{background:#e3c58f18;border-color:var(--nw-gold);color:#f0d8ab}
+.nw-connection-status{display:flex;align-items:center;gap:12px;padding:13px 17px;margin-bottom:22px;background:#112623;border:1px solid #315047;border-radius:10px}
+.nw-connection-status>div{flex:1;min-width:0}.nw-connection-status strong{font-size:12px;font-weight:550}
+.nw-connection-status p{color:#a5b9cc;font-size:12px;margin:3px 0 0}
+.nw-connection-status.is-readonly{background:#121f31;border-color:#30445e}
+.nw-connection-status.is-readonly>.nw-network-dot{background:#d4b47f}
+.nw-connection-detail{margin-bottom:20px;color:#a5b9cc;font-size:12px}
+@media(max-width:600px){.nw-connection-status{align-items:flex-start;flex-wrap:wrap}.nw-connection-status>.nw-network-dot{margin-top:7px}.nw-connection-status button{margin-left:18px}.nw-language-choice{justify-content:flex-start}}
 .near-app .nw-world-copy p,.near-app .nw-proof-card>p{font-size:13px;line-height:1.8}
 @media(max-width:900px){.near-app .nw-use-case{grid-template-columns:1fr;gap:24px}.nw-demo-result{grid-template-columns:1fr;gap:14px}}
 @media(max-width:760px){

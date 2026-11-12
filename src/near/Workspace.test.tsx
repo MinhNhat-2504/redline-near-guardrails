@@ -2,12 +2,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Overview, pageForTarget, pageFromHash, StatusBadge, Workspace, workspacePages } from "./Workspace";
 import { ProposalReview } from "./Review";
-import { ProofGallery, browserProofs, demoCases, DemoWalkthrough } from "./ProofGallery";
+import { ProofGallery, browserProofs, demoCases, DemoWalkthrough, DemoCaseContent } from "./ProofGallery";
 import { copyReceiptText } from "./clipboard";
 import { CONTRACT, PAYEE, type Grant, type Ledger, type Proposal } from "./model";
 import { explorerUrl } from "./onboarding";
 import NearApp from "./NearApp";
 import { QuickGuide } from "./QuickGuide";
+import { ConnectionStatus } from "./ConnectionStatus";
 const grant: Grant = { owner: "owner.testnet", active: false, next_nonce: "1", finalized_spent: "10000000000000000000000", pending_reserved: "0", finalized_transactions: 1, pending_transactions: 0, policy: { executor: "executor.testnet", policy_hash: "a".repeat(64), spend_cap: "50000000000000000000000", max_transactions: 3, recipients: [PAYEE], expires_at_ns: "1793778862645000000", cooldown_ns: "0" } };
 const balance: Ledger = { credited: "100000000000000000000000", finalized_spent: "10000000000000000000000", pending_reserved: "0", pending_withdrawals: "0", completed_withdrawals: "0", storage_available: "44980000000000000000000" };
 afterEach(() => vi.unstubAllGlobals());
@@ -61,6 +62,24 @@ describe("NEAR workspace navigation and display safety (render tests, not browse
     expect(html).toContain("PENDING hoặc UNKNOWN chưa xác nhận thành công");
     expect(html).toContain("AI giải thích không tự ký hay chuyển tiền");
     expect(html).not.toContain('<details open'); expect(navigate).not.toHaveBeenCalled();
+  });
+  it.each(demoCases.map((item, index) => ({ ...item, index })))("renders English evidence for $name with the original exact receipt", item => {
+    const onSelect = vi.fn(), fetcher = vi.fn(); vi.stubGlobal("fetch", fetcher);
+    const html = renderToStaticMarkup(<DemoCaseContent language="en" selected={item.index} onSelect={onSelect} />);
+    expect(html).toContain('lang="en"'); expect(html).toContain(explorerUrl(browserProofs[item.proofIndex].hash));
+    expect(html).toContain("historical Testnet transactions"); expect(html).toContain("cannot sign, create permissions or override the contract");
+    expect(html).toContain(item.blocked ? "Blocked:" : "0.01 NEAR transferred");
+    expect(onSelect).not.toHaveBeenCalled(); expect(fetcher).not.toHaveBeenCalled();
+  });
+  it("falls back to the first historical case for an invalid display selection", () => {
+    const html = renderToStaticMarkup(<DemoCaseContent language="en" selected={-1} onSelect={vi.fn()} />);
+    expect(html).toContain(explorerUrl(browserProofs[3].hash)); expect(html).not.toContain("undefined");
+  });
+  it.each([true, false])("keeps API status %s distinct from transaction settlement and makes no request on render", ready => {
+    const onCheck = vi.fn(); const html = renderToStaticMarkup(<ConnectionStatus ready={ready} busy={false} onCheck={onCheck} />);
+    expect(html).toContain(ready ? "API Testnet đã kết nối" : "Demo lịch sử vẫn mở được");
+    expect(html).not.toContain("SETTLED"); expect(onCheck).not.toHaveBeenCalled();
+    if (!ready) expect(html).toContain("Kiểm tra kết nối");
   });
   it("shows exact snapshot principal excluding storage and labels revoked grant", () => {
     const html = renderToStaticMarkup(<Overview owner={grant.owner} grant={grant} balance={balance} ready hasPending nextText="Keep same intent" nextTarget="near-intents" navigate={vi.fn()} onDemo={vi.fn()} demoBlocked />);

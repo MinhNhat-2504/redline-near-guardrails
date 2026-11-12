@@ -15,6 +15,7 @@ import { HistoryTable } from "./History";
 import { NearPolicyLab } from "./PolicyLab";
 import { ProofGallery } from "./ProofGallery";
 import { QuickGuide } from "./QuickGuide";
+import { ConnectionStatus } from "./ConnectionStatus";
 import { ProposalReview } from "./Review";
 import { assertLocalRecovery, recoverStartup, startupGrant } from "./recovery";
 import { assertNoWithdrawal, beginWithdrawal, completeWithdrawal, recordWithdrawalHash, validateWithdrawalProposal, withdrawalNear, type WithdrawalAttempt } from "./withdrawal";
@@ -41,7 +42,6 @@ export default function NearApp() {
     const health = await api<{ chain: string; network: string; contractId: string; executorId: string; identityEnforced: boolean; signingEnabled: boolean }>("/health");
     assertIdentity(health); setSigningEnabled(health.signingEnabled); setReady(true);
     const account = await finishCallback(); if (account) { await confirmSession(account); setOwner(account); }
-    setMessage(`Đã kiểm tra kết nối API Testnet lúc ${new Date().toLocaleTimeString("vi-VN")}.`);
   }
   useEffect(() => { const saved = recoverStartup(() => localStorage); setId(startupGrant(new URLSearchParams(location.search).get("grant"), saved)); setRecoveryErrors(saved.errors); if (saved.funding) { setFundingAttempt(saved.funding); setFundingHash(saved.funding.hash ?? ""); } if (saved.withdrawal) { setWithdrawalAttempt(saved.withdrawal); setWithdrawalHash(saved.withdrawal.hash ?? ""); } if (saved.request) setRequest(saved.request); void run(connect); const timer = setInterval(() => setTick(Date.now()), 1000); return () => clearInterval(timer); }, []);
   async function refresh(account = owner, selectedId = id) {
@@ -184,7 +184,8 @@ export default function NearApp() {
 
   return <Workspace page={page} navigate={navigate} owner={owner} ready={ready} busy={busy} onWallet={() => owner ? navigate("vault") : void run(async () => { setOwner(await login()); navigate("vault"); })}>
     <div ref={pageHeading} tabIndex={-1} className="nw-focus-anchor" />
-    <div aria-live="polite">{error && <p className="near-error" role="alert">{error}</p>}{message && <p className="near-notice">{message}</p>}{busy && <p>Đang xử lý… Giữ nguyên cửa sổ, không tạo request thay thế.</p>}</div>
+    <ConnectionStatus ready={ready} busy={busy} onCheck={() => void run(connect)} />
+    <div aria-live="polite">{error && (!ready && !owner && !hasPending && (page === "overview" || page === "proofs") ? <details className="nw-connection-detail"><summary>Chi tiết kết nối API chưa thành công</summary><p>{error}</p><p>Bằng chứng lịch sử không yêu cầu backend. Không cần nạp hoặc ký lại để xem demo.</p></details> : <p className="near-error" role="alert">{error}</p>)}{message && <p className="near-notice">{message}</p>}{busy && <p>Đang xử lý… Giữ nguyên cửa sổ, không tạo request thay thế.</p>}</div>
     {recoveryErrors.length > 0 && <p className="near-error" role="alert">{recoveryErrors.join(" ")} API chỉ đọc và Policy Lab vẫn dùng được khi kết nối sẵn sàng. Không xóa localStorage để vượt bước đối soát.</p>}
 
     {hasPending && <div className="nw-pending-banner"><Info size={18} /><div><strong>{withdrawalAttempt ? "Có lần rút cần đối soát" : fundingAttempt ? "Có lần ký funding cần đối soát" : "Có intent đã lưu"}</strong><p>Giữ nguyên yêu cầu. Không tự gửi lại hoặc tạo khoản nạp mới.</p></div><button onClick={() => navigate((fundingAttempt || withdrawalAttempt) ? "vault" : "activity")}>Xem thao tác <ArrowRight size={15} /></button></div>}

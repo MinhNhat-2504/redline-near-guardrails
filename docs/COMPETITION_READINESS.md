@@ -1,6 +1,12 @@
 # REDLINE competition readiness
 
-Reviewed2026-11-03. Goal: a credible, competitive Track06 submission. This is engineering prioritization, not a prize prediction or a claim of independent audit. Current overall status: NOT SUBMISSION-READY.
+Current review: **2026-11-12**. Target: owner submission on **2026-11-13**. The product has a verified Testnet core and a presentation/release candidate. Final submission is still pending the owner's visual rehearsal, video, public X post and form confirmation. No award probability or independent audit is claimed.
+
+**Use [current release checklist](NEAR_SUBMISSION_READY.md), [recording script](NEAR_DEMO_RECORDING.md) and [submission drafts](NEAR_SUBMISSION_DRAFT.md).** Public main, scoped license and hosted CI have since been verified; the older blockers below are historical and superseded. Local release checks: frontend443/backend649 tests and typechecks/builds PASS; current provider reliability/mobile acceptance remain limited. New English covers the read-only guided tour, not full-workspace translation.
+
+## Historical 2026-11-03 review (retained for traceability)
+
+The remaining sections describe the Nov3 checkpoint, not the current release status. Old instructions to fund/sign another grant are obsolete; no new payment is needed for the current historical-evidence video.
 
 ## Verified organizer guidance
 

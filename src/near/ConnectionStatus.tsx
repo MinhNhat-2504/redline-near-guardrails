@@ -1,0 +1,3 @@
+export function ConnectionStatus({ ready, busy, onCheck }: { ready: boolean; busy: boolean; onCheck: () => void }) {
+  return <div className={`nw-connection-status ${ready ? "is-connected" : "is-readonly"}`} role="status"><span aria-hidden="true" className="nw-network-dot" /><div><strong>{ready ? "API Testnet đã kết nối" : "Đang xem bằng chứng có sẵn"}</strong><p>{ready ? "Các thao tác với ví vẫn cần bạn xem lại và ký riêng." : "Demo lịch sử vẫn mở được. Kết nối backend nếu muốn đọc dữ liệu mới hoặc thao tác với ví."}</p></div>{!ready && <button disabled={busy} onClick={onCheck}>{busy ? "Đang kiểm tra…" : "Kiểm tra kết nối"}</button>}</div>;
+}
