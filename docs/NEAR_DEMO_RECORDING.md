@@ -2,6 +2,20 @@
 
 Prepared2026-11-12. Use the actual application and existing verified Testnet receipts. No new funding, grants, key resets or payments are needed for this video. Do not pretend an archived transaction is being executed live.
 
+## Offline voice-over prepared
+
+The owner requested a narrated demo. `scripts/prepare-near-demo-narration.ps1` generates an English synthetic voice using installed Windows System.Speech (Microsoft Zira Desktop), then `scripts/assemble-near-demo-narration.py` combines sentence clips with standard-library WAV processing. No model/API key, network upload or voice cloning is used.
+
+Actual output under ignored `.tooling/near-demo-narration/`:
+
+- `redline-demo-voiceover-en.wav`:101.374seconds,16-bit mono22050Hz PCM.
+- `redline-demo-subtitles-en.srt`:15 sentence-aligned captions.
+- `redline-demo-timeline.json`:scene names, narration and exact clip boundaries for editing.
+
+Verified output structure, non-silent PCM, cue count and timing bounds: `docs/evidence/phase6-demo-narration-check.json`. Audio was generated, not human-listened or pronunciation-reviewed. First sandbox SelectVoice attempt failed; the reviewed local escalation succeeded. This is **audio and subtitles only**: no screen recording or completed MP4 exists yet. Available tools cannot control/capture the owner's browser; ffmpeg is not installed in PATH. The owner must provide a real screen recording for a completed narrated product video. Do not replace it with staged payment outcomes or label slides as a live demo.
+
+Run from the project root to regenerate offline: `.\scripts\prepare-near-demo-narration.ps1`. Keep the generated binaries private/local until reviewed; the reproducible scripts and public narration text are tracked, not a personal screen recording.
+
 ## Before recording
 
 Start the frontend using the README. Backend and Gemini are optional for the historical tour. Close unrelated tabs and notifications; keep private files, terminal secrets, wallet backup and sessions out of frame. Use a readable browser zoom and test the microphone. The English tour is available under Bằng chứng → English. This is a bilingual evidence tour, not full-workspace localization.

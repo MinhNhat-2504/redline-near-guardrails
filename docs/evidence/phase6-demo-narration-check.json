@@ -1,0 +1,15 @@
+{
+  "date_vietnam": "2026-11-12",
+  "voice": "Microsoft Zira Desktop",
+  "synthetic": true,
+  "durationSeconds": 101.374,
+  "sampleRate": 22050,
+  "channels": 1,
+  "pcmBits": 16,
+  "sentenceCues": 15,
+  "audioBytes": 4470630,
+  "nonSilentPCM": true,
+  "scope": "WAV structure/non-silence and subtitle timing checks; no human listening or screen capture acceptance",
+  "videoGenerated": false,
+  "initialSandboxAttempt": "SelectVoice unavailable under sandbox; offline owner-machine voice generation succeeded with reviewed escalation"
+}
